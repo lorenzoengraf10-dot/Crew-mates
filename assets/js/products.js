@@ -151,6 +151,16 @@ const SUBS = Object.values(CATEGORIAS).reduce((acc, cat) => {
    ========================================================================= */
 const TESTIMONIOS = [
   {
+    texto: "Compren con los ojos cerrados. Uso y recomiendo.",
+    autor: "@cynmiran_0125",
+    img: "assets/img/clientes/cynmiran.jpg"
+  },
+  {
+    texto: "Increíble el bombillón.",
+    autor: "@josias_cevalles_9",
+    img: "assets/img/clientes/josias.jpg"
+  },
+  {
     texto: "Un lujo, amigo.",
     autor: "@32luceeroo",
     img: "assets/img/clientes/32luceeroo.jpg"

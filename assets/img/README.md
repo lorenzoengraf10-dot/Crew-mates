@@ -15,7 +15,9 @@ exacto**, en minúscula y sin tildes:
 | `hero-2.jpg` | La del puesto en la feria de Patagones | 600 × 750 px |
 | `showroom.jpg` | La de los pedidos para Viedma, con las bombillas atrás | 900 × 1100 px |
 | `og.jpg` | La que se ve al compartir el link por WhatsApp | 1200 × 630 px |
-| `clientes/32luceeroo.jpg` | La historia del cliente con la bolsa de la marca | 800 × 1000 px |
+| `clientes/cynmiran.jpg` | La del termo con el logo y el puesto de la feria | 800 × 1000 px |
+| `clientes/josias.jpg` | La del mate con bombillón en la cancha | 800 × 1000 px |
+| `clientes/32luceeroo.jpg` | La de la bolsa de la marca con el mate y la bombilla | 800 × 1000 px |
 
 Cuando cargues `hero-1.jpg` y `hero-2.jpg`, el collage del inicio aparece solo
 (hoy está oculto en celular justamente porque está vacío). Lo mismo con `showroom.jpg`.

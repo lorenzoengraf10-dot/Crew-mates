@@ -154,6 +154,16 @@ sed -i 's/styles.css?v=4/styles.css?v=4/' *.html
 
 ---
 
+## Después de subir un cambio
+
+GitHub Pages tarda **1 o 2 minutos** en publicar, y además los navegadores guardan los
+archivos un rato. Si subiste productos nuevos y todavía no los ves, esperá unos minutos
+y recargá — se acomoda solo.
+
+Lo único que sí conviene forzar a mano es el CSS, con el `?v=` explicado arriba.
+
+---
+
 ## Publicar en GitHub Pages
 
 1. En el repo: **Settings → Pages**.
