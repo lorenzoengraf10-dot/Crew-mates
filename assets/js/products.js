@@ -341,6 +341,17 @@ const PRODUCTOS = {
         "Caña curva",
         "Terminación premium"
       ]
+    },
+    {
+      nombre: "Bombillón pico de loro de alpaca y bronce",
+      precio: 28000,
+      desc: "Bombillón de alpaca y bronce, pico de loro. Mide 18 cm aproximadamente.",
+      img: "assets/img/bombillas/bombillon-pico-de-loro-alpaca-bronce.jpg",
+      detalles: [
+        "Alpaca y bronce",
+        "Pico de loro",
+        "18 cm aproximadamente"
+      ]
     }
   ],
 

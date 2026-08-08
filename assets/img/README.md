@@ -46,7 +46,12 @@ assets/img/bombillas/pico-de-loro.jpg
 assets/img/bombillas/bombillon-pico-del-rey.jpg
 assets/img/bombillas/bombillon-recto-alpaca.jpg
 assets/img/bombillas/bombillon-premium-curvo.jpg
+assets/img/bombillas/bombillon-pico-de-loro-alpaca-bronce.jpg
 ```
+
+Ojo con esta última: la foto que tenemos hoy (el soporte negro con dos picos) es en
+realidad la del "Bombillón pico del rey". Falta la foto propia de este producto —
+mientras tanto se muestra el placeholder de la marca en vez de repetir la otra imagen.
 
 Después, en `assets/js/products.js`, poné la ruta en el campo `img`:
 
