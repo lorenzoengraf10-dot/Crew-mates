@@ -6,10 +6,10 @@ de archivo asignado en el código:** para cargar una foto no hay que tocar
 `products.js`, alcanza con subir el archivo a la carpeta que corresponde, con el
 nombre exacto de esta lista.
 
-## Estado actual: 9 de 32 fotos cargadas
+## Estado actual: 11 de 32 fotos cargadas
 
-Las 5 de bombillas y bombillones, más 4 generales (los dos del hero, el showroom y
-la del cliente 32luceeroo). Faltan 23 — este archivo es el checklist para ir tachando
+Las 5 de bombillas y bombillones, los 3 generales (hero × 2 y showroom) y los 3
+testimonios de clientes. Faltan 21 — este archivo es el checklist para ir tachando
 a medida que subís cada una.
 
 ---
@@ -29,15 +29,15 @@ Van sueltas en `assets/img/`, no en una subcarpeta.
 El collage del inicio y la foto de "Nosotros" ya se muestran, porque `hero-1.jpg`,
 `hero-2.jpg` y `showroom.jpg` están cargadas.
 
-## 2. Clientes — 3 archivos (1 lista ✅)
+## 2. Clientes — 3 archivos ✅ listo
 
 En `assets/img/clientes/`.
 
 | Archivo | Qué foto va |
 |---|---|
 | ✅ `32luceeroo.jpg` | La de la bolsa de la marca con el mate y la bombilla (@32luceeroo) |
-| `cynmiran.jpg` | La del termo con el logo y el puesto de la feria (@cynmiran_0125) |
-| `josias.jpg` | La del mate con bombillón en la cancha (@josias_cevalles_9) |
+| ✅ `cynmiran.jpg` | La del termo con el logo y el puesto de la feria (@cynmiran_0125) |
+| ✅ `josias.jpg` | La del mate con bombillón en la cancha (@josias_cevalles_9) |
 
 ## 3. Mates — 6 archivos
 
