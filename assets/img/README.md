@@ -6,37 +6,38 @@ de archivo asignado en el código:** para cargar una foto no hay que tocar
 `products.js`, alcanza con subir el archivo a la carpeta que corresponde, con el
 nombre exacto de esta lista.
 
-## Estado actual: 5 de 32 fotos cargadas
+## Estado actual: 9 de 32 fotos cargadas
 
-Las 5 de bombillas y bombillones ya están. Faltan las 27 restantes — este archivo es
-el checklist para ir tachando a medida que subís cada una.
+Las 5 de bombillas y bombillones, más 4 generales (los dos del hero, el showroom y
+la del cliente 32luceeroo). Faltan 23 — este archivo es el checklist para ir tachando
+a medida que subís cada una.
 
 ---
 
-## 1. Imágenes generales — 5 archivos
+## 1. Imágenes generales — 5 archivos (4 listas ✅)
 
 Van sueltas en `assets/img/`, no en una subcarpeta.
 
 | Archivo | Qué foto va | Medida sugerida |
 |---|---|---|
+| ✅ `hero-1.jpg` | La del mate en el auto con el termo de stickers | listo |
+| ✅ `hero-2.jpg` | La del puesto en la Feria Municipal | listo |
+| ✅ `showroom.jpg` | La de los pedidos para Viedma, con las bombillas atrás | listo |
 | `logo.png` | El logo con fondo transparente | 400 × 140 px |
-| `hero-1.jpg` | La del mate en el auto con el termo de stickers | 1000 × 1000 px |
-| `hero-2.jpg` | La del puesto en la Feria Municipal | 600 × 750 px |
-| `showroom.jpg` | La de los pedidos para Viedma, con las bombillas atrás | 900 × 1100 px |
 | `og.jpg` | La que se ve al compartir el link por WhatsApp | 1200 × 630 px |
 
-Cuando cargues `hero-1.jpg` y `hero-2.jpg`, el collage del inicio aparece solo (hoy
-está oculto en celular porque está vacío). Lo mismo con `showroom.jpg`.
+El collage del inicio y la foto de "Nosotros" ya se muestran, porque `hero-1.jpg`,
+`hero-2.jpg` y `showroom.jpg` están cargadas.
 
-## 2. Clientes — 3 archivos
+## 2. Clientes — 3 archivos (1 lista ✅)
 
 En `assets/img/clientes/`.
 
 | Archivo | Qué foto va |
 |---|---|
+| ✅ `32luceeroo.jpg` | La de la bolsa de la marca con el mate y la bombilla (@32luceeroo) |
 | `cynmiran.jpg` | La del termo con el logo y el puesto de la feria (@cynmiran_0125) |
 | `josias.jpg` | La del mate con bombillón en la cancha (@josias_cevalles_9) |
-| `32luceeroo.jpg` | La de la bolsa de la marca con el mate y la bombilla (@32luceeroo) |
 
 ## 3. Mates — 6 archivos
 
