@@ -87,7 +87,7 @@ h1,h2,h3,h4{
 /* ============================ TIPOGRAFÍA DE SECCIÓN ============================ */
 
 .eyebrow{
-  display:inline-flex; align-items:center; gap:9px;
+  display:inline-flex; align-items:flex-start; gap:9px;
   margin:0 0 14px;
   font-size:.74rem; font-weight:700;
   letter-spacing:.16em; text-transform:uppercase;
@@ -97,6 +97,7 @@ h1,h2,h3,h4{
   width:8px; height:8px; border-radius:50%;
   background:var(--orange);
   flex:none;
+  margin-top:.45em;   /* queda a la altura de la primera línea, aunque el texto corte */
 }
 .eyebrow--light{ color:rgba(251,247,240,.72); }
 
@@ -633,7 +634,9 @@ h1,h2,h3,h4{
   margin-bottom:clamp(24px, 3vw, 34px);
 }
 .subnav a{
-  padding:9px 18px;
+  display:inline-flex; align-items:center;
+  min-height:44px;
+  padding:9px 20px;
   border-radius:999px;
   font-family:var(--font-display);
   font-weight:600; font-size:.95rem;
@@ -905,10 +908,16 @@ h1,h2,h3,h4{
   text-transform:uppercase;
   margin-bottom:16px;
 }
-.footer__col li{ margin-bottom:10px; font-size:.94rem; }
+.footer__col li{
+  display:flex; align-items:center;
+  min-height:34px;
+  font-size:.94rem;
+}
 .footer__col a{
+  display:inline-flex; align-items:center;
+  min-height:44px;               /* zona tocable cómoda con el dedo */
   cursor:pointer;
-  transition:color .18s ease, padding-left .18s ease;
+  transition:color .18s ease;
 }
 .footer__col a:hover{ color:var(--orange-soft); }
 .footer__wa{ margin-top:10px; padding:10px 18px; font-size:.9rem; }
@@ -972,12 +981,12 @@ h1,h2,h3,h4{
 
 .modal__close{
   position:absolute; top:12px; right:14px; z-index:3;
-  width:38px; height:38px;
+  width:44px; height:44px;
   border-radius:50%;
   display:grid; place-items:center;
   background:var(--cream);
   color:var(--navy);
-  font-size:1.6rem; line-height:1;
+  font-size:1.7rem; line-height:1;
   box-shadow:var(--shadow-sm);
 }
 .modal__close:hover{ background:var(--orange); color:#fff; }
@@ -1061,6 +1070,16 @@ h1,h2,h3,h4{
 }
 
 @media (max-width: 900px){
+  :root{ --header-h: 64px; }        /* menos barra, más contenido a la vista */
+
+  .brand{ min-height:44px; }
+  .brand__logo{ height:38px; }
+
+  .hero{ padding:26px 0 34px; }
+  .hero__text{ margin-top:16px; }
+  .hero__actions{ margin-top:22px; }
+  .hero__facts{ margin-top:26px; padding-top:20px; }
+
   .nav{
     position:fixed; inset:var(--header-h) 0 auto;
     background:var(--cream);
@@ -1095,13 +1114,18 @@ h1,h2,h3,h4{
     box-shadow:none;
   }
   .drop li:first-child{ border-bottom:0; padding-bottom:0; margin-bottom:0; }
-  .drop a{ padding:10px 8px; font-size:.98rem; }
+  .drop a{ min-height:44px; padding:10px 8px; font-size:.98rem; }
 
   .burger{ display:flex; margin-left:auto; }
   .header__cta{ display:none; }
 
   /* En mobile primero el mensaje, después la foto */
   .hero__inner{ grid-template-columns:1fr; }
+
+  /* Sin fotos cargadas, el collage sería una pantalla entera de scroll vacío
+     antes de llegar al catálogo. Mientras esté vacío, en celular no va. */
+  .hero__visual.is-empty{ display:none; }
+  .about__media.is-empty{ display:none; }
   .hero__visual{ max-width:420px; margin-top:8px; }
   .hero__stamp{
     width:92px; height:92px;
@@ -1120,10 +1144,12 @@ h1,h2,h3,h4{
 }
 
 @media (max-width: 620px){
+  .eyebrow{ font-size:.71rem; letter-spacing:.11em; }
   .ayuda__inner .btn{ width:100%; }
   .subs{ grid-template-columns:1fr; }
   .menu__grid{ grid-template-columns:1fr; }
-  .strip__inner{ grid-template-columns:1fr; }
+  .strip__inner{ grid-template-columns:1fr 1fr; }
+  .strip__item{ padding:16px 14px; font-size:.84rem; }
   .footer__inner{ grid-template-columns:1fr; }
   .grid{ grid-template-columns:repeat(auto-fill, minmax(160px, 1fr)); gap:14px; }
   .card__body{ padding:14px 14px 16px; }

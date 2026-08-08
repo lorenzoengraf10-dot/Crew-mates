@@ -522,11 +522,25 @@
 
     $$(".frame img, .about__media img").forEach((img) => {
       const cont = img.parentElement;
-      const marcar = () => cont.classList.add("is-empty");
+      const marcar = () => {
+        cont.classList.add("is-empty");
+        revisarHero();
+      };
       if (!img.getAttribute("src")) return marcar();
       if (img.complete && img.naturalWidth === 0) marcar();
       img.addEventListener("error", marcar, { once: true });
     });
+  }
+
+  /* Si todavía no hay ninguna foto en el collage del inicio, lo marcamos como
+     vacío: en el celular se oculta para no gastar una pantalla entera de scroll
+     antes de llegar al catálogo. */
+  function revisarHero() {
+    const visual = $(".hero__visual");
+    if (!visual) return;
+    const marcos = $$(".frame", visual);
+    const vacios = marcos.filter((f) => f.classList.contains("is-empty"));
+    visual.classList.toggle("is-empty", marcos.length > 0 && vacios.length === marcos.length);
   }
 
   /* ---------------------------------------------------------------------
