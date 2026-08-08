@@ -137,6 +137,23 @@ python3 -m http.server 8000
 
 ---
 
+## Si cambiás el CSS
+
+Los navegadores guardan `styles.css` en caché. Después de editarlo, subile el número
+de versión al final del link, en las 12 páginas `.html`:
+
+```html
+<link rel="stylesheet" href="assets/css/styles.css?v=2">   <!-- pasalo a ?v=3 -->
+```
+
+Con eso el navegador lo baja de nuevo en vez de usar la copia vieja. En la terminal:
+
+```bash
+sed -i 's/styles.css?v=2/styles.css?v=3/' *.html
+```
+
+---
+
 ## Publicar en GitHub Pages
 
 1. En el repo: **Settings → Pages**.
