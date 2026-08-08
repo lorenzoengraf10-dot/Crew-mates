@@ -136,6 +136,27 @@ const SUBS = Object.values(CATEGORIAS).reduce((acc, cat) => {
   return acc;
 }, {});
 
+/* =========================================================================
+   CLIENTES
+   -------------------------------------------------------------------------
+   Lo que dicen los que ya compraron. Es lo que más ayuda a que alguien de
+   otra provincia se anime a transferirte.
+
+   texto  → la frase, cortita. Tal cual la dijo.
+   autor  → el usuario de Instagram o el nombre de pila.
+   img    → captura de la historia o foto que mandó. Opcional: si no hay,
+            la tarjeta se muestra igual, solo con la frase.
+
+   Si dejás la lista vacía, la sección entera no aparece en el sitio.
+   ========================================================================= */
+const TESTIMONIOS = [
+  {
+    texto: "Un lujo, amigo.",
+    autor: "@32luceeroo",
+    img: "assets/img/clientes/32luceeroo.jpg"
+  }
+];
+
 const PRODUCTOS = {
 
   /* ======================================================================

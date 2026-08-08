@@ -303,6 +303,46 @@
   }
 
   /* ---------------------------------------------------------------------
+     Clientes
+     Si no hay ninguno cargado, la sección entera no se dibuja: en celular
+     un bloque vacío es scroll perdido.
+     --------------------------------------------------------------------- */
+
+  function renderTestimonios() {
+    const cont = $("[data-testimonios]");
+    if (!cont) return;
+
+    const lista = typeof TESTIMONIOS !== "undefined" ? TESTIMONIOS : [];
+    const seccion = cont.closest("section");
+
+    if (!lista.length) {
+      if (seccion) seccion.remove();
+      return;
+    }
+
+    cont.innerHTML = lista
+      .map(
+        (t) => `
+        <figure class="testi">
+          ${t.img
+            ? `<div class="testi__media">
+                 <img src="${escapar(t.img)}" alt="Compra de ${escapar(t.autor || "un cliente")}"
+                      loading="lazy" decoding="async">
+               </div>`
+            : ""}
+          <blockquote class="testi__texto">${escapar(t.texto)}</blockquote>
+          ${t.autor ? `<figcaption class="testi__autor">${escapar(t.autor)}</figcaption>` : ""}
+        </figure>`
+      )
+      .join("");
+
+    /* Si una captura todavía no está subida, sacamos el hueco de la imagen */
+    $$(".testi__media img", cont).forEach((img) => {
+      img.addEventListener("error", () => img.parentElement.remove(), { once: true });
+    });
+  }
+
+  /* ---------------------------------------------------------------------
      Página de sección / subsección
      --------------------------------------------------------------------- */
 
@@ -580,6 +620,7 @@
     renderHeader();
     renderMenu();
     renderCatalogo();
+    renderTestimonios();
     renderFooter();
 
     activarLinksWa();
