@@ -34,17 +34,107 @@ const CONFIG = {
   whatsapp: "5492920340402",
   whatsappVisible: "2920 340402",
   instagram: "https://www.instagram.com/crew.mattes",
+  ciudad: "Carmen de Patagones",
+  provincia: "Buenos Aires",
   moneda: "$"
 };
 
-/* Nombres lindos para las subcategorías (se muestran en las tarjetas) */
-const SUBS = {
-  criollos:  "Criollos",
-  calabaza:  "Calabaza",
-  algarrobo: "Algarrobo",
-  "1lt":     "Termo 1 lt",
-  stanley12: "Stanley 1,2 lt"
+/* =========================================================================
+   ESTRUCTURA DEL SITIO
+   -------------------------------------------------------------------------
+   Cada sección es una página aparte. De acá salen solos el menú del inicio,
+   la navegación de arriba, el footer y los títulos de cada página.
+   Normalmente no hace falta tocar esto: solo si querés cambiar un título,
+   un texto o agregar una sección nueva.
+   ========================================================================= */
+const CATEGORIAS = {
+  mates: {
+    nombre: "Mates",
+    pagina: "mates.html",
+    resumen: "Criollos · Calabaza · Algarrobo",
+    lead: "Tres familias, tres experiencias distintas. Todos salen curados y con recomendaciones de cuidado.",
+    subs: {
+      criollos: {
+        corto: "Criollos",
+        nombre: "Criollos",
+        pagina: "mates-criollos.html",
+        resumen: "Cuero y virola, para todos los días",
+        lead: "El mate de siempre: forrado en cuero, resistente y listo para el uso diario."
+      },
+      calabaza: {
+        corto: "Calabaza",
+        nombre: "Calabaza",
+        pagina: "mates-calabaza.html",
+        resumen: "Naturales, curados a mano",
+        lead: "Calabaza natural seleccionada pieza por pieza. Cada mate es distinto al otro."
+      },
+      algarrobo: {
+        corto: "Algarrobo",
+        nombre: "Algarrobo",
+        pagina: "mates-algarrobo.html",
+        resumen: "Madera maciza patagónica",
+        lead: "Madera maciza, terminación prolija y sabor neutro. También se pueden grabar."
+      }
+    }
+  },
+
+  yerberas: {
+    nombre: "Yerberas",
+    pagina: "yerberas.html",
+    resumen: "Sets, azucareras y dosificadores",
+    lead: "Para tener la yerba y el azúcar ordenados, sin bolsas abiertas dando vueltas."
+  },
+
+  canastas: {
+    nombre: "Canastas",
+    pagina: "canastas.html",
+    resumen: "Para llevar el equipo completo",
+    lead: "Mate, termo, yerbera y bombilla en un solo viaje. También hay formato bolso."
+  },
+
+  bombillas: {
+    nombre: "Bombillas y bombillones",
+    pagina: "bombillas.html",
+    resumen: "Alpaca, acero y pico de loro",
+    lead: "Todas desarmables para limpiar por dentro, que es lo que de verdad hace la diferencia."
+  },
+
+  yerbas: {
+    nombre: "Yerbas",
+    pagina: "yerbas.html",
+    resumen: "Suaves, tradicionales y compuestas",
+    lead: "Desde las más suaves para arrancar hasta las compuestas con hierbas serranas."
+  },
+
+  termos: {
+    nombre: "Termos",
+    pagina: "termos.html",
+    resumen: "1 lt · 1,2 lt Stanley",
+    lead: "Conservación real de temperatura, tapón cebador y garantía de marca.",
+    subs: {
+      "1lt": {
+        corto: "1 litro",
+        nombre: "Termos 1 lt",
+        pagina: "termos-1-litro.html",
+        resumen: "La medida más práctica",
+        lead: "El tamaño que entra en cualquier canasta y alcanza para una tarde de mates."
+      },
+      stanley12: {
+        corto: "Stanley 1,2 lt",
+        nombre: "Termos 1,2 lt Stanley",
+        pagina: "termos-stanley.html",
+        resumen: "Originales, con garantía",
+        lead: "Stanley original de 1,2 litros: hasta 24 horas de temperatura y garantía de por vida."
+      }
+    }
+  }
 };
+
+/* Nombres cortos de subcategoría para las tarjetas (se arma solo) */
+const SUBS = Object.values(CATEGORIAS).reduce((acc, cat) => {
+  Object.entries(cat.subs || {}).forEach(([id, sub]) => { acc[id] = sub.corto || sub.nombre; });
+  return acc;
+}, {});
 
 const PRODUCTOS = {
 

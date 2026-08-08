@@ -1,6 +1,6 @@
 # Crewmates — sitio web
 
-Sitio del emprendimiento **Crewmates** (Carmen de Patagones, Río Negro): mates, termos
+Sitio del emprendimiento **Crewmates** (Carmen de Patagones, Buenos Aires): mates, termos
 y accesorios, con envíos a todo el país y showroom local.
 
 Es un sitio **estático** (HTML + CSS + JavaScript, sin frameworks ni build). Se abre con
@@ -8,15 +8,38 @@ doble clic y se publica gratis en GitHub Pages.
 
 ---
 
-## Estructura
+## Cómo está organizado
+
+Cada sección del catálogo es **una página aparte**. Así, con muchos productos, cada rubro
+se ve completo y ordenado en vez de amontonarse todo en una sola pantalla.
 
 ```
-index.html                 → toda la página (hero, secciones, footer)
+index.html                → Inicio: hero, menú de secciones, cómo comprar, showroom
+│
+├── mates.html            → Mates (las 3 subdivisiones + todos los mates)
+│   ├── mates-criollos.html
+│   ├── mates-calabaza.html
+│   └── mates-algarrobo.html
+├── yerberas.html
+├── canastas.html
+├── bombillas.html
+├── yerbas.html
+└── termos.html           → Termos (las 2 subdivisiones + todos los termos)
+    ├── termos-1-litro.html
+    └── termos-stanley.html
+```
+
+Archivos de apoyo:
+
+```
 assets/css/styles.css      → estilos y paleta de colores
 assets/js/products.js      → 👈 EL CATÁLOGO. Acá cargás los productos
-assets/js/main.js          → lógica (filtros, ficha de producto, menú)
+assets/js/site.js          → arma el menú, el pie de página y las grillas
 assets/img/                → fotos (ver assets/img/README.md)
 ```
+
+El encabezado y el pie de página se arman solos en todas las páginas desde `site.js`,
+así que los datos de contacto se cambian **una sola vez** y se actualizan en todo el sitio.
 
 ---
 
@@ -32,7 +55,7 @@ assets/img/                → fotos (ver assets/img/README.md)
 {
   nombre: "Mate de calabaza imperial",
   sub: "calabaza",                              // solo en mates y termos
-  precio: 28000,                                // o null para "Consultar"
+  precio: 28000,                                // o null para "A consultar"
   desc: "Calabaza seleccionada y curada a mano.",
   img: "assets/img/mates/imperial-negro.jpg",
   etiqueta: "Nuevo",                            // opcional
@@ -42,7 +65,8 @@ assets/img/                → fotos (ver assets/img/README.md)
 }
 ```
 
-5. Guardá y recargá la página. Listo.
+5. Guardá y recargá la página. El producto aparece solo en su sección, en la subdivisión
+   que corresponda y en los contadores del menú.
 
 ### Subcategorías disponibles
 
@@ -55,6 +79,18 @@ El resto de las secciones (yerberas, canastas, bombillas, yerbas) no llevan `sub
 
 ---
 
+## Agregar una sección nueva
+
+1. En `assets/js/products.js`, agregá la sección dentro de `CATEGORIAS` (nombre, `pagina`,
+   `resumen` y `lead`) y creá su lista vacía en `PRODUCTOS`.
+2. Duplicá cualquier archivo `.html` de sección (por ejemplo `yerbas.html`), renombralo con
+   el mismo nombre que pusiste en `pagina` y cambiale el `<title>`, la descripción y el
+   `data-pagina` del `<body>`.
+
+El menú del inicio, la navegación de arriba y el pie de página se actualizan solos.
+
+---
+
 ## Datos de contacto
 
 Están todos juntos arriba de `assets/js/products.js`, en `CONFIG`:
@@ -64,6 +100,8 @@ const CONFIG = {
   whatsapp: "5492920340402",       // formato internacional, sin + ni espacios
   whatsappVisible: "2920 340402",
   instagram: "https://www.instagram.com/crew.mattes",
+  ciudad: "Carmen de Patagones",
+  provincia: "Buenos Aires",
   moneda: "$"
 };
 ```
@@ -78,10 +116,10 @@ Cada botón abre el chat con el nombre del producto ya escrito en el mensaje.
 | Color         | Hex       | Uso                                   |
 |---------------|-----------|---------------------------------------|
 | Blanco crema  | `#FBF7F0` | Fondo principal                        |
-| Crema medio   | `#F4EDE1` | Fondo de secciones alternadas          |
+| Crema medio   | `#F4EDE1` | Fondos alternados                      |
 | Azul marino   | `#10365F` | Títulos, header, botones principales   |
 | Azul profundo | `#0A2340` | Footer                                 |
-| Naranja       | `#EE5B23` | Acentos, etiquetas, precios destacados |
+| Naranja       | `#EE5B23` | Acentos, etiquetas, contadores         |
 | Verde oscuro  | `#1E4536` | WhatsApp y sección "Cómo comprar"      |
 
 Se definen una sola vez en `:root`, arriba de `assets/css/styles.css`.
@@ -103,7 +141,7 @@ python3 -m http.server 8000
 
 1. En el repo: **Settings → Pages**.
 2. En *Source* elegí **Deploy from a branch**.
-3. Branch: la rama que quieras publicar, carpeta `/ (root)`.
+3. Branch: `main`, carpeta `/ (root)`.
 4. Guardá. En un par de minutos queda online.
 
 ---
@@ -112,4 +150,3 @@ python3 -m http.server 8000
 
 - [ ] Subir `logo.png`, `hero-1.jpg`, `hero-2.jpg` y `showroom.jpg` a `assets/img/`
 - [ ] Reemplazar los productos de ejemplo por los reales, con foto y precio
-- [ ] Revisar los horarios de atención del footer en `index.html`
