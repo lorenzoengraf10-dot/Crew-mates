@@ -6,11 +6,10 @@ de archivo asignado en el código:** para cargar una foto no hay que tocar
 `products.js`, alcanza con subir el archivo a la carpeta que corresponde, con el
 nombre exacto de esta lista.
 
-## Estado actual: 0 de 32 fotos cargadas
+## Estado actual: 5 de 32 fotos cargadas
 
-Ninguna foto está subida todavía — ni siquiera las de bombillas, que ya tienen nombre
-asignado en el código. Este archivo es el checklist para ir tachando a medida que
-subís cada una.
+Las 5 de bombillas y bombillones ya están. Faltan las 27 restantes — este archivo es
+el checklist para ir tachando a medida que subís cada una.
 
 ---
 
@@ -72,9 +71,10 @@ En `assets/img/canastas/`.
 | `canasta-con-tapa.jpg` | Canasta matera con tapa |
 | `bolso-matero.jpg` | Bolso matero |
 
-## 6. Bombillas y bombillones — 5 archivos
+## 6. Bombillas y bombillones — 5 archivos ✅ listo
 
-En `assets/img/bombillas/`. Estos cinco productos ya tienen precio real cargado.
+En `assets/img/bombillas/`. Estos cinco productos ya tienen precio real y foto
+cargados.
 
 | Archivo | Producto |
 |---|---|
