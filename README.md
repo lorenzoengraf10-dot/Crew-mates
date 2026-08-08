@@ -175,5 +175,8 @@ Lo único que sí conviene forzar a mano es el CSS, con el `?v=` explicado arrib
 
 ## Pendientes
 
-- [ ] Subir `logo.png`, `hero-1.jpg`, `hero-2.jpg` y `showroom.jpg` a `assets/img/`
-- [ ] Reemplazar los productos de ejemplo por los reales, con foto y precio
+- [ ] Subir las 32 fotos que faltan — el checklist completo, con el nombre exacto de
+      cada archivo, está en `assets/img/README.md`
+- [x] Bombillas y bombillones tiene sus 5 productos reales cargados, con precio
+- [ ] Cargar los productos reales del resto de las secciones (mates, yerberas,
+      canastas, yerbas, termos), que hoy son de ejemplo

@@ -1,63 +1,111 @@
 # Imágenes del sitio
 
-Acá va todo el material gráfico. Si un archivo todavía no existe, el sitio muestra
-un placeholder o directamente oculta el bloque — no se rompe nada.
+Acá va todo el material gráfico. Mientras un archivo no exista, el sitio muestra el
+placeholder de la marca — no se rompe nada. **Todos los productos ya tienen su nombre
+de archivo asignado en el código:** para cargar una foto no hay que tocar
+`products.js`, alcanza con subir el archivo a la carpeta que corresponde, con el
+nombre exacto de esta lista.
 
-## Archivos que faltan ahora mismo
+## Estado actual: 0 de 32 fotos cargadas
 
-Estos son los que ya tienen lugar reservado en el sitio. Guardalos con **este nombre
-exacto**, en minúscula y sin tildes:
+Ninguna foto está subida todavía — ni siquiera las de bombillas, que ya tienen nombre
+asignado en el código. Este archivo es el checklist para ir tachando a medida que
+subís cada una.
+
+---
+
+## 1. Imágenes generales — 5 archivos
+
+Van sueltas en `assets/img/`, no en una subcarpeta.
 
 | Archivo | Qué foto va | Medida sugerida |
 |---|---|---|
 | `logo.png` | El logo con fondo transparente | 400 × 140 px |
 | `hero-1.jpg` | La del mate en el auto con el termo de stickers | 1000 × 1000 px |
-| `hero-2.jpg` | La del puesto en la feria de Patagones | 600 × 750 px |
+| `hero-2.jpg` | La del puesto en la Feria Municipal | 600 × 750 px |
 | `showroom.jpg` | La de los pedidos para Viedma, con las bombillas atrás | 900 × 1100 px |
 | `og.jpg` | La que se ve al compartir el link por WhatsApp | 1200 × 630 px |
-| `clientes/cynmiran.jpg` | La del termo con el logo y el puesto de la feria | 800 × 1000 px |
-| `clientes/josias.jpg` | La del mate con bombillón en la cancha | 800 × 1000 px |
-| `clientes/32luceeroo.jpg` | La de la bolsa de la marca con el mate y la bombilla | 800 × 1000 px |
 
-Cuando cargues `hero-1.jpg` y `hero-2.jpg`, el collage del inicio aparece solo
-(hoy está oculto en celular justamente porque está vacío). Lo mismo con `showroom.jpg`.
+Cuando cargues `hero-1.jpg` y `hero-2.jpg`, el collage del inicio aparece solo (hoy
+está oculto en celular porque está vacío). Lo mismo con `showroom.jpg`.
 
-## Fotos de producto
+## 2. Clientes — 3 archivos
 
-Cada categoría tiene su carpeta:
+En `assets/img/clientes/`.
 
-```
-assets/img/mates/
-assets/img/yerberas/
-assets/img/canastas/
-assets/img/bombillas/
-assets/img/yerbas/
-assets/img/termos/
-assets/img/clientes/     ← capturas de historias de clientes
-```
+| Archivo | Qué foto va |
+|---|---|
+| `cynmiran.jpg` | La del termo con el logo y el puesto de la feria (@cynmiran_0125) |
+| `josias.jpg` | La del mate con bombillón en la cancha (@josias_cevalles_9) |
+| `32luceeroo.jpg` | La de la bolsa de la marca con el mate y la bombilla (@32luceeroo) |
 
-### Fotos que ya están esperadas por su nombre
+## 3. Mates — 6 archivos
 
-Los bombillones y la bombilla ya están cargados en el catálogo con estos nombres de
-archivo. Apenas los subas, aparecen solos en la sección:
+En `assets/img/mates/`.
 
-```
-assets/img/bombillas/pico-de-loro.jpg
-assets/img/bombillas/bombillon-pico-del-rey.jpg
-assets/img/bombillas/bombillon-recto-alpaca.jpg
-assets/img/bombillas/bombillon-premium-curvo.jpg
-assets/img/bombillas/bombillon-pico-de-loro-alpaca-bronce.jpg
-```
+| Archivo | Producto |
+|---|---|
+| `criollo-cuero.jpg` | Mate criollo forrado en cuero |
+| `criollo-camionero.jpg` | Mate criollo camionero |
+| `calabaza-imperial.jpg` | Mate de calabaza imperial |
+| `calabaza-torpedo.jpg` | Mate de calabaza torpedo |
+| `algarrobo-virola.jpg` | Mate de algarrobo con virola |
+| `algarrobo-tallado.jpg` | Mate de algarrobo tallado |
 
-Ojo con esta última: la foto que tenemos hoy (el soporte negro con dos picos) es en
-realidad la del "Bombillón pico del rey". Falta la foto propia de este producto —
-mientras tanto se muestra el placeholder de la marca en vez de repetir la otra imagen.
+## 4. Yerberas — 3 archivos
 
-Después, en `assets/js/products.js`, poné la ruta en el campo `img`:
+En `assets/img/yerberas/`.
 
-```js
-img: "assets/img/mates/imperial-negro.jpg"
-```
+| Archivo | Producto |
+|---|---|
+| `set-yerbera-azucarera.jpg` | Set yerbera + azucarera |
+| `yerbera-acero.jpg` | Yerbera de acero inoxidable |
+| `yerbera-dosificador.jpg` | Yerbera con dosificador |
+
+## 5. Canastas — 3 archivos
+
+En `assets/img/canastas/`.
+
+| Archivo | Producto |
+|---|---|
+| `canasta-mimbre.jpg` | Canasta matera de mimbre |
+| `canasta-con-tapa.jpg` | Canasta matera con tapa |
+| `bolso-matero.jpg` | Bolso matero |
+
+## 6. Bombillas y bombillones — 5 archivos
+
+En `assets/img/bombillas/`. Estos cinco productos ya tienen precio real cargado.
+
+| Archivo | Producto |
+|---|---|
+| `pico-de-loro.jpg` | Bombilla pico de loro — $ 6.500 |
+| `bombillon-pico-del-rey.jpg` | Bombillón pico del rey — $ 28.000 |
+| `bombillon-recto-alpaca.jpg` | Bombillón recto de alpaca — $ 28.000 |
+| `bombillon-premium-curvo.jpg` | Bombillón premium curvo — $ 28.000 |
+| `bombillon-pico-de-loro-alpaca-bronce.jpg` | Bombillón pico de loro de alpaca y bronce — $ 28.000 |
+
+## 7. Yerbas — 3 archivos
+
+En `assets/img/yerbas/`.
+
+| Archivo | Producto |
+|---|---|
+| `tradicional-1kg.jpg` | Yerba tradicional 1 kg |
+| `suave-1kg.jpg` | Yerba suave 1 kg |
+| `compuesta-hierbas.jpg` | Yerba compuesta con hierbas |
+
+## 8. Termos — 4 archivos
+
+En `assets/img/termos/`.
+
+| Archivo | Producto |
+|---|---|
+| `termo-1lt-cebador.jpg` | Termo 1 lt con tapón cebador |
+| `termo-1lt-acero-mate.jpg` | Termo 1 lt acero mate |
+| `stanley-classic-12lt.jpg` | Stanley Classic 1,2 lt |
+| `stanley-color-12lt.jpg` | Stanley 1,2 lt edición color |
+
+---
 
 ## Cómo sacarlas para que queden parejas
 
@@ -66,16 +114,35 @@ Esto es lo que más hace que el sitio se vea profesional y no armado a las apura
 - **Vertical, proporción 4:5** (ej. 1000 × 1250 px). Todas las tarjetas usan esa medida.
 - **Siempre el mismo fondo y la misma distancia.** Un fondo liso y claro —una tela, un
   cartón crudo, una pared blanca— con el celular cerca de una ventana alcanza y sobra.
-  No hace falta cámara ni estudio.
+  No hace falta cámara ni estudio. Las fotos de los bombillones sobre el soporte negro
+  con el logo, contra la pared de ladrillo, son un buen ejemplo a repetir.
 - Nada de fondos distintos entre un producto y otro: con 60 productos, eso es lo que
   hace que una tienda se vea desprolija.
-- Nombres de archivo sin espacios, tildes ni mayúsculas: `mate-algarrobo-tallado.jpg`.
 
 ## Peso de los archivos
 
-**Menos de 300 KB cada una.** Con 60 productos, la diferencia entre fotos de 3 MB y de
-300 KB es que el sitio cargue en 2 segundos o en 20 con datos móviles. Más del 85% de
-los clientes entran desde el celular, muchos con señal floja.
+**Menos de 300 KB cada una.** La diferencia entre fotos de 3 MB y de 300 KB es que el
+sitio cargue en 2 segundos o en 20 con datos móviles. Más del 85% de los clientes
+entran desde el celular, muchos con señal floja.
 
 Para achicarlas sin instalar nada: [squoosh.app](https://squoosh.app) — arrastrás la
 foto, bajás la calidad a 75% y la descargás.
+
+## Cómo subirlas
+
+Desde el celular, sin necesidad de computadora:
+
+1. Entrá al repositorio en GitHub.
+2. Andá a la carpeta que corresponda (por ejemplo `assets/img/mates`).
+3. **Add file → Upload files**.
+4. Elegí la foto desde el carrete y confirmá que el nombre coincida exactamente con
+   el de esta lista (minúscula, sin tildes, sin espacios).
+5. Repetí para cada foto. GitHub Pages tarda 1 o 2 minutos en publicar el cambio.
+
+No hace falta editar `assets/js/products.js` para nada de esto: los productos ya
+están esperando cada archivo por su nombre.
+
+## Consejo
+
+Antes de sacar las 32, probá con **3 o 4** de una misma sección y subilas. Si el
+resultado te convence, seguís con el resto sin tener que repetir nada.

@@ -178,7 +178,7 @@ const PRODUCTOS = {
       sub: "criollos",
       precio: null,
       desc: "Clásico de todos los días. Forrado en cuero vacuno y con virola de acero.",
-      img: "",
+      img: "assets/img/mates/criollo-cuero.jpg",
       etiqueta: "Más vendido",
       detalles: [
         "Curado y listo para usar",
@@ -191,7 +191,7 @@ const PRODUCTOS = {
       sub: "criollos",
       precio: null,
       desc: "Boca amplia para cebar tranquilo. Ideal para viajes largos.",
-      img: "",
+      img: "assets/img/mates/criollo-camionero.jpg",
       detalles: ["Boca ancha", "Cuero cosido a mano"]
     },
     {
@@ -199,7 +199,7 @@ const PRODUCTOS = {
       sub: "calabaza",
       precio: null,
       desc: "Calabaza seleccionada, curada a mano y con guarda de alpaca.",
-      img: "",
+      img: "assets/img/mates/calabaza-imperial.jpg",
       etiqueta: "Nuevo",
       color: "green",
       detalles: [
@@ -213,7 +213,7 @@ const PRODUCTOS = {
       sub: "calabaza",
       precio: null,
       desc: "Forma alargada, sabor bien concentrado. Un clásico que nunca falla.",
-      img: "",
+      img: "assets/img/mates/calabaza-torpedo.jpg",
       detalles: ["Curado", "Forma torpedo"]
     },
     {
@@ -221,7 +221,7 @@ const PRODUCTOS = {
       sub: "algarrobo",
       precio: null,
       desc: "Madera maciza de algarrobo, con virola de acero y terminación lisa.",
-      img: "",
+      img: "assets/img/mates/algarrobo-virola.jpg",
       detalles: [
         "Algarrobo macizo",
         "No transmite sabor",
@@ -233,7 +233,7 @@ const PRODUCTOS = {
       sub: "algarrobo",
       precio: null,
       desc: "Tallado a mano en la Patagonia. Un regalo que se recuerda.",
-      img: "",
+      img: "assets/img/mates/algarrobo-tallado.jpg",
       etiqueta: "Artesanal",
       color: "navy",
       detalles: ["Tallado artesanal", "Cada mate es distinto"]
@@ -248,7 +248,7 @@ const PRODUCTOS = {
       nombre: "Set yerbera + azucarera",
       precio: null,
       desc: "Juego completo con tapa a rosca y pico vertedor.",
-      img: "",
+      img: "assets/img/yerberas/set-yerbera-azucarera.jpg",
       etiqueta: "Set",
       detalles: ["Yerbera 1 kg", "Azucarera 500 g", "Varios colores"]
     },
@@ -256,14 +256,14 @@ const PRODUCTOS = {
       nombre: "Yerbera de acero inoxidable",
       precio: null,
       desc: "Resistente y fácil de limpiar. Cierra hermético.",
-      img: "",
+      img: "assets/img/yerberas/yerbera-acero.jpg",
       detalles: ["Acero inoxidable", "Cierre hermético"]
     },
     {
       nombre: "Yerbera con dosificador",
       precio: null,
       desc: "Cargá el mate sin desparramar un solo gramo.",
-      img: "",
+      img: "assets/img/yerberas/yerbera-dosificador.jpg",
       detalles: ["Pico dosificador", "Capacidad 1 kg"]
     }
   ],
@@ -276,7 +276,7 @@ const PRODUCTOS = {
       nombre: "Canasta matera de mimbre",
       precio: null,
       desc: "Entra el termo, el mate, la yerbera y la bombilla. Todo en un viaje.",
-      img: "",
+      img: "assets/img/canastas/canasta-mimbre.jpg",
       etiqueta: "Regalo ideal",
       detalles: ["Mimbre natural", "Manija reforzada", "Interior acolchado"]
     },
@@ -284,14 +284,14 @@ const PRODUCTOS = {
       nombre: "Canasta matera con tapa",
       precio: null,
       desc: "Cierre completo para que no se te vuele nada en la playa o el campo.",
-      img: "",
+      img: "assets/img/canastas/canasta-con-tapa.jpg",
       detalles: ["Tapa con broche", "Espacio para 1 termo de 1 lt"]
     },
     {
       nombre: "Bolso matero",
       precio: null,
       desc: "Formato bolso, más liviano, con correa para cruzar.",
-      img: "",
+      img: "assets/img/canastas/bolso-matero.jpg",
       detalles: ["Correa regulable", "Bolsillos internos"]
     }
   ],
@@ -363,21 +363,21 @@ const PRODUCTOS = {
       nombre: "Yerba tradicional 1 kg",
       precio: null,
       desc: "Sabor de siempre, rinde y no amarga de entrada.",
-      img: "",
+      img: "assets/img/yerbas/tradicional-1kg.jpg",
       detalles: ["1 kg", "Con palo"]
     },
     {
       nombre: "Yerba suave 1 kg",
       precio: null,
       desc: "Para los que recién arrancan o prefieren algo liviano.",
-      img: "",
+      img: "assets/img/yerbas/suave-1kg.jpg",
       detalles: ["1 kg", "Baja amargura"]
     },
     {
       nombre: "Yerba compuesta con hierbas",
       precio: null,
       desc: "Mezcla serrana con peperina, poleo y boldo.",
-      img: "",
+      img: "assets/img/yerbas/compuesta-hierbas.jpg",
       etiqueta: "Nuevo",
       color: "green",
       detalles: ["500 g", "Hierbas serranas"]
@@ -393,7 +393,7 @@ const PRODUCTOS = {
       sub: "1lt",
       precio: null,
       desc: "Mantiene el agua caliente toda la tarde. Pico cebador de precisión.",
-      img: "",
+      img: "assets/img/termos/termo-1lt-cebador.jpg",
       etiqueta: "Más vendido",
       detalles: ["1 litro", "Tapón cebador", "Acero inoxidable"]
     },
@@ -402,7 +402,7 @@ const PRODUCTOS = {
       sub: "1lt",
       precio: null,
       desc: "Terminación mate antideslizante, entra en cualquier canasta.",
-      img: "",
+      img: "assets/img/termos/termo-1lt-acero-mate.jpg",
       detalles: ["1 litro", "Terminación soft touch"]
     },
     {
@@ -410,7 +410,7 @@ const PRODUCTOS = {
       sub: "stanley12",
       precio: null,
       desc: "El termo que todos quieren. Hasta 24 h de temperatura y garantía de por vida.",
-      img: "",
+      img: "assets/img/termos/stanley-classic-12lt.jpg",
       etiqueta: "Original",
       color: "navy",
       detalles: [
@@ -425,7 +425,7 @@ const PRODUCTOS = {
       sub: "stanley12",
       precio: null,
       desc: "Mismo termo de siempre, en colores que se consiguen por temporada.",
-      img: "",
+      img: "assets/img/termos/stanley-color-12lt.jpg",
       detalles: ["1,2 litros", "Colores limitados", "Consultá stock"]
     }
   ]
