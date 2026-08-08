@@ -559,6 +559,14 @@ h1,h2,h3,h4{
   text-decoration-color:transparent;
   transition:text-decoration-color .18s ease, color .18s ease;
 }
+.migas a{ position:relative; }
+.migas a::after{
+  content:"";
+  position:absolute;
+  left:-4px; right:-4px;          /* 8px extra: entra en el espacio entre links */
+  top:50%; transform:translateY(-50%);
+  height:44px;                    /* zona tocable completa, sin cambiar el alto de la fila */
+}
 .migas a:hover{ color:var(--orange); text-decoration-color:var(--orange); }
 .migas span[aria-hidden]{ color:var(--cream-3); }
 .migas [aria-current]{ color:var(--muted); }
@@ -784,6 +792,7 @@ h1,h2,h3,h4{
 
 .card__wa{
   --btn-bg:var(--green); --btn-fg:var(--cream);
+  min-height:44px;
   padding:9px 16px; font-size:.9rem; gap:7px;
   flex:none;
 }

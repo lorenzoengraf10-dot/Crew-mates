@@ -36,6 +36,18 @@ assets/img/termos/
 assets/img/clientes/     ← capturas de historias de clientes
 ```
 
+### Fotos que ya están esperadas por su nombre
+
+Los bombillones y la bombilla ya están cargados en el catálogo con estos nombres de
+archivo. Apenas los subas, aparecen solos en la sección:
+
+```
+assets/img/bombillas/pico-de-loro.jpg
+assets/img/bombillas/bombillon-pico-del-rey.jpg
+assets/img/bombillas/bombillon-recto-alpaca.jpg
+assets/img/bombillas/bombillon-premium-curvo.jpg
+```
+
 Después, en `assets/js/products.js`, poné la ruta en el campo `img`:
 
 ```js

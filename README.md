@@ -143,13 +143,13 @@ Los navegadores guardan `styles.css` en caché. Después de editarlo, subile el 
 de versión al final del link, en las 12 páginas `.html`:
 
 ```html
-<link rel="stylesheet" href="assets/css/styles.css?v=4">   <!-- pasalo a ?v=5 -->
+<link rel="stylesheet" href="assets/css/styles.css?v=5">   <!-- pasalo a ?v=6 -->
 ```
 
 Con eso el navegador lo baja de nuevo en vez de usar la copia vieja. En la terminal:
 
 ```bash
-sed -i 's/styles.css?v=4/styles.css?v=4/' *.html
+sed -i 's/styles.css?v=5/styles.css?v=6/' *.html
 ```
 
 ---

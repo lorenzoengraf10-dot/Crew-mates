@@ -95,8 +95,8 @@ const CATEGORIAS = {
   bombillas: {
     nombre: "Bombillas y bombillones",
     pagina: "bombillas.html",
-    resumen: "Alpaca, acero y pico de loro",
-    lead: "Todas desarmables para limpiar por dentro, que es lo que de verdad hace la diferencia."
+    resumen: "Alpaca, acero y bronce",
+    lead: "Desde la bombilla de acero de todos los días hasta bombillones de alpaca, rectos y curvos."
   },
 
   yerbas: {
@@ -301,34 +301,46 @@ const PRODUCTOS = {
      ====================================================================== */
   bombillas: [
     {
-      nombre: "Bombilla de alpaca pico de loro",
-      precio: null,
-      desc: "La clásica. Filtro fino que no deja pasar el palito.",
-      img: "",
-      etiqueta: "Clásica",
-      detalles: ["Alpaca", "Desarmable para limpiar", "22 cm"]
+      nombre: "Bombilla pico de loro",
+      precio: 6500,
+      desc: "Bombilla pico de loro de acero inoxidable.",
+      img: "assets/img/bombillas/pico-de-loro.jpg",
+      detalles: [
+        "Acero inoxidable 304",
+        "Pico de loro"
+      ]
     },
     {
-      nombre: "Bombilla de acero inoxidable",
-      precio: null,
-      desc: "Resistente, no se oxida y aguanta cualquier uso.",
-      img: "",
-      detalles: ["Acero inoxidable", "Filtro a rosca"]
+      nombre: "Bombillón pico del rey",
+      precio: 28000,
+      desc: "Bombillón premium de alpaca, pico de rey.",
+      img: "assets/img/bombillas/bombillon-pico-del-rey.jpg",
+      detalles: [
+        "Alpaca",
+        "Terminación premium"
+      ]
     },
     {
-      nombre: "Bombillón para tereré",
-      precio: null,
-      desc: "Más ancho y más largo, pensado para mate frío y jarras.",
-      img: "",
-      detalles: ["Extra largo", "Boca ancha"]
+      nombre: "Bombillón recto de alpaca",
+      precio: 28000,
+      desc: "Bombillón de alpaca con caña recta. Mide 18 cm aproximadamente.",
+      img: "assets/img/bombillas/bombillon-recto-alpaca.jpg",
+      detalles: [
+        "Alpaca",
+        "Caña recta",
+        "18 cm aproximadamente"
+      ]
     },
     {
-      nombre: "Bombilla premium con detalle",
-      precio: null,
-      desc: "Terminación trabajada, para regalar o darse un gusto.",
-      img: "",
-      color: "green",
-      detalles: ["Terminación artesanal", "Desarmable"]
+      nombre: "Bombillón premium curvo",
+      precio: 28000,
+      desc: "Bombillón de alpaca y bronce, con caña curva.",
+      img: "assets/img/bombillas/bombillon-premium-curvo.jpg",
+      detalles: [
+        "Alpaca y bronce",
+        "Caña curva",
+        "Terminación premium"
+      ]
     }
   ],
 
