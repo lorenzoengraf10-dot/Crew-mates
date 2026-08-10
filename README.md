@@ -20,10 +20,9 @@ index.html                → Inicio: hero, menú de secciones, cómo comprar, s
 │   ├── mates-criollos.html
 │   ├── mates-calabaza.html
 │   └── mates-algarrobo.html
-├── yerberas.html
 ├── canastas.html
 ├── bombillas.html
-├── yerbas.html
+├── yerbas.html           → Yerbas y yerberas juntas (son pocos productos)
 └── termos.html           → Termos (las 2 subdivisiones + todos los termos)
     ├── termos-1-litro.html
     └── termos-stanley.html
@@ -75,7 +74,7 @@ así que los datos de contacto se cambian **una sola vez** y se actualizan en to
 | Mates   | `criollos`, `calabaza`, `algarrobo`   |
 | Termos  | `1lt`, `stanley12`                    |
 
-El resto de las secciones (yerberas, canastas, bombillas, yerbas) no llevan `sub`.
+El resto de las secciones (canastas, bombillas, yerbas y yerberas) no llevan `sub`.
 
 ---
 
@@ -175,8 +174,9 @@ Lo único que sí conviene forzar a mano es el CSS, con el `?v=` explicado arrib
 
 ## Pendientes
 
-- [ ] Subir las 32 fotos que faltan — el checklist completo, con el nombre exacto de
+- [ ] Subir las fotos que faltan — el checklist completo, con el nombre exacto de
       cada archivo, está en `assets/img/README.md`
 - [x] Bombillas y bombillones tiene sus 5 productos reales cargados, con precio
-- [ ] Cargar los productos reales del resto de las secciones (mates, yerberas,
-      canastas, yerbas, termos), que hoy son de ejemplo
+- [x] Yerbas y yerberas tiene sus 7 productos reales cargados, con precio
+- [ ] Cargar los productos reales del resto de las secciones (mates, canastas,
+      termos), que hoy son de ejemplo

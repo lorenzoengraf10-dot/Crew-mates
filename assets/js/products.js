@@ -78,13 +78,6 @@ const CATEGORIAS = {
     }
   },
 
-  yerberas: {
-    nombre: "Yerberas",
-    pagina: "yerberas.html",
-    resumen: "Sets, azucareras y dosificadores",
-    lead: "Para tener la yerba y el azúcar ordenados, sin bolsas abiertas dando vueltas."
-  },
-
   canastas: {
     nombre: "Canastas",
     pagina: "canastas.html",
@@ -100,10 +93,10 @@ const CATEGORIAS = {
   },
 
   yerbas: {
-    nombre: "Yerbas",
+    nombre: "Yerbas y yerberas",
     pagina: "yerbas.html",
-    resumen: "Suaves, tradicionales y compuestas",
-    lead: "Desde las más suaves para arrancar hasta las compuestas con hierbas serranas."
+    resumen: "Las bolsas y dónde guardarlas",
+    lead: "Yerbas uruguayas y brasileñas, más yerberas para tenerlas siempre a mano."
   },
 
   termos: {
@@ -241,34 +234,6 @@ const PRODUCTOS = {
   ],
 
   /* ======================================================================
-     YERBERAS
-     ====================================================================== */
-  yerberas: [
-    {
-      nombre: "Set yerbera + azucarera",
-      precio: null,
-      desc: "Juego completo con tapa a rosca y pico vertedor.",
-      img: "assets/img/yerberas/set-yerbera-azucarera.jpg",
-      etiqueta: "Set",
-      detalles: ["Yerbera 1 kg", "Azucarera 500 g", "Varios colores"]
-    },
-    {
-      nombre: "Yerbera de acero inoxidable",
-      precio: null,
-      desc: "Resistente y fácil de limpiar. Cierra hermético.",
-      img: "assets/img/yerberas/yerbera-acero.jpg",
-      detalles: ["Acero inoxidable", "Cierre hermético"]
-    },
-    {
-      nombre: "Yerbera con dosificador",
-      precio: null,
-      desc: "Cargá el mate sin desparramar un solo gramo.",
-      img: "assets/img/yerberas/yerbera-dosificador.jpg",
-      detalles: ["Pico dosificador", "Capacidad 1 kg"]
-    }
-  ],
-
-  /* ======================================================================
      CANASTAS
      ====================================================================== */
   canastas: [
@@ -356,31 +321,63 @@ const PRODUCTOS = {
   ],
 
   /* ======================================================================
-     YERBAS
+     YERBAS Y YERBERAS
      ====================================================================== */
   yerbas: [
     {
-      nombre: "Yerba tradicional 1 kg",
-      precio: null,
-      desc: "Sabor de siempre, rinde y no amarga de entrada.",
-      img: "assets/img/yerbas/tradicional-1kg.jpg",
-      detalles: ["1 kg", "Con palo"]
+      nombre: "Verdecita 1 kg",
+      precio: 7500,
+      desc: "Yerba mate elaborada despalada, padrón uruguayo.",
+      img: "assets/img/yerbas/verdecita-1kg.jpg",
+      detalles: ["1 kg", "Elaborada despalada", "Padrón uruguayo"]
     },
     {
-      nombre: "Yerba suave 1 kg",
-      precio: null,
-      desc: "Para los que recién arrancan o prefieren algo liviano.",
-      img: "assets/img/yerbas/suave-1kg.jpg",
-      detalles: ["1 kg", "Baja amargura"]
+      nombre: "Verdecita 500 g",
+      precio: 4500,
+      desc: "Yerba mate elaborada despalada, padrón uruguayo.",
+      img: "assets/img/yerbas/verdecita-500g.jpg",
+      detalles: ["500 g", "Elaborada despalada", "Padrón uruguayo"]
     },
     {
-      nombre: "Yerba compuesta con hierbas",
-      precio: null,
-      desc: "Mezcla serrana con peperina, poleo y boldo.",
-      img: "assets/img/yerbas/compuesta-hierbas.jpg",
+      nombre: "Yerba Barão",
+      precio: 8000,
+      desc: "Erva-mate tipo uruguayo, importada de Brasil.",
+      img: "assets/img/yerbas/barao.jpg",
+      detalles: ["1 kg", "Tipo uruguayo", "Origen Brasil"]
+    },
+    {
+      nombre: "Yerba Mate Latina 1 kg",
+      precio: 7500,
+      desc: "Mate intenso y cremoso, con molienda fina estilo uruguayo y sabor herbal bien marcado.",
+      img: "assets/img/yerbas/latina-1kg.jpg",
       etiqueta: "Nuevo",
       color: "green",
-      detalles: ["500 g", "Hierbas serranas"]
+      detalles: ["1 kg", "Molienda fina", "Estilo uruguayo"]
+    },
+    {
+      nombre: "Centenaria 1 kg",
+      precio: 8000,
+      desc: "Yerba brasileña Seleme Centenaria Original, para un mate más intenso y diferente al argentino clásico.",
+      img: "assets/img/yerbas/centenaria-1kg.jpg",
+      detalles: ["1 kg", "Origen Brasil"]
+    },
+    {
+      nombre: "Yerbera de gamuza premium negro",
+      precio: 16000,
+      desc: "Yerbera gamuzada para 1/2 kg, en color negro.",
+      img: "assets/img/yerbas/yerbera-gamuza-negro.jpg",
+      etiqueta: "Premium",
+      color: "navy",
+      detalles: ["Gamuza", "Capacidad 1/2 kg", "Color negro"]
+    },
+    {
+      nombre: "Yerbera de gamuza premium suela",
+      precio: 16000,
+      desc: "Yerbera gamuzada para 1/2 kg, en color suela.",
+      img: "assets/img/yerbas/yerbera-gamuza-suela.jpg",
+      etiqueta: "Premium",
+      color: "navy",
+      detalles: ["Gamuza", "Capacidad 1/2 kg", "Color suela"]
     }
   ],
 

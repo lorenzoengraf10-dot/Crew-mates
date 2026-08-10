@@ -6,15 +6,15 @@ de archivo asignado en el código:** para cargar una foto no hay que tocar
 `products.js`, alcanza con subir el archivo a la carpeta que corresponde, con el
 nombre exacto de esta lista.
 
-## Estado actual: 11 de 32 fotos cargadas
+## Estado actual: 18 de 33 fotos cargadas
 
-Las 5 de bombillas y bombillones, los 3 generales (hero × 2 y showroom) y los 3
-testimonios de clientes. Faltan 21 — este archivo es el checklist para ir tachando
-a medida que subís cada una.
+Las 5 de bombillas y bombillones, las 7 de yerbas y yerberas, los 3 generales
+(hero × 2 y showroom) y los 3 testimonios de clientes. Faltan 15 — este archivo
+es el checklist para ir tachando a medida que subís cada una.
 
 ---
 
-## 1. Imágenes generales — 5 archivos (4 listas ✅)
+## 1. Imágenes generales — 5 archivos (3 listas ✅)
 
 Van sueltas en `assets/img/`, no en una subcarpeta.
 
@@ -52,17 +52,7 @@ En `assets/img/mates/`.
 | `algarrobo-virola.jpg` | Mate de algarrobo con virola |
 | `algarrobo-tallado.jpg` | Mate de algarrobo tallado |
 
-## 4. Yerberas — 3 archivos
-
-En `assets/img/yerberas/`.
-
-| Archivo | Producto |
-|---|---|
-| `set-yerbera-azucarera.jpg` | Set yerbera + azucarera |
-| `yerbera-acero.jpg` | Yerbera de acero inoxidable |
-| `yerbera-dosificador.jpg` | Yerbera con dosificador |
-
-## 5. Canastas — 3 archivos
+## 4. Canastas — 3 archivos
 
 En `assets/img/canastas/`.
 
@@ -72,7 +62,7 @@ En `assets/img/canastas/`.
 | `canasta-con-tapa.jpg` | Canasta matera con tapa |
 | `bolso-matero.jpg` | Bolso matero |
 
-## 6. Bombillas y bombillones — 5 archivos ✅ listo
+## 5. Bombillas y bombillones — 5 archivos ✅ listo
 
 En `assets/img/bombillas/`. Estos cinco productos ya tienen precio real y foto
 cargados.
@@ -85,17 +75,23 @@ cargados.
 | `bombillon-premium-curvo.jpg` | Bombillón premium curvo — $ 28.000 |
 | `bombillon-pico-de-loro-alpaca-bronce.jpg` | Bombillón pico de loro de alpaca y bronce — $ 28.000 |
 
-## 7. Yerbas — 3 archivos
+## 6. Yerbas y yerberas — 7 archivos ✅ listo
 
-En `assets/img/yerbas/`.
+En `assets/img/yerbas/`. Yerbas y yerberas comparten una sola sección del sitio
+porque entre las dos no suman muchos productos. Los siete ya tienen precio real
+y foto cargados.
 
 | Archivo | Producto |
 |---|---|
-| `tradicional-1kg.jpg` | Yerba tradicional 1 kg |
-| `suave-1kg.jpg` | Yerba suave 1 kg |
-| `compuesta-hierbas.jpg` | Yerba compuesta con hierbas |
+| `verdecita-1kg.jpg` | Verdecita 1 kg — $ 7.500 |
+| `verdecita-500g.jpg` | Verdecita 500 g — $ 4.500 |
+| `barao.jpg` | Yerba Barão — $ 8.000 |
+| `latina-1kg.jpg` | Yerba Mate Latina 1 kg — $ 7.500 |
+| `centenaria-1kg.jpg` | Centenaria 1 kg — $ 8.000 |
+| `yerbera-gamuza-negro.jpg` | Yerbera de gamuza premium negro — $ 16.000 |
+| `yerbera-gamuza-suela.jpg` | Yerbera de gamuza premium suela — $ 16.000 |
 
-## 8. Termos — 4 archivos
+## 7. Termos — 4 archivos
 
 En `assets/img/termos/`.
 
