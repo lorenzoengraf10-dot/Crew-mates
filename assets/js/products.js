@@ -46,13 +46,17 @@ const CONFIG = {
    la navegación de arriba, el footer y los títulos de cada página.
    Normalmente no hace falta tocar esto: solo si querés cambiar un título,
    un texto o agregar una sección nueva.
+
+   foto → la imagen que se ve en la tarjeta del menú del inicio.
+          Van en assets/img/secciones/ y son apaisadas (3:2).
    ========================================================================= */
 const CATEGORIAS = {
   mates: {
     nombre: "Mates",
     pagina: "mates.html",
+    foto: "assets/img/secciones/mates.jpg",
     resumen: "Criollos · Calabaza · Algarrobo",
-    lead: "Tres familias, tres experiencias distintas. Todos salen curados y con recomendaciones de cuidado.",
+    lead: "Tres familias, tres experiencias distintas. Te contamos las diferencias antes de que elijas.",
     subs: {
       criollos: {
         corto: "Criollos",
@@ -65,7 +69,7 @@ const CATEGORIAS = {
         corto: "Calabaza",
         nombre: "Calabaza",
         pagina: "mates-calabaza.html",
-        resumen: "Naturales, curados a mano",
+        resumen: "Naturales, uno distinto al otro",
         lead: "Calabaza natural seleccionada pieza por pieza. Cada mate es distinto al otro."
       },
       algarrobo: {
@@ -81,6 +85,7 @@ const CATEGORIAS = {
   canastas: {
     nombre: "Canastas",
     pagina: "canastas.html",
+    foto: "assets/img/secciones/canastas.jpg",
     resumen: "Para llevar el equipo completo",
     lead: "Mate, termo, yerbera y bombilla en un solo viaje. También hay formato bolso."
   },
@@ -88,6 +93,7 @@ const CATEGORIAS = {
   bombillas: {
     nombre: "Bombillas y bombillones",
     pagina: "bombillas.html",
+    foto: "assets/img/secciones/bombillas.jpg",
     resumen: "Alpaca, acero y bronce",
     lead: "Desde la bombilla de acero de todos los días hasta bombillones de alpaca, rectos y curvos."
   },
@@ -95,6 +101,7 @@ const CATEGORIAS = {
   yerbas: {
     nombre: "Yerbas y yerberas",
     pagina: "yerbas.html",
+    foto: "assets/img/secciones/yerbas.jpg",
     resumen: "Las bolsas y dónde guardarlas",
     lead: "Yerbas uruguayas y brasileñas, más yerberas para tenerlas siempre a mano."
   },
@@ -102,6 +109,7 @@ const CATEGORIAS = {
   termos: {
     nombre: "Termos",
     pagina: "termos.html",
+    foto: "assets/img/secciones/termos.jpg",
     resumen: "1 lt · 1,2 lt Stanley",
     lead: "Conservación real de temperatura, tapón cebador y garantía de marca.",
     subs: {
@@ -160,6 +168,28 @@ const TESTIMONIOS = [
   }
 ];
 
+/* =========================================================================
+   NUESTRA RECOMENDACIÓN
+   -------------------------------------------------------------------------
+   Los productos que se muestran en el inicio, abajo del menú del catálogo.
+   Es un mix de todas las secciones: lo que más sale.
+
+   Cada línea apunta a un producto que YA está cargado más abajo, así no hay
+   que repetir precio ni foto: se toman de ahí. Si cambiás el precio en su
+   sección, acá se actualiza solo.
+
+   Formato:  { seccion: "bombillas", nombre: "Bombilla pico de loro" }
+
+   El nombre tiene que coincidir exacto con el del producto.
+   Si dejás la lista vacía, la sección entera no aparece en el sitio.
+   ========================================================================= */
+const RECOMENDADOS = [
+  { seccion: "bombillas", nombre: "Bombilla pico de loro" },
+  { seccion: "yerbas",    nombre: "Verdecita 1 kg" },
+  { seccion: "bombillas", nombre: "Bombillón recto de alpaca" },
+  { seccion: "yerbas",    nombre: "Yerbera de gamuza premium negro" }
+];
+
 const PRODUCTOS = {
 
   /* ======================================================================
@@ -174,7 +204,6 @@ const PRODUCTOS = {
       img: "assets/img/mates/criollo-cuero.jpg",
       etiqueta: "Más vendido",
       detalles: [
-        "Curado y listo para usar",
         "Virola de acero inoxidable",
         "Base ancha, no se vuelca"
       ]
@@ -191,12 +220,11 @@ const PRODUCTOS = {
       nombre: "Mate de calabaza imperial",
       sub: "calabaza",
       precio: null,
-      desc: "Calabaza seleccionada, curada a mano y con guarda de alpaca.",
+      desc: "Calabaza seleccionada, con guarda de alpaca.",
       img: "assets/img/mates/calabaza-imperial.jpg",
       etiqueta: "Nuevo",
       color: "green",
       detalles: [
-        "Calabaza natural curada",
         "Guarda y base de alpaca",
         "Cada pieza es única"
       ]
@@ -207,7 +235,7 @@ const PRODUCTOS = {
       precio: null,
       desc: "Forma alargada, sabor bien concentrado. Un clásico que nunca falla.",
       img: "assets/img/mates/calabaza-torpedo.jpg",
-      detalles: ["Curado", "Forma torpedo"]
+      detalles: ["Forma torpedo"]
     },
     {
       nombre: "Mate de algarrobo con virola",

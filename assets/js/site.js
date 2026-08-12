@@ -106,9 +106,10 @@
             </ul>
           </nav>
 
-          <a class="btn btn--wa header__cta" data-wa="Hola Crewmates! Quería hacer una consulta 🧉">
-            ${ICONO_WA} WhatsApp
-          </a>
+          <button class="cartbtn" data-cart-open type="button" aria-label="Ver mi pedido">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h-.6a1 1 0 0 1 0-2H8a1 1 0 0 1 .98.8L9.3 4H20a1 1 0 0 1 .97 1.24l-1.7 6.8A2 2 0 0 1 17.33 13.6H9.9l.3 1.4H18a1 1 0 1 1 0 2H9.4a1 1 0 0 1-.98-.8L7 4Zm2.7 2 .8 5.6h6.83l1.4-5.6H9.7ZM10 18.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm7 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/></svg>
+            <span class="cartbtn__n" data-cart-count hidden>0</span>
+          </button>
 
           <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav">
             <span></span><span></span><span></span>
@@ -177,6 +178,8 @@
         </div>
       </footer>
 
+      <div data-carrito></div>
+
       <a class="fab" data-wa="Hola Crewmates! Quería hacer una consulta 🧉" aria-label="Escribir por WhatsApp">
         ${ICONO_WA}<span class="fab__label">Escribinos</span>
       </a>
@@ -243,7 +246,8 @@
         <p class="card__desc">${escapar(producto.desc || "")}</p>
         <div class="card__foot">
           ${precioHTML(producto)}
-          <a class="btn card__wa" data-wa="${escapar(mensaje)}">${ICONO_WA} Pedir</a>
+          <button class="btn card__add" data-agregar type="button">Agregar al pedido</button>
+          <a class="card__consulta" data-wa="${escapar(mensaje)}">Consultar por WhatsApp</a>
         </div>
       </div>`;
 
@@ -286,20 +290,59 @@
     if (!cont) return;
 
     cont.innerHTML = Object.entries(CATEGORIAS)
-      .map(([id, cat], i) => {
+      .map(([id, cat]) => {
         const n = contar(id);
         return `
           <a class="cat" href="${cat.pagina}">
-            <span class="cat__idx">${String(i + 1).padStart(2, "0")}</span>
+            <span class="cat__media">
+              ${cat.foto
+                ? `<img src="${escapar(cat.foto)}" alt="" loading="lazy" decoding="async">`
+                : ""}
+              <span class="cat__meta">${plural(n)}</span>
+            </span>
             <span class="cat__body">
               <span class="cat__name">${escapar(cat.nombre)}</span>
               <span class="cat__desc">${escapar(cat.resumen)}</span>
-              <span class="cat__meta">${plural(n)}</span>
+              <span class="cat__ver">Ver la sección <i aria-hidden="true">→</i></span>
             </span>
-            <span class="cat__arrow" aria-hidden="true">→</span>
           </a>`;
       })
       .join("");
+
+    /* Si todavía no está la foto de una sección, sacamos el hueco */
+    $$(".cat__media img", cont).forEach((img) => {
+      img.addEventListener("error", () => img.parentElement.classList.add("is-empty"), { once: true });
+    });
+  }
+
+  /* ---------------------------------------------------------------------
+     Nuestra recomendación — mix de productos de todas las secciones
+     --------------------------------------------------------------------- */
+
+  function renderRecomendados() {
+    const cont = $("[data-recomendados]");
+    if (!cont) return;
+
+    const seccion = cont.closest("section");
+    const lista = (typeof RECOMENDADOS !== "undefined" ? RECOMENDADOS : [])
+      .map(({ seccion: cat, nombre }) => {
+        const arr = (PRODUCTOS && PRODUCTOS[cat]) || [];
+        const indice = arr.findIndex((p) => p.nombre === nombre);
+        return indice === -1 ? null : { producto: arr[indice], indice, categoria: cat };
+      })
+      .filter(Boolean);
+
+    if (!lista.length) {
+      if (seccion) seccion.remove();
+      return;
+    }
+
+    const frag = document.createDocumentFragment();
+    lista.forEach(({ producto, indice, categoria }) =>
+      frag.appendChild(tarjeta(producto, categoria, indice))
+    );
+    cont.appendChild(frag);
+    activarLinksWa(cont);
   }
 
   /* ---------------------------------------------------------------------
@@ -442,6 +485,278 @@
       .filter(({ producto }) => (SUB ? producto.sub === SUB : true));
 
     $("[data-grilla]", cont).replaceWith(grilla(lista, PAGINA, titulo));
+  }
+
+  /* =====================================================================
+     CARRITO
+     ---------------------------------------------------------------------
+     El pedido se arma acá, en el navegador del cliente, y se manda entero
+     por WhatsApp. No hay pago online: el sitio es estático y el cobro lo
+     coordinás vos por chat, como siempre.
+
+     Lo que el cliente elige queda guardado en su teléfono (localStorage),
+     así no pierde el pedido si cierra la página sin querer.
+     ===================================================================== */
+
+  const CARRITO_KEY = "crewmates-pedido";
+
+  const Carrito = {
+    items: [],
+
+    cargar() {
+      try {
+        const guardado = JSON.parse(localStorage.getItem(CARRITO_KEY) || "[]");
+        /* Solo conservamos lo que todavía existe en el catálogo */
+        this.items = guardado.filter(
+          (it) => PRODUCTOS[it.categoria] && PRODUCTOS[it.categoria][it.indice]
+        );
+      } catch {
+        this.items = [];
+      }
+    },
+
+    guardar() {
+      try {
+        localStorage.setItem(CARRITO_KEY, JSON.stringify(this.items));
+      } catch {
+        /* Si el navegador no deja guardar, el pedido igual funciona
+           mientras la página esté abierta. */
+      }
+    },
+
+    producto(it) {
+      return PRODUCTOS[it.categoria][it.indice];
+    },
+
+    agregar(categoria, indice) {
+      const ya = this.items.find((it) => it.categoria === categoria && it.indice === indice);
+      if (ya) ya.cantidad += 1;
+      else this.items.push({ categoria, indice, cantidad: 1 });
+      this.guardar();
+      pintarCarrito();
+    },
+
+    cambiar(categoria, indice, delta) {
+      const it = this.items.find((i) => i.categoria === categoria && i.indice === indice);
+      if (!it) return;
+      it.cantidad += delta;
+      if (it.cantidad < 1) this.quitar(categoria, indice);
+      else { this.guardar(); pintarCarrito(); }
+    },
+
+    quitar(categoria, indice) {
+      this.items = this.items.filter((i) => !(i.categoria === categoria && i.indice === indice));
+      this.guardar();
+      pintarCarrito();
+    },
+
+    vaciar() {
+      this.items = [];
+      this.guardar();
+      pintarCarrito();
+    },
+
+    unidades() {
+      return this.items.reduce((n, it) => n + it.cantidad, 0);
+    },
+
+    /* Total de lo que tiene precio cargado. Los que están "a consultar"
+       se cuentan aparte para no mostrar un total que engañe. */
+    total() {
+      let suma = 0, aConsultar = 0;
+      this.items.forEach((it) => {
+        const p = this.producto(it);
+        if (typeof p.precio === "number" && p.precio > 0) suma += p.precio * it.cantidad;
+        else aConsultar += it.cantidad;
+      });
+      return { suma, aConsultar };
+    },
+
+    /* El mensaje que se abre en WhatsApp, ya con todo el detalle */
+    mensaje() {
+      const entrega = $('input[name="entrega"]:checked');
+      const { suma, aConsultar } = this.total();
+
+      const lineas = this.items.map((it) => {
+        const p = this.producto(it);
+        const precio =
+          typeof p.precio === "number" && p.precio > 0
+            ? `${CONFIG.moneda} ${formatoPrecio.format(p.precio * it.cantidad)}`
+            : "a consultar";
+        return `• ${it.cantidad} × ${p.nombre} — ${precio}`;
+      });
+
+      let txt = "Hola Crewmates! 🧉 Quiero hacer este pedido:\n\n" + lineas.join("\n");
+      if (suma > 0) txt += `\n\nTotal: ${CONFIG.moneda} ${formatoPrecio.format(suma)}`;
+      if (aConsultar > 0) {
+        txt += suma > 0 ? `\n(+ ${aConsultar} producto(s) a consultar)` : "";
+      }
+      if (entrega) txt += `\n\nEntrega: ${entrega.dataset.texto}`;
+      return txt;
+    }
+  };
+
+  function renderCarrito() {
+    const cont = $("[data-carrito]");
+    if (!cont) return;
+
+    cont.outerHTML = `
+      <div class="cart" id="cart" hidden>
+        <div class="cart__backdrop" data-cart-close></div>
+        <aside class="cart__panel" role="dialog" aria-modal="true" aria-labelledby="cart-title">
+          <header class="cart__head">
+            <h2 class="cart__title" id="cart-title">Tu pedido</h2>
+            <button class="cart__close" data-cart-close aria-label="Cerrar el pedido">×</button>
+          </header>
+
+          <div class="cart__body" data-cart-body></div>
+
+          <footer class="cart__foot" data-cart-foot hidden>
+            <fieldset class="entrega">
+              <legend class="entrega__tit">¿Cómo lo recibís?</legend>
+              <label class="entrega__op">
+                <input type="radio" name="entrega" value="retiro"
+                       data-texto="Retiro en Carmen de Patagones" checked>
+                <span class="entrega__nombre">Retiro en Carmen de Patagones</span>
+                <span class="entrega__precio entrega__precio--gratis">Sin cargo</span>
+              </label>
+              <label class="entrega__op">
+                <input type="radio" name="entrega" value="envio"
+                       data-texto="Envío a domicilio (a coordinar)">
+                <span class="entrega__nombre">Envío a todo el país</span>
+                <span class="entrega__precio">A coordinar</span>
+              </label>
+            </fieldset>
+
+            <div class="cart__total" data-cart-total></div>
+
+            <a class="btn btn--wa cart__cta" id="cart-wa">${ICONO_WA} Hacer el pedido</a>
+            <p class="cart__nota">
+              Se abre WhatsApp con el pedido ya escrito. Ahí te confirmamos stock,
+              precio final y forma de pago.
+            </p>
+            <button class="cart__vaciar" data-cart-vaciar>Vaciar el pedido</button>
+          </footer>
+        </aside>
+      </div>`;
+  }
+
+  function pintarCarrito() {
+    const burbuja = $("[data-cart-count]");
+    const unidades = Carrito.unidades();
+    if (burbuja) {
+      burbuja.textContent = unidades;
+      burbuja.hidden = unidades === 0;
+    }
+
+    const body = $("[data-cart-body]");
+    const foot = $("[data-cart-foot]");
+    if (!body) return;
+
+    if (!Carrito.items.length) {
+      body.innerHTML = `
+        <div class="cart__vacio">
+          <p><strong>Todavía no agregaste nada.</strong></p>
+          <p>Entrá a una sección del catálogo y sumá lo que te guste.</p>
+          <a class="btn btn--primary" href="index.html#catalogo">Ver el catálogo</a>
+        </div>`;
+      if (foot) foot.hidden = true;
+      return;
+    }
+
+    body.innerHTML = Carrito.items
+      .map((it) => {
+        const p = Carrito.producto(it);
+        const precio =
+          typeof p.precio === "number" && p.precio > 0
+            ? `${CONFIG.moneda} ${formatoPrecio.format(p.precio * it.cantidad)}`
+            : "A consultar";
+        return `
+          <article class="citem" data-cat="${escapar(it.categoria)}" data-idx="${it.indice}">
+            <div class="citem__media">
+              ${p.img ? `<img src="${escapar(p.img)}" alt="" loading="lazy">` : ""}
+            </div>
+            <div class="citem__body">
+              <h3 class="citem__nombre">${escapar(p.nombre)}</h3>
+              <p class="citem__precio">${precio}</p>
+              <div class="citem__cant">
+                <button data-menos aria-label="Sacar uno de ${escapar(p.nombre)}">−</button>
+                <span aria-live="polite">${it.cantidad}</span>
+                <button data-mas aria-label="Sumar uno de ${escapar(p.nombre)}">+</button>
+              </div>
+            </div>
+            <button class="citem__quitar" data-quitar aria-label="Sacar ${escapar(p.nombre)} del pedido">×</button>
+          </article>`;
+      })
+      .join("");
+
+    if (foot) foot.hidden = false;
+
+    const { suma, aConsultar } = Carrito.total();
+    const elTotal = $("[data-cart-total]");
+    if (elTotal) {
+      elTotal.innerHTML = suma > 0
+        ? `<span>Total</span><strong>${CONFIG.moneda} ${formatoPrecio.format(suma)}</strong>
+           ${aConsultar ? `<small>+ ${aConsultar} a consultar</small>` : ""}`
+        : `<span>Total</span><strong>A consultar</strong>`;
+    }
+
+    const wa = $("#cart-wa");
+    if (wa) {
+      wa.setAttribute("href", waLink(Carrito.mensaje()));
+      wa.setAttribute("target", "_blank");
+      wa.setAttribute("rel", "noopener");
+    }
+  }
+
+  function initCarrito() {
+    const modal = $("#cart");
+    if (!modal) return;
+
+    const abrir = () => { modal.hidden = false; document.body.style.overflow = "hidden"; };
+    const cerrar = () => { modal.hidden = true; document.body.style.overflow = ""; };
+
+    document.addEventListener("click", (e) => {
+      /* Agregar al pedido desde una tarjeta */
+      const btnAdd = e.target.closest("[data-agregar]");
+      if (btnAdd) {
+        e.preventDefault();
+        const card = btnAdd.closest(".card");
+        if (!card) return;
+        Carrito.agregar(card.dataset.categoria, Number(card.dataset.index));
+        btnAdd.classList.add("is-ok");
+        const original = btnAdd.dataset.original || btnAdd.innerHTML;
+        btnAdd.dataset.original = original;
+        btnAdd.innerHTML = "Agregado ✓";
+        setTimeout(() => {
+          btnAdd.classList.remove("is-ok");
+          btnAdd.innerHTML = original;
+        }, 1200);
+        return;
+      }
+
+      if (e.target.closest("[data-cart-open]")) { e.preventDefault(); abrir(); return; }
+      if (e.target.closest("[data-cart-close]")) { cerrar(); return; }
+
+      if (e.target.closest("[data-cart-vaciar]")) { Carrito.vaciar(); return; }
+
+      const fila = e.target.closest(".citem");
+      if (fila) {
+        const cat = fila.dataset.cat, idx = Number(fila.dataset.idx);
+        if (e.target.closest("[data-mas]"))    Carrito.cambiar(cat, idx, +1);
+        if (e.target.closest("[data-menos]"))  Carrito.cambiar(cat, idx, -1);
+        if (e.target.closest("[data-quitar]")) Carrito.quitar(cat, idx);
+      }
+    });
+
+    /* Al cambiar la forma de entrega se rearma el mensaje */
+    modal.addEventListener("change", (e) => {
+      if (e.target.name === "entrega") pintarCarrito();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !modal.hidden) cerrar();
+    });
   }
 
   /* ---------------------------------------------------------------------
@@ -620,13 +935,19 @@
     renderHeader();
     renderMenu();
     renderCatalogo();
+    renderRecomendados();
     renderTestimonios();
     renderFooter();
+    renderCarrito();
 
     activarLinksWa();
     initImagenes();
     initModal();
     initHeader();
     initReveal();
+
+    Carrito.cargar();
+    initCarrito();
+    pintarCarrito();
   });
 })();
