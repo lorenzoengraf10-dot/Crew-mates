@@ -16,13 +16,13 @@
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 
 <!-- Nuestra hoja de estilos va primero y con ?v= para forzar recarga cuando cambia -->
-<link rel="stylesheet" href="assets/css/styles.css?v=6">
+<link rel="stylesheet" href="assets/css/styles.css?v=7">
 
 <!-- Las tipografías se cargan aparte: si tardan o fallan, el sitio igual se ve bien -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" media="print" onload="this.media='all'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap"></noscript>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap"></noscript>
 </head>
 <body data-pagina="inicio">
 
@@ -33,139 +33,48 @@
 <main>
 
   <!-- ============================ HERO ============================ -->
-  <section class="hero">
+  <section class="hero bg-photo" style="background-image:url('assets/img/fondos/hero.jpg')">
     <div class="wrap hero__inner">
-      <div class="hero__copy">
-        <p class="eyebrow"><span class="eyebrow__dot"></span> Carmen de Patagones · Buenos Aires</p>
-        <h1 class="hero__title">
-          Mates que se<br><em>eligen</em> uno por uno.
-        </h1>
-        <p class="hero__text">
-          Mates de calabaza, algarrobo y criollos, termos Stanley, bombillas, yerberas y
-          canastas. Trabajamos con proveedores de confianza y revisamos pieza por pieza antes
-          de que salga para tu casa.
-        </p>
-        <div class="hero__actions">
-          <a class="btn btn--primary" href="#catalogo">Ver el catálogo</a>
-          <a class="btn btn--ghost" data-wa="Hola Crewmates! Vi la web y quería consultar por un producto 🧉">Consultar por WhatsApp</a>
-        </div>
+      <p class="hero__stamp"><i>🧉</i> hecho para compartir</p>
 
-        <ul class="hero__facts">
-          <li><strong>Envíos</strong> a todo el país</li>
-          <li><strong>Retiro</strong> en Carmen de Patagones</li>
-          <li><strong>Atención</strong> personalizada</li>
-        </ul>
+      <p class="eyebrow eyebrow--onphoto"><span class="eyebrow__dot"></span> Carmen de Patagones · Buenos Aires</p>
+      <h1 class="hero__title">
+        Mates que se<br><em>eligen</em> uno por uno.
+      </h1>
+      <p class="hero__text">
+        Mates de calabaza, algarrobo y criollos, termos Stanley, bombillas, yerberas y
+        canastas. Trabajamos con proveedores de confianza y revisamos pieza por pieza antes
+        de que salga para tu casa.
+      </p>
+      <div class="hero__actions">
+        <a class="btn btn--orange" href="#catalogo">Ver el catálogo</a>
+        <a class="btn btn--ghost" data-wa="Hola Crewmates! Vi la web y quería consultar por un producto 🧉">Consultar por WhatsApp</a>
       </div>
 
-      <div class="hero__visual" aria-hidden="true">
-        <figure class="frame frame--main">
-          <img src="assets/img/hero-1.jpg" alt="" loading="eager" decoding="async">
-        </figure>
-        <figure class="frame frame--small">
-          <img src="assets/img/hero-2.jpg" alt="" loading="lazy" decoding="async">
-        </figure>
-        <div class="hero__stamp">
-          <span>hecho<br>para<br>compartir</span>
-        </div>
-      </div>
+      <ul class="hero__facts">
+        <li><strong>Envíos</strong> a todo el país</li>
+        <li><strong>Retiro</strong> en Carmen de Patagones</li>
+        <li><strong>Atención</strong> personalizada</li>
+      </ul>
     </div>
   </section>
 
-  <!-- ============================ INFO IMPORTANTE ============================ -->
-  <section class="strip" aria-label="Información importante">
-    <div class="wrap strip__inner">
-      <div class="strip__item"><span class="strip__num">01</span> Enviamos a todo el país</div>
-      <div class="strip__item"><span class="strip__num">02</span> Retiro sin cargo en Carmen de Patagones</div>
-      <div class="strip__item"><span class="strip__num">03</span> Pedidos y pagos por WhatsApp</div>
-      <div class="strip__item"><span class="strip__num">04</span> Te ayudamos a elegir antes de comprar</div>
+  <!-- ============================ CATÁLOGO ============================
+       Se arma entero por JS (ver renderCatalogoCompleto en site.js): una
+       .catsec por categoría, cada una con su grilla de productos. La
+       barra de pastillas de arriba (parte del header) filtra qué se ve. -->
+  <section class="catalogo" id="catalogo">
+    <div class="wrap sec-head">
+      <p class="eyebrow"><span class="eyebrow__dot"></span> El catálogo</p>
+      <h2 class="sec-title">Todo Crewmates, en un solo lugar</h2>
     </div>
+    <div data-catalogo></div>
   </section>
 
-  <!-- ============================ CÓMO COMPRAR ============================ -->
-  <section class="steps" id="comprar">
-    <div class="wrap">
-      <header class="sec-head sec-head--center">
-        <p class="eyebrow eyebrow--light"><span class="eyebrow__dot"></span> Cómo comprar</p>
-        <h2 class="sec-title sec-title--light">Tres pasos y listo</h2>
-      </header>
-
-      <ol class="steps__list">
-        <li class="step">
-          <span class="step__n">1</span>
-          <h3>Tocá la sección que te guste</h3>
-          <p>Entrá al rubro que te interesa y mirá todos sus productos, con foto y precio.</p>
-        </li>
-        <li class="step">
-          <span class="step__n">2</span>
-          <h3>Elegí y escribinos</h3>
-          <p>Sumá lo que quieras al pedido y mandanoslo por WhatsApp. Te llega con todo el detalle cargado, no hace falta que escribas nada.</p>
-        </li>
-        <li class="step">
-          <span class="step__n">3</span>
-          <h3>Te damos atención personalizada</h3>
-          <p>Te confirmamos stock, precio final y forma de pago. Coordinamos el envío a tu casa o el retiro en Patagones.</p>
-        </li>
-      </ol>
-
-      <div class="steps__cta">
-        <a class="btn btn--orange" href="#catalogo">Empezar mi pedido</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================ MENÚ DE SECCIONES ============================ -->
-  <section class="menu" id="catalogo">
-    <div class="wrap">
-      <header class="sec-head">
-        <p class="eyebrow"><span class="eyebrow__dot"></span> El catálogo</p>
-        <h2 class="sec-title">Elegí por dónde querés empezar</h2>
-        <p class="sec-lead">
-          Cada rubro tiene su propia página para que puedas verlo tranquilo, sin mezclar.
-        </p>
-      </header>
-
-      <nav class="menu__grid" data-menu aria-label="Secciones del catálogo"></nav>
-    </div>
-  </section>
-
-  <!-- ============================ RECOMENDADOS ============================ -->
-  <section class="recos" id="recomendados">
-    <div class="wrap">
-      <header class="sec-head">
-        <p class="eyebrow"><span class="eyebrow__dot"></span> Nuestra recomendación</p>
-        <h2 class="sec-title">Lo que más nos piden</h2>
-        <p class="sec-lead">
-          Un poco de cada sección: lo que más sale y lo que mejor nos resulta recomendar.
-        </p>
-      </header>
-
-      <div class="grid" data-recomendados></div>
-    </div>
-  </section>
-
-  <!-- ============================ HISTORIA ============================ -->
-  <section class="about" id="historia">
-    <div class="wrap about__inner">
-      <figure class="about__media">
-        <img src="assets/img/showroom.jpg" alt="Pedidos de Crewmates listos para salir" loading="lazy" decoding="async">
-      </figure>
-      <div class="about__copy">
-        <p class="eyebrow"><span class="eyebrow__dot"></span> Nuestra historia</p>
-        <h2 class="sec-title">Un emprendimiento de Patagones</h2>
-        <p>
-          Crewmates nació de una idea simple: que conseguir un buen mate no sea una lotería.
-          Elegimos calabazas, maderas y bombillas de a una, las probamos y recién ahí las publicamos.
-        </p>
-        <p>
-          Nos vas a encontrar en la Feria Municipal de Patagones y en el showroom, donde podés ver y
-          tocar los productos antes de decidir. Si estás lejos, te mandamos fotos y videos reales del
-          que se va a tu casa.
-        </p>
-        <div class="about__actions">
-          <a class="btn btn--primary" data-wa="Hola Crewmates! Quería coordinar una visita al showroom 🧉">Coordinar visita</a>
-          <a class="btn btn--link" href="https://www.instagram.com/crew.mattes" target="_blank" rel="noopener">Ver Instagram →</a>
-        </div>
-      </div>
+  <!-- ============================ SEPARADOR ============================ -->
+  <section class="separador bg-photo" style="background-image:url('assets/img/fondos/separador.jpg')">
+    <div class="wrap separador__inner">
+      <p>Un mate bien elegido se toma distinto. Por eso probamos cada pieza antes de venderla.</p>
     </div>
   </section>
 
@@ -187,6 +96,21 @@
         <a class="btn btn--ghost" href="https://www.instagram.com/crew.mattes" target="_blank" rel="noopener">
           Ver más en Instagram →
         </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ HISTORIA ============================ -->
+  <section class="about" id="historia">
+    <div class="wrap about__copy">
+      <p class="eyebrow"><span class="eyebrow__dot"></span> Nuestra historia</p>
+      <h2 class="sec-title">Un poco sobre Crewmates</h2>
+      <p>
+        Somos un emprendimiento de Carmen de Patagones. Elegimos cada mate, termo y
+        bombilla a mano y los revisamos antes de que salgan para tu casa.
+      </p>
+      <div class="about__actions">
+        <a class="btn btn--link" href="https://www.instagram.com/crew.mattes" target="_blank" rel="noopener">Ver Instagram →</a>
       </div>
     </div>
   </section>

@@ -15,9 +15,6 @@
   const $  = (sel, ctx = document) => ctx.querySelector(sel);
   const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
 
-  const PAGINA = document.body.dataset.pagina || "inicio";
-  const SUB    = document.body.dataset.sub || "";
-
   /* ---------------------------------------------------------------------
      Utilidades
      --------------------------------------------------------------------- */
@@ -66,35 +63,13 @@
     if (!cont) return;
 
     const items = Object.entries(CATEGORIAS)
-      .map(([id, cat]) => {
-        const actual = id === PAGINA ? ' class="is-current"' : "";
-        const subs = Object.entries(cat.subs || {});
-
-        const desplegable = subs.length
-          ? `<ul class="drop">
-               <li><a href="${cat.pagina}">Todos los ${escapar(cat.nombre.toLowerCase())}</a></li>
-               ${subs
-                 .map(
-                   ([sid, s]) =>
-                     `<li><a href="${s.pagina}"${
-                       sid === SUB ? ' class="is-current"' : ""
-                     }>${escapar(s.nombre)}</a></li>`
-                 )
-                 .join("")}
-             </ul>`
-          : "";
-
-        return `<li class="nav__item${subs.length ? " nav__item--sub" : ""}">
-                  <a href="${cat.pagina}"${actual}>${escapar(cat.nombre)}</a>
-                  ${desplegable}
-                </li>`;
-      })
+      .map(([id, cat]) => `<li class="nav__item"><a href="#cat-${id}">${escapar(cat.nombre)}</a></li>`)
       .join("");
 
     cont.outerHTML = `
       <header class="header" id="header">
         <div class="wrap header__inner">
-          <a class="brand" href="index.html" aria-label="Crewmates — inicio">
+          <a class="brand" href="#inicio" aria-label="Crewmates — inicio">
             <img class="brand__logo" src="assets/img/logo.png" alt="Crewmates" width="132" height="44">
             <span class="brand__mark" aria-hidden="true">${WORDMARK}</span>
           </a>
@@ -102,6 +77,7 @@
           <nav class="nav" id="nav" aria-label="Secciones del catálogo">
             <ul class="nav__list">
               ${items}
+              <li class="nav__item"><a href="#clientes">Clientes</a></li>
               <li class="nav__item"><a href="#contacto">Contacto</a></li>
             </ul>
           </nav>
@@ -115,7 +91,16 @@
             <span></span><span></span><span></span>
           </button>
         </div>
-      </header>`;
+      </header>
+
+      <nav class="catnav" id="catnav" aria-label="Filtrar el catálogo">
+        <div class="wrap catnav__inner">
+          <button class="pill is-active" data-filtro="todos" type="button">Todos</button>
+          ${Object.entries(CATEGORIAS)
+            .map(([id, cat]) => `<button class="pill" data-filtro="${id}" type="button">${escapar(cat.nombre)}</button>`)
+            .join("")}
+        </div>
+      </nav>`;
   }
 
   /* ---------------------------------------------------------------------
@@ -127,11 +112,12 @@
     if (!cont) return;
 
     const links = Object.entries(CATEGORIAS)
-      .map(([, cat]) => `<li><a href="${cat.pagina}">${escapar(cat.nombre)}</a></li>`)
+      .map(([id, cat]) => `<li><a href="#cat-${id}">${escapar(cat.nombre)}</a></li>`)
       .join("");
 
     cont.outerHTML = `
-      <footer class="footer" id="contacto">
+      <footer class="footer bg-photo" id="contacto" style="background-image:url('assets/img/fondos/footer.jpg')">
+        <div class="footer__capa">
         <div class="wrap footer__inner">
 
           <div class="footer__col footer__brand">
@@ -175,6 +161,7 @@
         <div class="wrap footer__bottom">
           <p>© <span data-anio></span> Crewmates · ${escapar(CONFIG.ciudad)}, ${escapar(CONFIG.provincia)}</p>
           <p>Mates &amp; accesorios · Hecho con ganas de compartir</p>
+        </div>
         </div>
       </footer>
 
@@ -233,6 +220,7 @@
     art.className = "card";
     art.dataset.categoria = categoria;
     art.dataset.index = indice;
+    art.dataset.sub = producto.sub || "";
 
     art.innerHTML = `
       <div class="card__media" data-abrir>
@@ -285,66 +273,6 @@
      Menú de secciones del inicio
      --------------------------------------------------------------------- */
 
-  function renderMenu() {
-    const cont = $("[data-menu]");
-    if (!cont) return;
-
-    cont.innerHTML = Object.entries(CATEGORIAS)
-      .map(([id, cat]) => {
-        const n = contar(id);
-        return `
-          <a class="cat" href="${cat.pagina}">
-            <span class="cat__media">
-              ${cat.foto
-                ? `<img src="${escapar(cat.foto)}" alt="" loading="lazy" decoding="async">`
-                : ""}
-              <span class="cat__meta">${plural(n)}</span>
-            </span>
-            <span class="cat__body">
-              <span class="cat__name">${escapar(cat.nombre)}</span>
-              <span class="cat__desc">${escapar(cat.resumen)}</span>
-              <span class="cat__ver">Ver la sección <i aria-hidden="true">→</i></span>
-            </span>
-          </a>`;
-      })
-      .join("");
-
-    /* Si todavía no está la foto de una sección, sacamos el hueco */
-    $$(".cat__media img", cont).forEach((img) => {
-      img.addEventListener("error", () => img.parentElement.classList.add("is-empty"), { once: true });
-    });
-  }
-
-  /* ---------------------------------------------------------------------
-     Nuestra recomendación — mix de productos de todas las secciones
-     --------------------------------------------------------------------- */
-
-  function renderRecomendados() {
-    const cont = $("[data-recomendados]");
-    if (!cont) return;
-
-    const seccion = cont.closest("section");
-    const lista = (typeof RECOMENDADOS !== "undefined" ? RECOMENDADOS : [])
-      .map(({ seccion: cat, nombre }) => {
-        const arr = (PRODUCTOS && PRODUCTOS[cat]) || [];
-        const indice = arr.findIndex((p) => p.nombre === nombre);
-        return indice === -1 ? null : { producto: arr[indice], indice, categoria: cat };
-      })
-      .filter(Boolean);
-
-    if (!lista.length) {
-      if (seccion) seccion.remove();
-      return;
-    }
-
-    const frag = document.createDocumentFragment();
-    lista.forEach(({ producto, indice, categoria }) =>
-      frag.appendChild(tarjeta(producto, categoria, indice))
-    );
-    cont.appendChild(frag);
-    activarLinksWa(cont);
-  }
-
   /* ---------------------------------------------------------------------
      Clientes
      Si no hay ninguno cargado, la sección entera no se dibuja: en celular
@@ -386,105 +314,89 @@
   }
 
   /* ---------------------------------------------------------------------
-     Página de sección / subsección
+     Catálogo completo — todas las secciones en la misma página, una
+     debajo de la otra. La barra de pastillas (ver initFiltroCatalogo)
+     permite mostrar solo una a la vez, o "Todos" para verlas todas.
      --------------------------------------------------------------------- */
 
-  function renderCatalogo() {
+  function renderCatalogoCompleto() {
     const cont = $("[data-catalogo]");
     if (!cont) return;
 
-    const cat = CATEGORIAS[PAGINA];
-    if (!cat) return;
+    cont.innerHTML = Object.entries(CATEGORIAS)
+      .map(([id, cat]) => {
+        const subs = Object.entries(cat.subs || {});
+        const total = contar(id);
 
-    const sub = SUB && cat.subs ? cat.subs[SUB] : null;
-    const subs = Object.entries(cat.subs || {});
+        const subtabs = subs.length
+          ? `<div class="subtabs" role="tablist" aria-label="Tipos de ${escapar(cat.nombre.toLowerCase())}">
+               <button class="pill pill--sm is-active" data-subfiltro="todos" type="button">Todos</button>
+               ${subs
+                 .map(
+                   ([sid, s]) =>
+                     `<button class="pill pill--sm" data-subfiltro="${sid}" type="button">${escapar(s.corto || s.nombre)}</button>`
+                 )
+                 .join("")}
+             </div>`
+          : "";
 
-    /* Migas de pan */
-    const migas = `
-      <nav class="migas" aria-label="Dónde estás">
-        <a href="index.html">Inicio</a>
-        <span aria-hidden="true">/</span>
-        ${sub
-          ? `<a href="${cat.pagina}">${escapar(cat.nombre)}</a>
-             <span aria-hidden="true">/</span>
-             <span aria-current="page">${escapar(sub.nombre)}</span>`
-          : `<span aria-current="page">${escapar(cat.nombre)}</span>`}
-      </nav>`;
+        return `
+          <div class="catsec" id="cat-${id}" data-cat="${id}">
+            <div class="wrap">
+              <header class="catsec__head">
+                <p class="eyebrow"><span class="eyebrow__dot"></span> ${plural(total)}</p>
+                <h2 class="sec-title">${escapar(cat.nombre)}</h2>
+                <p class="sec-lead">${escapar(cat.lead)}</p>
+              </header>
+              ${subtabs}
+              <div class="grid" data-grilla="${id}"></div>
+            </div>
+          </div>`;
+      })
+      .join("");
 
-    /* Encabezado */
-    const titulo = sub ? sub.nombre : cat.nombre;
-    const lead = sub ? sub.lead : cat.lead;
-    const total = contar(PAGINA, SUB);
+    /* Cada grilla, con sus productos reales */
+    Object.keys(CATEGORIAS).forEach((id) => {
+      const lista = ((PRODUCTOS && PRODUCTOS[id]) || []).map((producto, indice) => ({ producto, indice }));
+      $(`[data-grilla="${id}"]`, cont).replaceWith(grilla(lista, id, CATEGORIAS[id].nombre));
+    });
 
-    const encabezado = `
-      <header class="pagina__head">
-        <p class="eyebrow"><span class="eyebrow__dot"></span> ${escapar(cat.nombre)}</p>
-        <h1 class="sec-title">${escapar(titulo)}</h1>
-        <p class="sec-lead">${escapar(lead)}</p>
-        <p class="pagina__conteo">${plural(total)} en esta sección</p>
-      </header>`;
+    activarLinksWa(cont);
+  }
 
-    /* Navegación entre subsecciones */
-    let navegacionSubs = "";
+  /* Pastillas de arriba: filtran qué sección se ve */
+  function initFiltroCatalogo() {
+    const barra = $("#catnav");
+    const secciones = $$(".catsec");
+    if (!barra || !secciones.length) return;
 
-    if (subs.length && !sub) {
-      /* Página madre: tarjetas grandes hacia cada subsección */
-      navegacionSubs = `
-        <div class="subs">
-          ${subs
-            .map(
-              ([sid, s]) => `
-              <a class="subcard" href="${s.pagina}">
-                <span class="subcard__name">${escapar(s.nombre)}</span>
-                <span class="subcard__desc">${escapar(s.resumen)}</span>
-                <span class="subcard__meta">${plural(contar(PAGINA, sid))} <i aria-hidden="true">→</i></span>
-              </a>`
-            )
-            .join("")}
-        </div>`;
-    } else if (subs.length && sub) {
-      /* Dentro de una subsección: saltar a las hermanas */
-      navegacionSubs = `
-        <nav class="subnav" aria-label="Tipos de ${escapar(cat.nombre.toLowerCase())}">
-          <a href="${cat.pagina}">Ver todo</a>
-          ${subs
-            .map(
-              ([sid, s]) =>
-                `<a href="${s.pagina}"${sid === SUB ? ' class="is-current" aria-current="page"' : ""}>${escapar(
-                  s.corto || s.nombre
-                )}</a>`
-            )
-            .join("")}
-        </nav>`;
-    }
+    barra.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-filtro]");
+      if (!btn) return;
+      const filtro = btn.dataset.filtro;
 
-    cont.innerHTML = `
-      <section class="pagina">
-        <div class="wrap">
-          ${migas}
-          ${encabezado}
-          ${navegacionSubs}
-          ${subs.length && !sub ? `<h2 class="pagina__sub">Todos los ${escapar(cat.nombre.toLowerCase())}</h2>` : ""}
-          <div data-grilla></div>
-        </div>
-      </section>
+      $$(".pill[data-filtro]", barra).forEach((p) => p.classList.toggle("is-active", p === btn));
+      secciones.forEach((s) => { s.hidden = filtro !== "todos" && s.dataset.cat !== filtro; });
 
-      <section class="ayuda">
-        <div class="wrap ayuda__inner">
-          <div>
-            <h2>¿No sabés cuál elegir?</h2>
-            <p>Contanos para qué lo querés y te recomendamos el que mejor te sirve. Te mandamos fotos y videos reales del producto antes de que lo compres.</p>
-          </div>
-          <a class="btn btn--orange" data-wa="Hola Crewmates! Necesito ayuda para elegir ${escapar(titulo.toLowerCase())} 🧉">Pedir ayuda por WhatsApp</a>
-        </div>
-      </section>`;
+      $("#catalogo")?.scrollIntoView({ block: "start" });
+    });
+  }
 
-    /* Productos, conservando el índice original para la ficha */
-    const lista = ((PRODUCTOS && PRODUCTOS[PAGINA]) || [])
-      .map((producto, indice) => ({ producto, indice }))
-      .filter(({ producto }) => (SUB ? producto.sub === SUB : true));
+  /* Pastillas chicas dentro de cada sección: filtran por subcategoría */
+  function initFiltroSubs() {
+    $$(".subtabs").forEach((barra) => {
+      const seccion = barra.closest(".catsec");
+      barra.addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-subfiltro]");
+        if (!btn) return;
+        const filtro = btn.dataset.subfiltro;
 
-    $("[data-grilla]", cont).replaceWith(grilla(lista, PAGINA, titulo));
+        $$(".pill", barra).forEach((p) => p.classList.toggle("is-active", p === btn));
+        $$(".card", seccion).forEach((card) => {
+          card.hidden = filtro !== "todos" && card.dataset.sub !== filtro;
+        });
+      });
+    });
   }
 
   /* =====================================================================
@@ -575,6 +487,8 @@
     /* El mensaje que se abre en WhatsApp, ya con todo el detalle */
     mensaje() {
       const entrega = $('input[name="entrega"]:checked');
+      const pago = $('input[name="pago"]:checked');
+      const transfirio = $("#pago-hecho")?.checked;
       const { suma, aConsultar } = this.total();
 
       const lineas = this.items.map((it) => {
@@ -586,12 +500,23 @@
         return `• ${it.cantidad} × ${p.nombre} — ${precio}`;
       });
 
-      let txt = "Hola Crewmates! 🧉 Quiero hacer este pedido:\n\n" + lineas.join("\n");
+      const esTransferencia = pago && pago.value === "transferencia";
+
+      let txt = esTransferencia
+        ? "Hola Crewmates! 🧉 Quiero confirmar este pedido con *Transferencia*:\n\n"
+        : "Hola Crewmates! 🧉 Quiero hacer este pedido:\n\n";
+      txt += lineas.join("\n");
+
       if (suma > 0) txt += `\n\nTotal: ${CONFIG.moneda} ${formatoPrecio.format(suma)}`;
-      if (aConsultar > 0) {
-        txt += suma > 0 ? `\n(+ ${aConsultar} producto(s) a consultar)` : "";
-      }
+      if (aConsultar > 0) txt += suma > 0 ? `\n(+ ${aConsultar} producto(s) a consultar)` : "";
       if (entrega) txt += `\n\nEntrega: ${entrega.dataset.texto}`;
+
+      if (esTransferencia) {
+        txt += transfirio
+          ? "\n\nYa realicé la transferencia. ¡Muchas gracias!"
+          : "\n\nTe mando el comprobante de la transferencia apenas la haga.";
+      }
+
       return txt;
     }
   };
@@ -628,9 +553,47 @@
               </label>
             </fieldset>
 
+            ${CONFIG.pago && CONFIG.pago.alias ? `
+            <fieldset class="entrega">
+              <legend class="entrega__tit">Medio de pago</legend>
+              <label class="entrega__op">
+                <input type="radio" name="pago" value="transferencia" checked>
+                <span class="entrega__nombre">Transferencia</span>
+              </label>
+              <label class="entrega__op">
+                <input type="radio" name="pago" value="wa">
+                <span class="entrega__nombre">Coordinar por WhatsApp</span>
+              </label>
+
+              <div class="pagobox" data-pagobox>
+                <p class="pagobox__tit">Datos para la transferencia</p>
+                ${CONFIG.pago.titular ? `
+                <div class="pagobox__fila">
+                  <span>Titular</span>
+                  <strong>${escapar(CONFIG.pago.titular)}</strong>
+                  <button type="button" data-copiar="${escapar(CONFIG.pago.titular)}">Copiar</button>
+                </div>` : ""}
+                <div class="pagobox__fila">
+                  <span>Alias</span>
+                  <strong>${escapar(CONFIG.pago.alias)}</strong>
+                  <button type="button" data-copiar="${escapar(CONFIG.pago.alias)}">Copiar</button>
+                </div>
+                ${CONFIG.pago.cvu ? `
+                <div class="pagobox__fila">
+                  <span>CVU</span>
+                  <strong>${escapar(CONFIG.pago.cvu)}</strong>
+                  <button type="button" data-copiar="${escapar(CONFIG.pago.cvu)}">Copiar</button>
+                </div>` : ""}
+                <label class="pagobox__check">
+                  <input type="checkbox" id="pago-hecho">
+                  Ya realicé la transferencia
+                </label>
+              </div>
+            </fieldset>` : ""}
+
             <div class="cart__total" data-cart-total></div>
 
-            <a class="btn btn--wa cart__cta" id="cart-wa">${ICONO_WA} Hacer el pedido</a>
+            <a class="btn btn--wa cart__cta" id="cart-wa">${ICONO_WA} <span data-cart-cta>Hacer el pedido</span></a>
             <p class="cart__nota">
               Se abre WhatsApp con el pedido ya escrito. Ahí te confirmamos stock,
               precio final y forma de pago.
@@ -701,6 +664,17 @@
         : `<span>Total</span><strong>A consultar</strong>`;
     }
 
+    /* Mostrar los datos de transferencia solo si eligió pagar así */
+    const pago = $('input[name="pago"]:checked');
+    const pagobox = $("[data-pagobox]");
+    if (pagobox) pagobox.hidden = !pago || pago.value !== "transferencia";
+
+    const cta = $("[data-cart-cta]");
+    if (cta) {
+      cta.textContent =
+        pago && pago.value === "transferencia" ? "Confirmar el pedido" : "Hacer el pedido";
+    }
+
     const wa = $("#cart-wa");
     if (wa) {
       wa.setAttribute("href", waLink(Carrito.mensaje()));
@@ -747,11 +721,26 @@
         if (e.target.closest("[data-menos]"))  Carrito.cambiar(cat, idx, -1);
         if (e.target.closest("[data-quitar]")) Carrito.quitar(cat, idx);
       }
+
+      /* Copiar alias / CVU / titular al portapapeles */
+      const btnCopiar = e.target.closest("[data-copiar]");
+      if (btnCopiar) {
+        const texto = btnCopiar.dataset.copiar;
+        const listo = () => {
+          const original = btnCopiar.textContent;
+          btnCopiar.textContent = "Copiado ✓";
+          setTimeout(() => { btnCopiar.textContent = original; }, 1500);
+        };
+        if (navigator.clipboard) navigator.clipboard.writeText(texto).then(listo).catch(listo);
+        else listo();
+      }
     });
 
-    /* Al cambiar la forma de entrega se rearma el mensaje */
+    /* Al cambiar la forma de entrega o el medio de pago se rearma el mensaje */
     modal.addEventListener("change", (e) => {
-      if (e.target.name === "entrega") pintarCarrito();
+      if (e.target.name === "entrega" || e.target.name === "pago" || e.target.id === "pago-hecho") {
+        pintarCarrito();
+      }
     });
 
     document.addEventListener("keydown", (e) => {
@@ -874,28 +863,6 @@
       if (logo.complete && logo.naturalWidth === 0) fallback();
       logo.addEventListener("error", fallback, { once: true });
     }
-
-    $$(".frame img, .about__media img").forEach((img) => {
-      const cont = img.parentElement;
-      const marcar = () => {
-        cont.classList.add("is-empty");
-        revisarHero();
-      };
-      if (!img.getAttribute("src")) return marcar();
-      if (img.complete && img.naturalWidth === 0) marcar();
-      img.addEventListener("error", marcar, { once: true });
-    });
-  }
-
-  /* Si todavía no hay ninguna foto en el collage del inicio, lo marcamos como
-     vacío: en el celular se oculta para no gastar una pantalla entera de scroll
-     antes de llegar al catálogo. */
-  function revisarHero() {
-    const visual = $(".hero__visual");
-    if (!visual) return;
-    const marcos = $$(".frame", visual);
-    const vacios = marcos.filter((f) => f.classList.contains("is-empty"));
-    visual.classList.toggle("is-empty", marcos.length > 0 && vacios.length === marcos.length);
   }
 
   /* ---------------------------------------------------------------------
@@ -904,7 +871,7 @@
 
   function initReveal() {
     const objetivos = $$(
-      ".sec-head, .pagina__head, .cat, .subcard, .card, .step, .about__media, .about__copy, .hero__copy, .hero__visual, .ayuda__inner"
+      ".sec-head, .catsec__head, .card, .testi, .about__copy"
     );
     objetivos.forEach((el) => el.classList.add("reveal"));
 
@@ -933,9 +900,7 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     renderHeader();
-    renderMenu();
-    renderCatalogo();
-    renderRecomendados();
+    renderCatalogoCompleto();
     renderTestimonios();
     renderFooter();
     renderCarrito();
@@ -944,6 +909,8 @@
     initImagenes();
     initModal();
     initHeader();
+    initFiltroCatalogo();
+    initFiltroSubs();
     initReveal();
 
     Carrito.cargar();

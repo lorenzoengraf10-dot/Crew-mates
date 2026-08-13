@@ -36,47 +36,47 @@ const CONFIG = {
   instagram: "https://www.instagram.com/crew.mattes",
   ciudad: "Carmen de Patagones",
   provincia: "Buenos Aires",
-  moneda: "$"
+  moneda: "$",
+
+  /* Datos para que el cliente te transfiera. Se muestran en el último paso
+     del pedido, con botón para copiar.
+
+     Si los dejás vacíos, ese paso no aparece: el sitio le dice al cliente
+     que el pago se coordina por WhatsApp, y el pedido llega igual. */
+  pago: {
+    titular: "",
+    alias: "",
+    cvu: ""
+  }
 };
 
 /* =========================================================================
    ESTRUCTURA DEL SITIO
    -------------------------------------------------------------------------
-   Cada sección es una página aparte. De acá salen solos el menú del inicio,
-   la navegación de arriba, el footer y los títulos de cada página.
+   Cada categoría es una sección del catálogo (todas viven en la misma
+   página, index.html). De acá salen solos la barra de filtros, la
+   navegación de arriba, el footer y los títulos de cada sección.
    Normalmente no hace falta tocar esto: solo si querés cambiar un título,
    un texto o agregar una sección nueva.
-
-   foto → la imagen que se ve en la tarjeta del menú del inicio.
-          Van en assets/img/secciones/ y son apaisadas (3:2).
    ========================================================================= */
 const CATEGORIAS = {
   mates: {
     nombre: "Mates",
-    pagina: "mates.html",
-    foto: "assets/img/secciones/mates.jpg",
-    resumen: "Criollos · Calabaza · Algarrobo",
     lead: "Tres familias, tres experiencias distintas. Te contamos las diferencias antes de que elijas.",
     subs: {
       criollos: {
         corto: "Criollos",
         nombre: "Criollos",
-        pagina: "mates-criollos.html",
-        resumen: "Cuero y virola, para todos los días",
         lead: "El mate de siempre: forrado en cuero, resistente y listo para el uso diario."
       },
       calabaza: {
         corto: "Calabaza",
         nombre: "Calabaza",
-        pagina: "mates-calabaza.html",
-        resumen: "Naturales, uno distinto al otro",
         lead: "Calabaza natural seleccionada pieza por pieza. Cada mate es distinto al otro."
       },
       algarrobo: {
         corto: "Algarrobo",
         nombre: "Algarrobo",
-        pagina: "mates-algarrobo.html",
-        resumen: "Madera maciza patagónica",
         lead: "Madera maciza, terminación prolija y sabor neutro. También se pueden grabar."
       }
     }
@@ -84,47 +84,31 @@ const CATEGORIAS = {
 
   canastas: {
     nombre: "Canastas",
-    pagina: "canastas.html",
-    foto: "assets/img/secciones/canastas.jpg",
-    resumen: "Para llevar el equipo completo",
     lead: "Mate, termo, yerbera y bombilla en un solo viaje. También hay formato bolso."
   },
 
   bombillas: {
     nombre: "Bombillas y bombillones",
-    pagina: "bombillas.html",
-    foto: "assets/img/secciones/bombillas.jpg",
-    resumen: "Alpaca, acero y bronce",
     lead: "Desde la bombilla de acero de todos los días hasta bombillones de alpaca, rectos y curvos."
   },
 
   yerbas: {
     nombre: "Yerbas y yerberas",
-    pagina: "yerbas.html",
-    foto: "assets/img/secciones/yerbas.jpg",
-    resumen: "Las bolsas y dónde guardarlas",
     lead: "Yerbas uruguayas y brasileñas, más yerberas para tenerlas siempre a mano."
   },
 
   termos: {
     nombre: "Termos",
-    pagina: "termos.html",
-    foto: "assets/img/secciones/termos.jpg",
-    resumen: "1 lt · 1,2 lt Stanley",
     lead: "Conservación real de temperatura, tapón cebador y garantía de marca.",
     subs: {
       "1lt": {
         corto: "1 litro",
         nombre: "Termos 1 lt",
-        pagina: "termos-1-litro.html",
-        resumen: "La medida más práctica",
         lead: "El tamaño que entra en cualquier canasta y alcanza para una tarde de mates."
       },
       stanley12: {
         corto: "Stanley 1,2 lt",
         nombre: "Termos 1,2 lt Stanley",
-        pagina: "termos-stanley.html",
-        resumen: "Originales, con garantía",
         lead: "Stanley original de 1,2 litros: hasta 24 horas de temperatura y garantía de por vida."
       }
     }
@@ -166,28 +150,6 @@ const TESTIMONIOS = [
     autor: "@32luceeroo",
     img: "assets/img/clientes/32luceeroo.jpg"
   }
-];
-
-/* =========================================================================
-   NUESTRA RECOMENDACIÓN
-   -------------------------------------------------------------------------
-   Los productos que se muestran en el inicio, abajo del menú del catálogo.
-   Es un mix de todas las secciones: lo que más sale.
-
-   Cada línea apunta a un producto que YA está cargado más abajo, así no hay
-   que repetir precio ni foto: se toman de ahí. Si cambiás el precio en su
-   sección, acá se actualiza solo.
-
-   Formato:  { seccion: "bombillas", nombre: "Bombilla pico de loro" }
-
-   El nombre tiene que coincidir exacto con el del producto.
-   Si dejás la lista vacía, la sección entera no aparece en el sitio.
-   ========================================================================= */
-const RECOMENDADOS = [
-  { seccion: "bombillas", nombre: "Bombilla pico de loro" },
-  { seccion: "yerbas",    nombre: "Verdecita 1 kg" },
-  { seccion: "bombillas", nombre: "Bombillón recto de alpaca" },
-  { seccion: "yerbas",    nombre: "Yerbera de gamuza premium negro" }
 ];
 
 const PRODUCTOS = {

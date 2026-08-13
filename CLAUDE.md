@@ -28,16 +28,21 @@ En la práctica, para cada cambio:
 
 ## Cómo está hecho el sitio
 
-Sitio estático, sin frameworks ni build. Una página por sección del catálogo
-(el emprendimiento tiene cerca de 60 productos, por eso no van todos juntos).
+Sitio estático, sin frameworks ni build. Todo el catálogo vive en una sola
+página (`index.html`), con una barra de pastillas fija que filtra las
+categorías sin recargar. Las viejas URLs por sección (`mates.html`,
+`bombillas.html`, etc.) quedan como redirects a `index.html#cat-<id>`, para
+no romper links guardados.
 
 - `assets/js/products.js` — datos: contacto, estructura de secciones y productos.
   Es el único archivo que toca el dueño para cargar productos.
-- `assets/js/site.js` — arma encabezado, pie y grillas en todas las páginas.
+- `assets/js/site.js` — arma encabezado, pie, la barra de filtros y el
+  catálogo completo.
 - `assets/css/styles.css` — estilos. La paleta se define en `:root`.
 
-Al modificar el CSS hay que subir el `?v=` del link en las 12 páginas `.html`,
-si no los navegadores siguen usando la copia vieja en caché.
+Al modificar el CSS hay que subir el `?v=` del link en `index.html` (es la
+única página que carga la hoja de estilos; los redirects no la usan), si no
+los navegadores siguen usando la copia vieja en caché.
 
 ## Estilo
 
