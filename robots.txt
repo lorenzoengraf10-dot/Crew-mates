@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://lorenzoengraf10-dot.github.io/Crew-mates/sitemap.xml

@@ -318,10 +318,10 @@ h1,h2,h3,h4{
 .hero__tagline{
   margin:0 0 26px;
   font-family:var(--font-display);
-  font-weight:600;
-  font-size:1.15rem;
+  font-weight:700;
+  font-size:clamp(1.4rem, 4.5vw, 1.9rem);
   letter-spacing:.01em;
-  color:rgba(251,247,240,.86);
+  color:var(--orange-soft);
   text-transform:lowercase;
 }
 
