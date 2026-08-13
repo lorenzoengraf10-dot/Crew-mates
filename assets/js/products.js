@@ -65,55 +65,30 @@ const CONFIG = {
 const CATEGORIAS = {
   mates: {
     nombre: "Mates",
-    lead: "Tres familias, tres experiencias distintas. Te contamos las diferencias antes de que elijas.",
     subs: {
-      criollos: {
-        corto: "Criollos",
-        nombre: "Criollos",
-        lead: "El mate de siempre: forrado en cuero, resistente y listo para el uso diario."
-      },
-      calabaza: {
-        corto: "Calabaza",
-        nombre: "Calabaza",
-        lead: "Calabaza natural seleccionada pieza por pieza. Cada mate es distinto al otro."
-      },
-      algarrobo: {
-        corto: "Algarrobo",
-        nombre: "Algarrobo",
-        lead: "Madera maciza, terminación prolija y sabor neutro. También se pueden grabar."
-      }
+      criollos: { corto: "Criollos", nombre: "Criollos" },
+      calabaza: { corto: "Calabaza", nombre: "Calabaza" },
+      algarrobo: { corto: "Algarrobo", nombre: "Algarrobo" }
     }
   },
 
   canastas: {
-    nombre: "Canastas",
-    lead: "Para llevar el equipo completo: mate, termo, yerbera y bombilla en un solo viaje."
+    nombre: "Canastas"
   },
 
   bombillas: {
-    nombre: "Bombillas y bombillones",
-    lead: "Desde la bombilla de acero de todos los días hasta bombillones de alpaca, rectos y curvos."
+    nombre: "Bombillas y bombillones"
   },
 
   yerbas: {
-    nombre: "Yerbas y yerberas",
-    lead: "Yerbas uruguayas y brasileñas, más yerberas para tenerlas siempre a mano."
+    nombre: "Yerbas y yerberas"
   },
 
   termos: {
     nombre: "Termos",
-    lead: "Conservación real de temperatura, tapón cebador y garantía de marca.",
     subs: {
-      "1lt": {
-        corto: "1 litro",
-        nombre: "Termos 1 lt",
-        lead: "El tamaño que entra en cualquier canasta y alcanza para una tarde de mates."
-      },
-      stanley12: {
-        corto: "Stanley 1,2 lt",
-        nombre: "Termos 1,2 lt Stanley",
-        lead: "Stanley original de 1,2 litros: hasta 24 horas de temperatura y garantía de por vida."
-      }
+      "1lt": { corto: "1 litro", nombre: "Termos 1 lt" },
+      stanley12: { corto: "Stanley 1,2 lt", nombre: "Termos 1,2 lt Stanley" }
     }
   }
 };
@@ -138,11 +113,6 @@ const SUBS = Object.values(CATEGORIAS).reduce((acc, cat) => {
    Si dejás la lista vacía, la sección entera no aparece en el sitio.
    ========================================================================= */
 const TESTIMONIOS = [
-  {
-    texto: "Compren con los ojos cerrados. Uso y recomiendo.",
-    autor: "@cynmiran_0125",
-    img: "assets/img/clientes/cynmiran.jpg"
-  },
   {
     texto: "Increíble el bombillón.",
     autor: "@josias_cevalles_9",

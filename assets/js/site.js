@@ -46,14 +46,6 @@
   const WORDMARK =
     '<span class="brand__line">crew</span><span class="brand__line">mates<i class="brand__dot"></i></span>';
 
-  /* Cuenta de productos de una categoría / subcategoría */
-  function contar(catId, subId) {
-    const lista = (PRODUCTOS && PRODUCTOS[catId]) || [];
-    return subId ? lista.filter((p) => p.sub === subId).length : lista.length;
-  }
-
-  const plural = (n) => (n === 1 ? "1 producto" : `${n} productos`);
-
   /* ---------------------------------------------------------------------
      Encabezado
      --------------------------------------------------------------------- */
@@ -329,7 +321,6 @@
     cont.innerHTML = Object.entries(CATEGORIAS)
       .map(([id, cat]) => {
         const subs = Object.entries(cat.subs || {});
-        const total = contar(id);
 
         const subtabs = subs.length
           ? `<div class="subtabs" role="tablist" aria-label="Tipos de ${escapar(cat.nombre.toLowerCase())}">
@@ -347,9 +338,7 @@
           <div class="catsec" id="cat-${id}" data-cat="${id}">
             <div class="wrap">
               <header class="catsec__head">
-                <p class="eyebrow"><span class="eyebrow__dot"></span> ${plural(total)}</p>
                 <h2 class="sec-title">${escapar(cat.nombre)}</h2>
-                <p class="sec-lead">${escapar(cat.lead)}</p>
               </header>
               ${subtabs}
               <div class="grid" data-grilla="${id}"></div>
