@@ -121,7 +121,7 @@
         <div class="wrap footer__inner">
 
           <div class="footer__col footer__brand">
-            <span class="brand__mark brand__mark--light" aria-hidden="true">${WORDMARK}</span>
+            <img class="footer__logo" src="assets/img/logo-light.png" alt="Crewmates" width="700" height="791" loading="lazy">
             <p class="footer__tag">
               Mates, termos y accesorios.<br>
               Desde ${escapar(CONFIG.ciudad)} para todo el país.
