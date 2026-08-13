@@ -376,44 +376,87 @@ const PRODUCTOS = {
      ====================================================================== */
   termos: [
     {
-      nombre: "Termo 1 lt con tapón cebador",
+      nombre: "Termo media manija acero inox",
       sub: "1lt",
-      precio: null,
-      desc: "Mantiene el agua caliente toda la tarde. Pico cebador de precisión.",
-      img: "assets/img/termos/termo-1lt-cebador.jpg",
-      etiqueta: "Más vendido",
-      detalles: ["1 litro", "Tapón cebador", "Acero inoxidable"]
+      precio: 20000,
+      desc: "Termo media manija de acero inoxidable, terminación natural.",
+      img: "assets/img/termos/media-manija-acero.jpg",
+      detalles: ["Acero inoxidable", "Con manija", "Pico cebador"]
     },
     {
-      nombre: "Termo 1 lt acero mate",
+      nombre: "Termo media manija negro",
       sub: "1lt",
-      precio: null,
-      desc: "Terminación mate antideslizante, entra en cualquier canasta.",
-      img: "assets/img/termos/termo-1lt-acero-mate.jpg",
-      detalles: ["1 litro", "Terminación soft touch"]
+      precio: 22000,
+      desc: "Termo media manija de acero inox, color negro.",
+      img: "assets/img/termos/media-manija-negro.jpg",
+      detalles: ["Acero inoxidable", "Color negro", "Con manija", "Pico cebador"]
     },
+    /* Stanley System 1,2 lt: mismo termo, cambia solo el color */
     {
-      nombre: "Stanley Classic 1,2 lt",
+      nombre: "Stanley System Negro",
       sub: "stanley12",
-      precio: null,
-      desc: "El termo que todos quieren. Hasta 24 h de temperatura y garantía de por vida.",
-      img: "assets/img/termos/stanley-classic-12lt.jpg",
+      precio: 30000,
+      desc: "Termo Stanley System 1,2 litros, pico cebador, color negro.",
+      img: "assets/img/termos/stanley-negro.jpg",
       etiqueta: "Original",
       color: "navy",
-      detalles: [
-        "1,2 litros",
-        "Hasta 24 h caliente",
-        "Garantía de por vida",
-        "Producto original"
-      ]
+      detalles: ["1,2 litros", "Pico cebador", "Producto original Stanley"]
     },
     {
-      nombre: "Stanley 1,2 lt edición color",
+      nombre: "Stanley System Blanco",
       sub: "stanley12",
-      precio: null,
-      desc: "Mismo termo de siempre, en colores que se consiguen por temporada.",
-      img: "assets/img/termos/stanley-color-12lt.jpg",
-      detalles: ["1,2 litros", "Colores limitados", "Consultá stock"]
+      precio: 30000,
+      desc: "Termo Stanley System 1,2 litros, pico cebador, color blanco.",
+      img: "assets/img/termos/stanley-blanco.jpg",
+      detalles: ["1,2 litros", "Pico cebador", "Producto original Stanley"]
+    },
+    {
+      nombre: "Stanley System Rosa",
+      sub: "stanley12",
+      precio: 30000,
+      desc: "Termo Stanley System 1,2 litros, pico cebador, color rosa.",
+      img: "assets/img/termos/stanley-rosa.jpg",
+      detalles: ["1,2 litros", "Pico cebador", "Producto original Stanley"]
+    },
+    {
+      nombre: "Stanley System Naranja",
+      sub: "stanley12",
+      precio: 30000,
+      desc: "Termo Stanley System 1,2 litros, pico cebador, color naranja.",
+      img: "assets/img/termos/stanley-naranja.jpg",
+      detalles: ["1,2 litros", "Pico cebador", "Producto original Stanley"]
+    },
+    {
+      nombre: "Stanley System Gris",
+      sub: "stanley12",
+      precio: 30000,
+      desc: "Termo Stanley System 1,2 litros, pico cebador, color gris.",
+      img: "assets/img/termos/stanley-gris.jpg",
+      detalles: ["1,2 litros", "Pico cebador", "Producto original Stanley"]
+    },
+    {
+      nombre: "Stanley System Menta",
+      sub: "stanley12",
+      precio: 30000,
+      desc: "Termo Stanley System 1,2 litros, pico cebador, color menta.",
+      img: "assets/img/termos/stanley-menta.jpg",
+      detalles: ["1,2 litros", "Pico cebador", "Producto original Stanley"]
+    },
+    {
+      nombre: "Stanley System Turquesa",
+      sub: "stanley12",
+      precio: 30000,
+      desc: "Termo Stanley System 1,2 litros, pico cebador, color turquesa.",
+      img: "assets/img/termos/stanley-turquesa.jpg",
+      detalles: ["1,2 litros", "Pico cebador", "Producto original Stanley"]
+    },
+    {
+      nombre: "Stanley System Cobre",
+      sub: "stanley12",
+      precio: 30000,
+      desc: "Termo Stanley System 1,2 litros, pico cebador, color cobre.",
+      img: "assets/img/termos/stanley-cobre.jpg",
+      detalles: ["1,2 litros", "Pico cebador", "Producto original Stanley"]
     }
   ]
 
