@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://lorenzoengraf10-dot.github.io/Crew-mates/sitemap.xml
+Sitemap: https://crew-mates.vercel.app/sitemap.xml
