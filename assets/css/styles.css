@@ -294,25 +294,6 @@ h1,h2,h3,h4{
 .eyebrow--onphoto{ color:rgba(251,247,240,.82); }
 .eyebrow--onphoto .eyebrow__dot{ background:var(--orange); }
 
-.hero__title{
-  font-size:clamp(2.6rem, 6.2vw, 4.3rem);
-  letter-spacing:-.03em;
-  text-wrap:balance;
-  color:var(--cream);
-}
-.hero__title em{
-  font-style:normal;
-  color:var(--orange-soft);
-  white-space:nowrap;
-}
-
-.hero__text{
-  max-width:50ch;
-  margin:20px 0 0;
-  color:rgba(251,247,240,.86);
-  font-size:1.06rem;
-}
-
 .hero__actions{
   display:flex; flex-wrap:wrap; gap:12px;
   margin-top:28px;
@@ -328,22 +309,23 @@ h1,h2,h3,h4{
 }
 .hero__facts strong{ color:var(--cream); font-weight:700; }
 
-/* Logo grande arriba del hero, con "hecho para compartir" debajo */
+/* Logo grande arriba del hero, con "hecho para compartir" debajo.
+   Es el elemento principal del hero: no hay título aparte. */
 .hero__logo{
-  margin:0 0 12px;
+  margin:0 0 14px;
   font-family:var(--font-display);
   font-weight:800;
-  line-height:.8;
-  font-size:clamp(2.5rem, 8vw, 3.6rem);
+  line-height:.78;
+  font-size:clamp(3.4rem, 15vw, 6rem);
   letter-spacing:-.03em;
   color:var(--cream);
   text-transform:lowercase;
 }
 .hero__tagline{
-  margin:0 0 22px;
+  margin:0 0 26px;
   font-family:var(--font-display);
   font-weight:600;
-  font-size:1rem;
+  font-size:1.15rem;
   letter-spacing:.01em;
   color:rgba(251,247,240,.86);
   text-transform:lowercase;
@@ -1210,7 +1192,6 @@ h1,h2,h3,h4{
   .brand__logo{ height:38px; }
 
   .hero{ padding:52px 0 40px; }
-  .hero__text{ margin-top:16px; }
   .hero__actions{ margin-top:22px; }
   .hero__facts{ margin-top:26px; padding-top:20px; }
 
