@@ -175,7 +175,10 @@
         <div class="modal__backdrop" data-close></div>
         <div class="modal__box" role="dialog" aria-modal="true" aria-labelledby="modal-title">
           <button class="modal__close" data-close aria-label="Cerrar">×</button>
-          <div class="modal__media"><img id="modal-img" src="" alt=""></div>
+          <div class="modal__media">
+            <img id="modal-img" src="" alt="">
+            <div class="modal__thumbs" id="modal-thumbs" hidden></div>
+          </div>
           <div class="modal__body">
             <p class="modal__cat" id="modal-cat"></p>
             <h2 class="modal__title" id="modal-title"></h2>
@@ -759,8 +762,10 @@
     const elImg = $("#modal-img"), elCat = $("#modal-cat"), elTit = $("#modal-title");
     const elPre = $("#modal-price"), elDesc = $("#modal-desc"), elSpecs = $("#modal-specs");
     const elWa = $("#modal-wa"), media = $(".modal__media", modal);
+    const elThumbs = $("#modal-thumbs");
 
     let ultimoFoco = null;
+    let fotosActuales = [];
 
     function abrir(categoria, indice) {
       const p = PRODUCTOS[categoria] && PRODUCTOS[categoria][indice];
@@ -781,14 +786,28 @@
 
       elSpecs.innerHTML = (p.detalles || []).map((d) => `<li>${escapar(d)}</li>`).join("");
 
+      fotosActuales = [p.img, p.img2].filter(Boolean);
+
       media.classList.remove("is-empty");
-      if (p.img) {
-        elImg.src = p.img;
+      if (fotosActuales.length) {
+        elImg.src = fotosActuales[0];
         elImg.alt = p.nombre;
         elImg.onerror = () => media.classList.add("is-empty");
       } else {
         elImg.removeAttribute("src");
         media.classList.add("is-empty");
+      }
+
+      /* Algunos mates tienen 2 fotos para que se aprecien mejor:
+         mostramos pastillas chicas para pasar de una a otra. */
+      if (fotosActuales.length > 1) {
+        elThumbs.innerHTML = fotosActuales
+          .map((f, i) => `<button type="button" data-foto="${i}" class="${i === 0 ? "is-active" : ""}" aria-label="Foto ${i + 1} de ${fotosActuales.length}"></button>`)
+          .join("");
+        elThumbs.hidden = false;
+      } else {
+        elThumbs.innerHTML = "";
+        elThumbs.hidden = true;
       }
 
       elWa.dataset.wa =
@@ -814,6 +833,15 @@
         if (card) abrir(card.dataset.categoria, Number(card.dataset.index));
         return;
       }
+
+      const btnFoto = e.target.closest("[data-foto]");
+      if (btnFoto) {
+        const i = Number(btnFoto.dataset.foto);
+        if (fotosActuales[i]) elImg.src = fotosActuales[i];
+        $$("[data-foto]", elThumbs).forEach((b) => b.classList.toggle("is-active", b === btnFoto));
+        return;
+      }
+
       if (e.target.closest("[data-close]")) cerrar();
     });
 

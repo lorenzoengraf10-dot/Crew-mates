@@ -21,6 +21,9 @@
    desc      (texto)     Una o dos líneas describiendo el producto.
    img       (texto)     Ruta de la foto. Si la dejás en "" se muestra
                          un placeholder con el logo hasta que la cargues.
+   img2      (texto)     OPCIONAL. Una segunda foto del mismo producto.
+                         Se ve al abrir la ficha (tocando la foto de la
+                         tarjeta), con botones para pasar de una a otra.
    etiqueta  (texto)     OPCIONAL. Ej: "Nuevo", "Último", "Más vendido".
    color     (texto)     OPCIONAL. Color de la etiqueta:
                          "orange" (por defecto) | "green" | "navy"
@@ -158,68 +161,183 @@ const PRODUCTOS = {
      MATES  ·  subcategorías: criollos | calabaza | algarrobo
      ====================================================================== */
   mates: [
+    /* --- Criollos: calabaza forma criolla, base de cuero --- */
     {
-      nombre: "Mate criollo forrado en cuero",
+      nombre: "Mate Galleta",
       sub: "criollos",
-      precio: null,
-      desc: "Clásico de todos los días. Forrado en cuero vacuno y con virola de acero.",
-      img: "assets/img/mates/criollo-cuero.jpg",
-      etiqueta: "Más vendido",
-      detalles: [
-        "Virola de acero inoxidable",
-        "Base ancha, no se vuelca"
-      ]
+      precio: 22000,
+      desc: "Mate de calabaza criolla con base de cuero crudo y costura en tiento de potro.",
+      img: "assets/img/mates/mate-galleta.jpg",
+      detalles: ["Calabaza criolla", "Base de cuero crudo", "Costura en tiento de potro"]
     },
     {
-      nombre: "Mate criollo camionero",
+      nombre: "Criollo coquito",
       sub: "criollos",
-      precio: null,
-      desc: "Boca amplia para cebar tranquilo. Ideal para viajes largos.",
-      img: "assets/img/mates/criollo-camionero.jpg",
-      detalles: ["Boca ancha", "Cuero cosido a mano"]
+      precio: 18000,
+      desc: "Mate de calabaza criollo con base de cuero con costura trenzada.",
+      img: "assets/img/mates/criollo-coquito.jpg",
+      detalles: ["Calabaza criolla", "Base de cuero", "Costura trenzada"]
     },
     {
-      nombre: "Mate de calabaza imperial",
-      sub: "calabaza",
-      precio: null,
-      desc: "Calabaza seleccionada, con guarda de alpaca.",
-      img: "assets/img/mates/calabaza-imperial.jpg",
+      nombre: "Camionero criollo",
+      sub: "criollos",
+      precio: 18000,
+      desc: "Mate de calabaza criollo con base de cuero con costura trenzada.",
+      img: "assets/img/mates/camionero-criollo.jpg",
+      detalles: ["Calabaza criolla", "Base de cuero", "Costura trenzada"]
+    },
+
+    /* --- Algarrobo: madera maciza --- */
+    {
+      nombre: "Imperial algarrobo",
+      sub: "algarrobo",
+      precio: 22000,
+      desc: "Mate de algarrobo, con bombilla de regalo.",
+      img: "assets/img/mates/imperial-algarrobo.jpg",
+      detalles: ["Algarrobo macizo", "Bombilla de regalo"]
+    },
+    {
+      nombre: "Torpedo algarrobo cincelado",
+      sub: "algarrobo",
+      precio: 26000,
+      desc: "Torpedo de algarrobo cincelado, con bombilla de regalo.",
+      img: "assets/img/mates/torpedo-algarrobo-cincelado.jpg",
+      detalles: ["Algarrobo macizo", "Virola cincelada", "Bombilla de regalo"]
+    },
+    {
+      nombre: "Ranchero Blanco",
+      sub: "algarrobo",
+      precio: 34000,
+      desc: "Mate ranchero de algarrobo, cruz con puntos de alpaca. Viene con bombilla de regalo.",
+      img: "assets/img/mates/ranchero-blanco.jpg",
       etiqueta: "Nuevo",
       color: "green",
-      detalles: [
-        "Guarda y base de alpaca",
-        "Cada pieza es única"
-      ]
+      detalles: ["Algarrobo macizo", "Cruz con puntos de alpaca", "Bombilla de regalo"]
     },
     {
-      nombre: "Mate de calabaza torpedo",
+      nombre: "Camionero algarrobo",
+      sub: "algarrobo",
+      precio: 14000,
+      desc: "Camionero de algarrobo, con bombilla de regalo.",
+      img: "assets/img/mates/camionero-algarrobo.jpg",
+      detalles: ["Algarrobo macizo", "Bombilla de regalo"]
+    },
+    {
+      nombre: "Imperial algarrobo cincelado",
+      sub: "algarrobo",
+      precio: 25000,
+      desc: "Imperial de algarrobo cincelado, con bombilla de regalo.",
+      img: "assets/img/mates/imperial-algarrobo-cincelado.jpg",
+      detalles: ["Algarrobo macizo", "Virola cincelada", "Bombilla de regalo"]
+    },
+
+    /* --- Calabaza: distintos cueros y virolas, cada pieza es única --- */
+    {
+      nombre: "Imperial cincelado",
       sub: "calabaza",
-      precio: null,
-      desc: "Forma alargada, sabor bien concentrado. Un clásico que nunca falla.",
-      img: "assets/img/mates/calabaza-torpedo.jpg",
-      detalles: ["Forma torpedo"]
+      precio: 32000,
+      desc: "Calabaza forrada en cuero negro, con virola cincelada.",
+      img: "assets/img/mates/imperial-cincelado-negro-1.jpg",
+      img2: "assets/img/mates/imperial-cincelado-negro-2.jpg",
+      detalles: ["Cuero negro", "Virola cincelada"]
     },
     {
-      nombre: "Mate de algarrobo con virola",
-      sub: "algarrobo",
-      precio: null,
-      desc: "Madera maciza de algarrobo, con virola de acero y terminación lisa.",
-      img: "assets/img/mates/algarrobo-virola.jpg",
-      detalles: [
-        "Algarrobo macizo",
-        "No transmite sabor",
-        "Se puede grabar con nombre"
-      ]
+      nombre: "Imperial cincelado en borravino",
+      sub: "calabaza",
+      precio: 32000,
+      desc: "Calabaza forrada en cuero borravino, con virola cincelada.",
+      img: "assets/img/mates/imperial-cincelado-borravino-1.jpg",
+      img2: "assets/img/mates/imperial-cincelado-borravino-2.jpg",
+      detalles: ["Cuero borravino", "Virola cincelada"]
     },
     {
-      nombre: "Mate de algarrobo tallado",
-      sub: "algarrobo",
-      precio: null,
-      desc: "Tallado a mano en la Patagonia. Un regalo que se recuerda.",
-      img: "assets/img/mates/algarrobo-tallado.jpg",
-      etiqueta: "Artesanal",
+      nombre: "Torpedo clásico",
+      sub: "calabaza",
+      precio: 30000,
+      desc: "Torpedo forrado en cuero negro, con bombilla de regalo.",
+      img: "assets/img/mates/torpedo-clasico.jpg",
+      detalles: ["Cuero negro", "Bombilla de regalo"]
+    },
+    {
+      nombre: "Mate imperial",
+      sub: "calabaza",
+      precio: 30000,
+      desc: "Imperial forrado en cuero negro, con guarda de acero y bombilla de regalo.",
+      img: "assets/img/mates/imperial-negro.jpg",
+      detalles: ["Cuero negro", "Guarda de acero", "Bombilla de regalo"]
+    },
+    {
+      nombre: "Imperial liso borravino",
+      sub: "calabaza",
+      precio: 30000,
+      desc: "Calabaza forrada en cuero liso borravino, con virola cincelada.",
+      img: "assets/img/mates/imperial-liso-borravino.jpg",
+      detalles: ["Cuero liso borravino", "Virola cincelada"]
+    },
+    {
+      nombre: "Torpedo del Rey",
+      sub: "calabaza",
+      precio: 32000,
+      desc: "Torpedo negro con virola de alpaca y aro en bronce, viene con bombilla de regalo.",
+      img: "assets/img/mates/torpedo-del-rey.jpg",
+      detalles: ["Cuero negro", "Virola de alpaca", "Aro en bronce", "Bombilla de regalo"]
+    },
+    {
+      nombre: "Torpedo croco en borravino",
+      sub: "calabaza",
+      precio: 38000,
+      desc: "Torpedo en cuero croco borravino, con virola de alpaca cincelada y bombilla de regalo.",
+      img: "assets/img/mates/torpedo-croco-borravino.jpg",
+      etiqueta: "Premium",
       color: "navy",
-      detalles: ["Tallado artesanal", "Cada mate es distinto"]
+      detalles: ["Cuero croco borravino", "Virola de alpaca cincelada", "Bombilla de regalo"]
+    },
+    {
+      nombre: "Imperial croco negro",
+      sub: "calabaza",
+      precio: 38000,
+      desc: "Imperial en cuero croco negro, con bombilla de regalo.",
+      img: "assets/img/mates/imperial-croco-negro.jpg",
+      etiqueta: "Premium",
+      color: "navy",
+      detalles: ["Cuero croco negro", "Bombilla de regalo"]
+    },
+    {
+      nombre: "Imperial croco cincelado",
+      sub: "calabaza",
+      precio: 38000,
+      desc: "Imperial en cuero croco, con virola cincelada y bombilla de regalo.",
+      img: "assets/img/mates/imperial-croco-cincelado-1.jpg",
+      img2: "assets/img/mates/imperial-croco-cincelado-2.jpg",
+      etiqueta: "Premium",
+      color: "navy",
+      detalles: ["Cuero croco", "Virola cincelada", "Bombilla de regalo"]
+    },
+    {
+      nombre: "Torpedo croco negro",
+      sub: "calabaza",
+      precio: 38000,
+      desc: "Torpedo en cuero croco negro, con bombilla de regalo.",
+      img: "assets/img/mates/torpedo-croco-negro.jpg",
+      etiqueta: "Premium",
+      color: "navy",
+      detalles: ["Cuero croco negro", "Bombilla de regalo"]
+    },
+    {
+      nombre: "Camionero repujado negro",
+      sub: "calabaza",
+      precio: 26000,
+      desc: "Camionero repujado, virola de acero inoxidable, con bombilla de regalo.",
+      img: "assets/img/mates/camionero-repujado-negro.jpg",
+      detalles: ["Cuero repujado negro", "Virola de acero inoxidable", "Bombilla de regalo"]
+    },
+    {
+      nombre: "Camionero repujado borravino",
+      sub: "calabaza",
+      precio: 26000,
+      desc: "Camionero repujado, virola de acero inoxidable, con bombilla de regalo.",
+      img: "assets/img/mates/camionero-repujado-borravino.jpg",
+      detalles: ["Cuero repujado borravino", "Virola de acero inoxidable", "Bombilla de regalo"]
     }
   ],
 
