@@ -63,7 +63,7 @@ h1,h2,h3,h4{
   font-family:var(--font-display);
   font-weight:800;
   line-height:1.06;
-  letter-spacing:-.015em;
+  letter-spacing:-.02em;
   margin:0;
   color:var(--navy);
 }
@@ -107,6 +107,7 @@ h1,h2,h3,h4{
 
 .sec-title{
   font-size:clamp(2rem, 4.2vw, 3.1rem);
+  letter-spacing:-.025em;
   text-wrap:balance;
 }
 .sec-title--light{ color:var(--cream); }
@@ -327,28 +328,25 @@ h1,h2,h3,h4{
 }
 .hero__facts strong{ color:var(--cream); font-weight:700; }
 
-/* "hecho para compartir" — sello de marca sobre la foto */
-.hero__stamp{
-  display:inline-flex; align-items:center; gap:8px;
-  margin-bottom:20px;
-  padding:8px 18px 8px 8px;
-  border-radius:999px;
-  background:rgba(251,247,240,.14);
-  backdrop-filter:blur(6px);
-  color:var(--cream);
+/* Logo grande arriba del hero, con "hecho para compartir" debajo */
+.hero__logo{
+  margin:0 0 12px;
   font-family:var(--font-display);
-  font-weight:600;
-  font-size:.86rem;
-  letter-spacing:.01em;
+  font-weight:800;
+  line-height:.8;
+  font-size:clamp(2.5rem, 8vw, 3.6rem);
+  letter-spacing:-.03em;
+  color:var(--cream);
   text-transform:lowercase;
 }
-.hero__stamp i{
-  display:grid; place-items:center;
-  width:26px; height:26px;
-  border-radius:50%;
-  background:var(--orange);
-  font-style:normal;
-  font-size:1.1rem;
+.hero__tagline{
+  margin:0 0 22px;
+  font-family:var(--font-display);
+  font-weight:600;
+  font-size:1rem;
+  letter-spacing:.01em;
+  color:rgba(251,247,240,.86);
+  text-transform:lowercase;
 }
 
 /* ============================ SEPARADOR ============================ */
@@ -404,9 +402,9 @@ h1,h2,h3,h4{
 }
 .pill:hover{ background:rgba(16,54,95,.06); }
 .pill.is-active{
-  background:var(--navy);
-  color:var(--cream);
-  box-shadow:inset 0 0 0 1.5px var(--navy);
+  background:var(--orange);
+  color:#fff;
+  box-shadow:inset 0 0 0 1.5px var(--orange);
 }
 .pill--sm{
   min-height:44px;
@@ -917,7 +915,7 @@ h1,h2,h3,h4{
    sección de venta. Un párrafo corto y listo. */
 
 .about{
-  padding:clamp(52px, 7vw, 80px) 0;
+  padding:clamp(64px, 9vw, 100px) 0;
   scroll-margin-top:calc(var(--header-h) + var(--catnav-h));
 }
 .about__copy{
@@ -926,13 +924,68 @@ h1,h2,h3,h4{
   text-align:center;
 }
 .about__copy .eyebrow{ justify-content:center; }
+.about__copy .eyebrow--onphoto{ color:rgba(251,247,240,.82); }
+.about__copy .sec-title{ color:var(--cream); }
 .about__copy p{
   margin:16px 0 0;
-  color:var(--muted);
+  color:rgba(251,247,240,.86);
 }
 .about__actions{
   display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:14px;
   margin-top:22px;
+}
+.about__actions .btn--link{
+  --btn-fg:var(--cream);
+  text-decoration-color:var(--orange-soft);
+}
+
+/* ============================ PREGUNTAS FRECUENTES ============================ */
+
+.faq{
+  padding:clamp(52px, 7vw, 80px) 0;
+  scroll-margin-top:calc(var(--header-h) + var(--catnav-h));
+}
+.faq__list{
+  display:flex; flex-direction:column;
+  gap:10px;
+  max-width:720px;
+}
+.faq__item{
+  border-radius:var(--radius);
+  background:#fff;
+  box-shadow:inset 0 0 0 1px var(--line);
+  overflow:hidden;
+}
+.faq__item summary{
+  display:flex; align-items:center; justify-content:space-between; gap:14px;
+  min-height:44px;
+  padding:16px 20px;
+  cursor:pointer;
+  list-style:none;
+  font-family:var(--font-display);
+  font-weight:700;
+  font-size:1rem;
+  color:var(--navy);
+}
+.faq__item summary::-webkit-details-marker{ display:none; }
+.faq__item summary::after{
+  content:"+";
+  flex:none;
+  display:grid; place-items:center;
+  width:26px; height:26px;
+  border-radius:50%;
+  background:var(--cream-2);
+  color:var(--orange);
+  font-size:1.15rem;
+  font-weight:700;
+  transition:transform .2s ease;
+}
+.faq__item[open] summary::after{ content:"–"; transform:rotate(180deg); }
+.faq__item p{
+  margin:0;
+  padding:0 20px 18px;
+  color:var(--muted);
+  font-size:.96rem;
 }
 
 /* ============================ FOOTER ============================ */

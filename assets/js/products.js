@@ -87,7 +87,7 @@ const CATEGORIAS = {
 
   canastas: {
     nombre: "Canastas",
-    lead: "Mate, termo, yerbera y bombilla en un solo viaje. También hay formato bolso."
+    lead: "Para llevar el equipo completo: mate, termo, yerbera y bombilla en un solo viaje."
   },
 
   bombillas: {
@@ -346,26 +346,20 @@ const PRODUCTOS = {
      ====================================================================== */
   canastas: [
     {
-      nombre: "Canasta matera de mimbre",
-      precio: null,
-      desc: "Entra el termo, el mate, la yerbera y la bombilla. Todo en un viaje.",
-      img: "assets/img/canastas/canasta-mimbre.jpg",
-      etiqueta: "Regalo ideal",
-      detalles: ["Mimbre natural", "Manija reforzada", "Interior acolchado"]
+      nombre: "Canasta de cuerina",
+      precio: 11500,
+      desc: "Canasta matera de cuerina, con dos manijas y divisiones internas.",
+      img: "assets/img/canastas/canasta-cuerina.jpg",
+      detalles: ["Cuerina", "Dos manijas", "Divisiones internas"]
     },
     {
-      nombre: "Canasta matera con tapa",
-      precio: null,
-      desc: "Cierre completo para que no se te vuele nada en la playa o el campo.",
-      img: "assets/img/canastas/canasta-con-tapa.jpg",
-      detalles: ["Tapa con broche", "Espacio para 1 termo de 1 lt"]
-    },
-    {
-      nombre: "Bolso matero",
-      precio: null,
-      desc: "Formato bolso, más liviano, con correa para cruzar.",
-      img: "assets/img/canastas/bolso-matero.jpg",
-      detalles: ["Correa regulable", "Bolsillos internos"]
+      nombre: "Canasta 100% cuero",
+      precio: 32000,
+      desc: "Canasta matera 100% cuero, con dos manijas y divisiones internas.",
+      img: "assets/img/canastas/canasta-100-cuero.jpg",
+      etiqueta: "Premium",
+      color: "navy",
+      detalles: ["100% cuero", "Dos manijas", "Divisiones internas"]
     }
   ],
 

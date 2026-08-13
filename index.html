@@ -16,7 +16,7 @@
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 
 <!-- Nuestra hoja de estilos va primero y con ?v= para forzar recarga cuando cambia -->
-<link rel="stylesheet" href="assets/css/styles.css?v=7">
+<link rel="stylesheet" href="assets/css/styles.css?v=8">
 
 <!-- Las tipografías se cargan aparte: si tardan o fallan, el sitio igual se ve bien -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -35,7 +35,8 @@
   <!-- ============================ HERO ============================ -->
   <section class="hero bg-photo" style="background-image:url('assets/img/fondos/hero.jpg')">
     <div class="wrap hero__inner">
-      <p class="hero__stamp"><i>🧉</i> hecho para compartir</p>
+      <p class="hero__logo" aria-hidden="true"><span class="brand__line">crew</span><span class="brand__line">mates<i class="brand__dot"></i></span></p>
+      <p class="hero__tagline">hecho para compartir</p>
 
       <p class="eyebrow eyebrow--onphoto"><span class="eyebrow__dot"></span> Carmen de Patagones · Buenos Aires</p>
       <h1 class="hero__title">
@@ -101,10 +102,35 @@
     </div>
   </section>
 
+  <!-- ============================ PREGUNTAS FRECUENTES ============================ -->
+  <section class="faq" id="preguntas">
+    <div class="wrap">
+      <header class="sec-head">
+        <p class="eyebrow"><span class="eyebrow__dot"></span> Antes de comprar</p>
+        <h2 class="sec-title">Preguntas frecuentes</h2>
+      </header>
+
+      <div class="faq__list">
+        <details class="faq__item">
+          <summary>¿Qué medios de pago aceptan?</summary>
+          <p>Mercado Pago, transferencias y efectivo.</p>
+        </details>
+        <details class="faq__item">
+          <summary>¿Cómo son los envíos?</summary>
+          <p>Enviamos a todo el país. También podés retirar sin cargo en Carmen de Patagones.</p>
+        </details>
+        <details class="faq__item">
+          <summary>¿Los mates vienen curados?</summary>
+          <p>No vienen curados, para que puedas vivir la experiencia completa de curarlo vos mismo.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
   <!-- ============================ HISTORIA ============================ -->
-  <section class="about" id="historia">
+  <section class="about bg-photo" id="historia" style="background-image:url('assets/img/fondos/footer.jpg')">
     <div class="wrap about__copy">
-      <p class="eyebrow"><span class="eyebrow__dot"></span> Nuestra historia</p>
+      <p class="eyebrow eyebrow--onphoto"><span class="eyebrow__dot"></span> Nuestra historia</p>
       <h2 class="sec-title">Un poco sobre Crewmates</h2>
       <p>
         Somos un emprendimiento de Carmen de Patagones. Elegimos cada mate, termo y
