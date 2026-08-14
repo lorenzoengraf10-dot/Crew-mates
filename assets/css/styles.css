@@ -439,6 +439,10 @@ h1,h2,h3,h4{
   gap:clamp(16px, 2vw, 26px);
 }
 
+/* Sin esto, el filtro de subcategorías (Criollos/Calabaza/Algarrobo, etc.)
+   no ocultaba nada: display:flex de acá abajo pisaba al [hidden] del navegador. */
+.card[hidden]{ display:none; }
+
 .card{
   position:relative;
   display:flex; flex-direction:column;

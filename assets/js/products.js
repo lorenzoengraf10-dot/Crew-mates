@@ -167,14 +167,6 @@ const PRODUCTOS = {
       detalles: ["Algarrobo macizo", "Bombilla de regalo"]
     },
     {
-      nombre: "Torpedo algarrobo cincelado",
-      sub: "algarrobo",
-      precio: 26000,
-      desc: "Torpedo de algarrobo cincelado, con bombilla de regalo.",
-      img: "assets/img/mates/torpedo-algarrobo-cincelado.jpg",
-      detalles: ["Algarrobo macizo", "Virola cincelada", "Bombilla de regalo"]
-    },
-    {
       nombre: "Ranchero Blanco",
       sub: "algarrobo",
       precio: 34000,
@@ -243,14 +235,6 @@ const PRODUCTOS = {
       desc: "Calabaza forrada en cuero liso borravino, con virola cincelada.",
       img: "assets/img/mates/imperial-liso-borravino.jpg",
       detalles: ["Cuero liso borravino", "Virola cincelada"]
-    },
-    {
-      nombre: "Torpedo del Rey",
-      sub: "calabaza",
-      precio: 32000,
-      desc: "Torpedo negro con virola de alpaca y aro en bronce, viene con bombilla de regalo.",
-      img: "assets/img/mates/torpedo-del-rey.jpg",
-      detalles: ["Cuero negro", "Virola de alpaca", "Aro en bronce", "Bombilla de regalo"]
     },
     {
       nombre: "Torpedo croco en borravino",
@@ -432,24 +416,6 @@ const PRODUCTOS = {
       desc: "Yerba brasileña Seleme Centenaria Original, para un mate más intenso y diferente al argentino clásico.",
       img: "assets/img/yerbas/centenaria-1kg.jpg",
       detalles: ["1 kg", "Origen Brasil"]
-    },
-    {
-      nombre: "Yerbera de gamuza premium negro",
-      precio: 16000,
-      desc: "Yerbera gamuzada para 1/2 kg, en color negro.",
-      img: "assets/img/yerbas/yerbera-gamuza-negro.jpg",
-      etiqueta: "Premium",
-      color: "navy",
-      detalles: ["Gamuza", "Capacidad 1/2 kg", "Color negro"]
-    },
-    {
-      nombre: "Yerbera de gamuza premium suela",
-      precio: 16000,
-      desc: "Yerbera gamuzada para 1/2 kg, en color suela.",
-      img: "assets/img/yerbas/yerbera-gamuza-suela.jpg",
-      etiqueta: "Premium",
-      color: "navy",
-      detalles: ["Gamuza", "Capacidad 1/2 kg", "Color suela"]
     }
   ],
 
