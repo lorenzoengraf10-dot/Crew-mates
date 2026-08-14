@@ -27,6 +27,17 @@
   const waLink = (mensaje) =>
     `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(mensaje)}`;
 
+  /* Para armar el link directo a un producto: "Mate Galleta" -> "mate-galleta" */
+  const slugify = (txt = "") =>
+    String(txt)
+      .normalize("NFD").replace(/[̀-ͯ]/g, "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+
+  const linkProducto = (categoria, producto) =>
+    `${location.origin}${location.pathname}#producto=${categoria}:${slugify(producto.nombre)}`;
+
   function activarLinksWa(ctx = document) {
     $$("[data-wa]", ctx).forEach((el) => {
       el.setAttribute("href", waLink(el.dataset.wa));
@@ -178,6 +189,7 @@
             <p class="modal__desc" id="modal-desc"></p>
             <ul class="modal__specs" id="modal-specs"></ul>
             <a class="btn btn--wa modal__cta" id="modal-wa">Consultar por WhatsApp</a>
+            <button type="button" class="btn btn--ghost modal__share" id="modal-share">Copiar link de este producto</button>
             <p class="modal__note">Te respondemos apenas lo vemos. Coordinamos envío o retiro en el showroom.</p>
           </div>
         </div>
@@ -751,14 +763,18 @@
     const elImg = $("#modal-img"), elCat = $("#modal-cat"), elTit = $("#modal-title");
     const elPre = $("#modal-price"), elDesc = $("#modal-desc"), elSpecs = $("#modal-specs");
     const elWa = $("#modal-wa"), media = $(".modal__media", modal);
-    const elThumbs = $("#modal-thumbs");
+    const elThumbs = $("#modal-thumbs"), elShare = $("#modal-share");
 
     let ultimoFoco = null;
     let fotosActuales = [];
+    let categoriaAbierta = null, indiceAbierto = null;
 
     function abrir(categoria, indice) {
       const p = PRODUCTOS[categoria] && PRODUCTOS[categoria][indice];
       if (!p) return;
+
+      categoriaAbierta = categoria;
+      indiceAbierto = indice;
 
       const sub = p.sub ? SUBS[p.sub] || p.sub : "";
       const nombreCat = (CATEGORIAS[categoria] && CATEGORIAS[categoria].nombre) || "";
@@ -831,12 +847,45 @@
         return;
       }
 
+      if (e.target.closest("#modal-share")) {
+        const p = PRODUCTOS[categoriaAbierta] && PRODUCTOS[categoriaAbierta][indiceAbierto];
+        if (!p) return;
+        const link = linkProducto(categoriaAbierta, p);
+        const original = elShare.textContent;
+        const listo = () => {
+          elShare.textContent = "Copiado ✓";
+          setTimeout(() => { elShare.textContent = original; }, 1500);
+        };
+        if (navigator.clipboard) navigator.clipboard.writeText(link).then(listo).catch(listo);
+        else listo();
+        return;
+      }
+
       if (e.target.closest("[data-close]")) cerrar();
     });
 
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && !modal.hidden) cerrar();
     });
+
+    /* Si alguien entra con un link tipo #producto=categoria:slug (el que
+       genera el botón "Copiar link"), abrimos esa ficha directo. Si el hash
+       no corresponde a ningún producto (cambió a otra sección, o el link
+       está mal escrito) y la ficha estaba abierta por un link directo, se
+       cierra sola en vez de quedar tapando la sección a la que se navegó. */
+    function abrirDesdeHash() {
+      const m = location.hash.match(/^#producto=([a-z0-9-]+):(.+)$/i);
+      const [, categoria, slug] = m || [];
+      const lista = categoria && PRODUCTOS[categoria];
+      const indice = lista ? lista.findIndex((p) => slugify(p.nombre) === slug) : -1;
+      if (indice === -1) {
+        if (!modal.hidden) cerrar();
+        return;
+      }
+      abrir(categoria, indice);
+    }
+    abrirDesdeHash();
+    window.addEventListener("hashchange", abrirDesdeHash);
   }
 
   /* ---------------------------------------------------------------------
