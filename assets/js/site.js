@@ -107,6 +107,142 @@
   }
 
   /* ---------------------------------------------------------------------
+     Ofertas
+     Cartel grande arriba de todo, con las fotos y/o el video de la promo
+     pasando solos. Si no hay ninguna oferta cargada, no se agrega nada.
+     --------------------------------------------------------------------- */
+
+  function renderOfertas() {
+    const cont = $("[data-ofertas]");
+    if (!cont) return;
+
+    const lista = typeof OFERTAS !== "undefined" ? OFERTAS : [];
+    if (!lista.length) {
+      cont.remove();
+      return;
+    }
+
+    cont.outerHTML = lista
+      .map((of, oi) => {
+        const mensajeWa = of.whatsapp || `Hola! Vi la oferta de ${of.nombre} y quería consultar 🧉`;
+        const altPrecio = `oferta ${CONFIG.moneda} ${formatoPrecio.format(of.precioAhora)}`;
+
+        const slides = of.media
+          .map(
+            (m, mi) => `
+            <div class="ofertas__slide${mi === 0 ? " is-active" : ""}" data-slide="${mi}">
+              ${
+                m.tipo === "video"
+                  ? `<video src="${escapar(m.src)}" muted playsinline preload="metadata"></video>`
+                  : `<img src="${escapar(m.src)}" alt="${escapar(of.nombre)} — ${altPrecio}" loading="${oi === 0 && mi === 0 ? "eager" : "lazy"}" decoding="async">`
+              }
+            </div>`
+          )
+          .join("");
+
+        const dots =
+          of.media.length > 1
+            ? `<div class="ofertas__dots" role="group" aria-label="Fotos y video de la oferta">
+                ${of.media
+                  .map(
+                    (m, mi) =>
+                      `<button class="ofertas__dot${mi === 0 ? " is-active" : ""}" type="button" data-dot="${mi}"${mi === 0 ? ' aria-current="true"' : ""} aria-label="${m.tipo === "video" ? "Ver video" : `Ver foto ${mi + 1}`}"></button>`
+                  )
+                  .join("")}
+              </div>`
+            : "";
+
+        return `
+        <section class="ofertas" id="${lista.length > 1 ? `oferta-${oi}` : "ofertas"}">
+          <div class="wrap ofertas__head">
+            <p class="eyebrow"><span class="eyebrow__dot"></span> Oferta por tiempo limitado</p>
+            <h2 class="sec-title">${escapar(of.nombre)}</h2>
+            <p class="ofertas__precio">
+              <s class="ofertas__antes">${CONFIG.moneda} ${formatoPrecio.format(of.precioAntes)}</s>
+              <span class="ofertas__ahora">${CONFIG.moneda} ${formatoPrecio.format(of.precioAhora)}</span>
+            </p>
+            ${of.badge ? `<p class="ofertas__badge">${escapar(of.badge)}</p>` : ""}
+          </div>
+
+          <div class="ofertas__carrusel" data-ofertas-carrusel>
+            <div class="ofertas__slides">${slides}</div>
+            ${dots}
+          </div>
+
+          <div class="wrap ofertas__pie">
+            <a class="btn btn--wa" data-wa="${escapar(mensajeWa)}">Quiero esta oferta</a>
+          </div>
+        </section>`;
+      })
+      .join("");
+  }
+
+  /* Carrusel de ofertas: pasa solo entre fotos y video. Las fotos tienen un
+     tiempo fijo; el video se deja terminar solo antes de avanzar. */
+  function initOfertas() {
+    $$(".ofertas__carrusel").forEach((carrusel) => {
+      const slides = $$(".ofertas__slide", carrusel);
+      const dots = $$(".ofertas__dot", carrusel);
+      if (slides.length < 2) return;
+
+      let actual = 0;
+      let timer = null;
+
+      function detener() {
+        if (timer) { clearTimeout(timer); timer = null; }
+        const video = slides[actual].querySelector("video");
+        if (video) video.pause();
+      }
+
+      function arrancarSlide() {
+        const video = slides[actual].querySelector("video");
+        if (video) {
+          video.currentTime = 0;
+          const p = video.play();
+          if (p && p.catch) p.catch(() => {});
+          video.addEventListener("ended", siguiente, { once: true });
+        } else {
+          timer = setTimeout(siguiente, 4500);
+        }
+      }
+
+      function mostrar(indice) {
+        detener();
+        slides[actual].classList.remove("is-active");
+        if (dots[actual]) {
+          dots[actual].classList.remove("is-active");
+          dots[actual].removeAttribute("aria-current");
+        }
+
+        actual = (indice + slides.length) % slides.length;
+
+        slides[actual].classList.add("is-active");
+        if (dots[actual]) {
+          dots[actual].classList.add("is-active");
+          dots[actual].setAttribute("aria-current", "true");
+        }
+
+        arrancarSlide();
+      }
+
+      function siguiente() { mostrar(actual + 1); }
+
+      dots.forEach((dot, i) => {
+        dot.addEventListener("click", () => mostrar(i));
+      });
+
+      arrancarSlide();
+
+      /* Pausa si la pestaña queda en segundo plano, para no gastar batería
+         ni datos de más. */
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) detener();
+        else arrancarSlide();
+      });
+    });
+  }
+
+  /* ---------------------------------------------------------------------
      Pie de página
      --------------------------------------------------------------------- */
 
@@ -966,6 +1102,7 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     renderHeader();
+    renderOfertas();
     renderCatalogoCompleto();
     renderTestimonios();
     renderFooter();
@@ -977,6 +1114,7 @@
     initHeader();
     initFiltroCatalogo();
     initFiltroSubs();
+    initOfertas();
     initReveal();
 
     Carrito.cargar();

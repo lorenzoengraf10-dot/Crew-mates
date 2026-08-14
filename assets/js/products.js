@@ -54,6 +54,37 @@ const CONFIG = {
 };
 
 /* =========================================================================
+   OFERTAS
+   -------------------------------------------------------------------------
+   Liquidaciones o promos puntuales. Se muestran arriba de todo en la web,
+   antes que nada, en un cartel grande con las fotos y/o el video pasando
+   solos. Si dejás la lista vacía, la sección no aparece.
+
+   nombre       (texto)   Nombre del producto en oferta.
+   precioAntes  (número)  Precio tachado.
+   precioAhora  (número)  Precio de oferta.
+   badge        (texto)   OPCIONAL. Ej: "¡Últimas 4 unidades!"
+   whatsapp     (texto)   Mensaje prearmado del botón para consultar.
+   media        (lista)   Fotos y/o video que van pasando solos. Cada uno:
+                            { tipo: "img", src: "assets/img/ofertas/..." }
+                            { tipo: "video", src: "assets/img/ofertas/..." }
+   ========================================================================= */
+const OFERTAS = [
+  {
+    nombre: "Mate Criollo Imperial",
+    precioAntes: 42000,
+    precioAhora: 35000,
+    badge: "¡Últimas 4 unidades!",
+    whatsapp: "Hola! Vi la oferta del Mate Criollo Imperial (antes $42.000, ahora $35.000) y quería consultar 🧉",
+    media: [
+      { tipo: "img", src: "assets/img/ofertas/imperial-cincelado.jpg" },
+      { tipo: "img", src: "assets/img/ofertas/imperial-liso.jpg" },
+      { tipo: "video", src: "assets/img/ofertas/imperial-video.mp4" }
+    ]
+  }
+];
+
+/* =========================================================================
    ESTRUCTURA DEL SITIO
    -------------------------------------------------------------------------
    Cada categoría es una sección del catálogo (todas viven en la misma
