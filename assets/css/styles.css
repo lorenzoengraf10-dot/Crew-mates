@@ -19,12 +19,10 @@
   --muted:        #5C6B7A;
   --line:         rgba(16, 54, 95, .14);
 
-  /* Tipografía
-     "Squeeze" (la de Instagram) no está en Google Fonts. Fredoka es la
-     alternativa gratuita más parecida: rounded, amigable, con buen peso
-     para títulos grandes. */
-  --font-display: "Fredoka", "Baloo 2", "Trebuchet MS", system-ui, sans-serif;
-  --font-body:    "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  /* Tipografía: una sola familia (Outfit) para todo el sitio, títulos y
+     texto, para una estética limpia y redondeada tipo Instagram. */
+  --font-display: "Outfit", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body:    "Outfit", system-ui, -apple-system, "Segoe UI", sans-serif;
 
   /* Layout */
   --wrap: 1180px;
