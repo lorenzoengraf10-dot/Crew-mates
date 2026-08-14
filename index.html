@@ -55,10 +55,10 @@
 }
 </script>
 
-<!-- La primera foto del carrusel de ofertas es ahora lo más grande de la
-     primera pantalla (LCP): la arma JS, así que sin este preload el
-     navegador ni se entera de que existe hasta que corre site.js. -->
-<link rel="preload" as="image" href="assets/img/ofertas/imperial-cincelado.jpg" fetchpriority="high">
+<!-- La foto de fondo del hero es la imagen más grande de la primera pantalla (LCP).
+     Sin este preload, el navegador no la descubre hasta procesar el CSS, que está
+     más abajo, y la carga se atrasa varios segundos. -->
+<link rel="preload" as="image" href="assets/img/fondos/hero.jpg" fetchpriority="high">
 
 <!-- Nuestra hoja de estilos va primero y con ?v= para forzar recarga cuando cambia -->
 <link rel="stylesheet" href="assets/css/styles.css?v=17">
@@ -76,11 +76,6 @@
 <div data-header></div>
 
 <main>
-
-  <!-- ============================ OFERTAS ============================
-       Se arma por JS (ver renderOfertas en site.js) a partir de OFERTAS en
-       products.js. Si esa lista está vacía, no se agrega nada acá. -->
-  <div data-ofertas></div>
 
   <!-- ============================ HERO ============================ -->
   <section class="hero bg-photo" style="background-image:url('assets/img/fondos/hero.jpg')">
@@ -102,6 +97,11 @@
       </ul>
     </div>
   </section>
+
+  <!-- ============================ OFERTAS ============================
+       Se arma por JS (ver renderOfertas en site.js) a partir de OFERTAS en
+       products.js. Si esa lista está vacía, no se agrega nada acá. -->
+  <div data-ofertas></div>
 
   <!-- ============================ CATÁLOGO ============================
        Se arma entero por JS (ver renderCatalogoCompleto en site.js): una
