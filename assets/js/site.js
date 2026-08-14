@@ -62,7 +62,7 @@
       <header class="header" id="header">
         <div class="wrap header__inner">
           <a class="brand" href="#inicio" aria-label="Crewmates — inicio">
-            <img class="brand__logo" src="assets/img/logo.png" alt="Crewmates" width="132" height="44">
+            <img class="brand__logo" src="assets/img/logo.png" alt="Crewmates" width="160" height="180">
             <span class="brand__mark" aria-hidden="true">${WORDMARK}</span>
           </a>
 
@@ -120,7 +120,7 @@
             </p>
             <div class="footer__social">
               <a href="${CONFIG.instagram}" target="_blank" rel="noopener"
-                 aria-label="Instagram de Crewmates">${ICONO_IG} @crew.mattes</a>
+                 aria-label="Instagram de Crewmates: @crew.mattes">${ICONO_IG} @crew.mattes</a>
             </div>
           </div>
 
@@ -323,7 +323,7 @@
         const subs = Object.entries(cat.subs || {});
 
         const subtabs = subs.length
-          ? `<div class="subtabs" role="tablist" aria-label="Tipos de ${escapar(cat.nombre.toLowerCase())}">
+          ? `<div class="subtabs" role="group" aria-label="Tipos de ${escapar(cat.nombre.toLowerCase())}">
                <button class="pill pill--sm is-active" data-subfiltro="todos" type="button">Todos</button>
                ${subs
                  .map(

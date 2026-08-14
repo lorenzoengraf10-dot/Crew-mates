@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Crewmates | Mates, termos y accesorios — Carmen de Patagones</title>
-<meta name="description" content="Mates de calabaza, algarrobo y criollos, termos Stanley, bombillas, yerberas, canastas y yerbas. Showroom en Carmen de Patagones, Buenos Aires. Envíos a todo el país. Pedidos por WhatsApp.">
+<meta name="description" content="Mates de calabaza, algarrobo y criollos, termos Stanley, bombillas, yerberas y canastas. Showroom en Carmen de Patagones, Buenos Aires. Envíos a todo el país.">
 <meta name="keywords" content="mates, yerba mate, termos, bombillas, yerberas, canastas materas, Carmen de Patagones, Buenos Aires, Argentina">
 <meta name="theme-color" content="#10365F">
 <meta name="robots" content="index, follow">
@@ -30,7 +30,7 @@
 <meta name="twitter:image" content="https://crew-mates.vercel.app/assets/img/og.jpg">
 
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="assets/img/logo.png">
+<link rel="apple-touch-icon" href="assets/img/icon-touch.png">
 
 <script type="application/ld+json">
 {
@@ -55,8 +55,13 @@
 }
 </script>
 
+<!-- La foto de fondo del hero es la imagen más grande de la primera pantalla (LCP).
+     Sin este preload, el navegador no la descubre hasta procesar el CSS, que está
+     más abajo, y la carga se atrasa varios segundos. -->
+<link rel="preload" as="image" href="assets/img/fondos/hero.jpg" fetchpriority="high">
+
 <!-- Nuestra hoja de estilos va primero y con ?v= para forzar recarga cuando cambia -->
-<link rel="stylesheet" href="assets/css/styles.css?v=10">
+<link rel="stylesheet" href="assets/css/styles.css?v=11">
 
 <!-- Las tipografías se cargan aparte: si tardan o fallan, el sitio igual se ve bien -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -75,7 +80,7 @@
   <!-- ============================ HERO ============================ -->
   <section class="hero bg-photo" style="background-image:url('assets/img/fondos/hero.jpg')">
     <div class="wrap hero__inner">
-      <h1 class="hero__logo"><img src="assets/img/logo-light.png" alt="Crewmates" width="700" height="791"></h1>
+      <h1 class="hero__logo"><span class="visually-hidden">Crewmates — mates, termos y accesorios</span><img src="assets/img/logo-light.png" alt="" width="700" height="791"></h1>
       <p class="hero__tagline">hecho para compartir</p>
 
       <p class="eyebrow eyebrow--onphoto"><span class="eyebrow__dot"></span> Carmen de Patagones · Buenos Aires</p>
