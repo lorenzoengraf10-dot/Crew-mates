@@ -81,7 +81,7 @@ const CATEGORIAS = {
   },
 
   yerbas: {
-    nombre: "Yerbas y yerberas"
+    nombre: "Yerbas"
   },
 
   termos: {
