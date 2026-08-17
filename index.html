@@ -61,7 +61,7 @@
 <link rel="preload" as="image" href="assets/img/fondos/hero.jpg" fetchpriority="high">
 
 <!-- Nuestra hoja de estilos va primero y con ?v= para forzar recarga cuando cambia -->
-<link rel="stylesheet" href="assets/css/styles.css?v=17">
+<link rel="stylesheet" href="assets/css/styles.css?v=14">
 
 <!-- Las tipografías se cargan aparte: si tardan o fallan, el sitio igual se ve bien -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -97,11 +97,6 @@
       </ul>
     </div>
   </section>
-
-  <!-- ============================ OFERTAS ============================
-       Se arma por JS (ver renderOfertas en site.js) a partir de OFERTAS en
-       products.js. Si esa lista está vacía, no se agrega nada acá. -->
-  <div data-ofertas></div>
 
   <!-- ============================ CATÁLOGO ============================
        Se arma entero por JS (ver renderCatalogoCompleto en site.js): una
@@ -192,7 +187,7 @@
 <!-- vercel.json cachea /assets/ por 24hs. Sin el ?v=, un navegador que ya
      entró se queda con el JS viejo un día entero aunque haya deploy nuevo:
      hay que subir este número cada vez que cambie products.js o site.js. -->
-<script src="assets/js/products.js?v=2"></script>
-<script src="assets/js/site.js?v=2"></script>
+<script src="assets/js/products.js?v=1"></script>
+<script src="assets/js/site.js?v=1"></script>
 </body>
 </html>
