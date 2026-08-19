@@ -254,6 +254,29 @@
       `Hola Crewmates! 🧉 Me interesa: ${producto.nombre}` +
       (sub ? ` (${sub})` : "") + `. ¿Tienen stock?`;
 
+    /* Si el producto tiene más de una variante, mostramos los circulitos de
+       color (o pastillas, si es un kilaje en vez de un color) ya en la
+       tarjeta, para que se note desde el catálogo que hay más opciones sin
+       tener que entrar a la ficha. Tocar uno acá cambia la foto y el precio
+       de la tarjeta, y esa es la variante que se agrega si tocás "Agregar
+       al pedido" sin abrir la ficha. */
+    const variantesHTML =
+      producto.variantes && producto.variantes.length > 1
+        ? `<div class="card__variantes" aria-label="Colores disponibles">
+            ${producto.variantes
+              .map((v) => {
+                const activa = v === variante;
+                const cls = activa ? " is-active" : "";
+                const current = activa ? ' aria-current="true"' : "";
+                return v.swatch
+                  ? `<button type="button" class="card__swatch${cls}" data-variante="${escapar(v.label)}"
+                             style="background:${escapar(v.swatch)}" aria-label="${escapar(v.label)}"${current}></button>`
+                  : `<button type="button" class="pill pill--sm${cls}" data-variante="${escapar(v.label)}"${current}>${escapar(v.label)}</button>`;
+              })
+              .join("")}
+          </div>`
+        : "";
+
     const art = document.createElement("article");
     art.className = "card";
     art.dataset.categoria = categoria;
@@ -272,6 +295,7 @@
         ${sub ? `<span class="card__sub">${escapar(sub)}</span>` : ""}
         <h3 class="card__name">${escapar(producto.nombre)}</h3>
         <p class="card__desc">${escapar(desc || "")}</p>
+        ${variantesHTML}
         <div class="card__foot">
           ${precioHTML(producto)}
           <button class="btn card__add" data-agregar type="button">Agregar al pedido</button>
@@ -433,6 +457,54 @@
           card.hidden = filtro !== "todos" && card.dataset.sub !== filtro;
         });
       });
+    });
+  }
+
+  /* Circulitos de color (o pastillas de kilaje) en la tarjeta del catálogo:
+     tocar uno cambia la foto y el precio de esa tarjeta sin abrir la ficha,
+     y queda guardado como la variante que se agrega si tocás "Agregar al
+     pedido" directo desde ahí. */
+  function initVariantesTarjeta() {
+    document.addEventListener("click", (e) => {
+      const btn = e.target.closest(".card__variantes [data-variante]");
+      if (!btn) return;
+      e.preventDefault();
+
+      const card = btn.closest(".card");
+      if (!card) return;
+
+      const lista = PRODUCTOS[card.dataset.categoria];
+      const producto = lista && lista[Number(card.dataset.index)];
+      if (!producto || !producto.variantes) return;
+
+      const variante = producto.variantes.find((v) => v.label === btn.dataset.variante);
+      if (!variante) return;
+
+      card.dataset.variante = variante.label;
+
+      const media = $(".card__media", card);
+      const img = $("img", media);
+      if (img && variante.img) {
+        img.src = variante.img;
+        media.classList.remove("is-empty");
+      }
+
+      const precioViejo = $(".card__price", card);
+      if (precioViejo) precioViejo.outerHTML = precioHTML(variante);
+
+      $$("[data-variante]", $(".card__variantes", card)).forEach((b) => {
+        b.classList.toggle("is-active", b === btn);
+      });
+
+      const sub = producto.sub ? SUBS[producto.sub] || producto.sub : "";
+      const mensaje =
+        `Hola Crewmates! 🧉 Me interesa: ${producto.nombre} — ${variante.label}` +
+        (sub ? ` (${sub})` : "") + `. ¿Tienen stock?`;
+      const consulta = $(".card__consulta", card);
+      if (consulta) {
+        consulta.dataset.wa = mensaje;
+        consulta.setAttribute("href", waLink(mensaje));
+      }
     });
   }
 
@@ -1111,6 +1183,7 @@
     initHeader();
     initFiltroCatalogo();
     initFiltroSubs();
+    initVariantesTarjeta();
     initReveal();
 
     Carrito.cargar();
