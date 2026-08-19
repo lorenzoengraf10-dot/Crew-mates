@@ -842,6 +842,31 @@ h1,h2,h3,h4{
 }
 .entrega__precio--gratis{ color:var(--green-soft); }
 
+.entrega__provincia{ margin:0 0 8px; display:flex; flex-direction:column; gap:8px; }
+.entrega__provincia[hidden]{ display:none; }
+.entrega__provincia select,
+.entrega__provincia .entrega__cp{
+  width:100%;
+  min-height:48px;
+  padding:0 14px;
+  border-radius:12px;
+  border:0;
+  background:#fff;
+  box-shadow:inset 0 0 0 1.5px var(--line);
+  font-family:var(--font-body);
+  font-size:.94rem;
+  color:var(--ink);
+}
+.entrega__provincia select:focus-visible,
+.entrega__provincia .entrega__cp:focus-visible{ box-shadow:inset 0 0 0 2px var(--navy); outline:none; }
+.entrega__envio-nota{
+  display:block;
+  font-size:.78rem;
+  font-weight:600;
+  color:var(--green-soft);
+}
+.entrega__envio-nota[hidden]{ display:none; }
+
 /* Datos de transferencia — solo se ve si eligió "Transferencia" y si
    CONFIG.pago tiene alias cargado (ver pintarCarrito en site.js) */
 .pagobox{ margin:4px 0 16px; }

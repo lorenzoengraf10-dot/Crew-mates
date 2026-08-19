@@ -59,6 +59,7 @@ const CONFIG = {
   instagram: "https://www.instagram.com/crew.mattes",
   ciudad: "Carmen de Patagones",
   provincia: "Buenos Aires",
+  origenCP: "8504",
   moneda: "$",
 
   /* Datos para que el cliente te transfiera. Se muestran en el último paso
@@ -118,6 +119,17 @@ const SUBS = Object.values(CATEGORIAS).reduce((acc, cat) => {
   Object.entries(cat.subs || {}).forEach(([id, sub]) => { acc[id] = sub.corto || sub.nombre; });
   return acc;
 }, {});
+
+/* Peso promedio por categoría (kg), para estimar el costo de envío.
+   Son cifras de referencia con embalaje incluido — no hace falta pesar
+   cada producto, y se pueden ajustar acá si algo queda mal calculado. */
+const PESO_CATEGORIA_KG = {
+  mates: 0.35,
+  canastas: 0.5,
+  bombillas: 0.08,
+  yerbas: 0.85,
+  termos: 0.6
+};
 
 /* =========================================================================
    CLIENTES
