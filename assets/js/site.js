@@ -575,6 +575,7 @@
       else this.items.push({ categoria, slug, variante, cantidad: 1 });
       this.guardar();
       pintarCarrito();
+      recalcularEnvioSiCorresponde();
     },
 
     cambiar(categoria, slug, variante, delta) {
@@ -585,7 +586,7 @@
       if (!it) return;
       it.cantidad += delta;
       if (it.cantidad < 1) this.quitar(categoria, slug, variante);
-      else { this.guardar(); pintarCarrito(); }
+      else { this.guardar(); pintarCarrito(); recalcularEnvioSiCorresponde(); }
     },
 
     quitar(categoria, slug, variante) {
@@ -595,6 +596,7 @@
       );
       this.guardar();
       pintarCarrito();
+      recalcularEnvioSiCorresponde();
     },
 
     vaciar() {
@@ -679,6 +681,15 @@
       if (input) input.dataset.texto = `Envío a domicilio — ${provincia} (estimado ${precioTexto})`;
       pintarCarrito();
     });
+  }
+
+  /* Si ya se eligió una provincia, cada vez que cambia lo que hay en el
+     carrito (agregar, sumar/restar, sacar) hay que volver a pedir el
+     envío: el peso del pedido cambió y el precio de $/kg extra también
+     puede cambiar. No pasa nada si todavía no se eligió ninguna. */
+  function recalcularEnvioSiCorresponde() {
+    const provincia = $("#envio-select")?.value;
+    if (provincia) actualizarEnvio(provincia);
   }
 
   function renderCarrito() {
