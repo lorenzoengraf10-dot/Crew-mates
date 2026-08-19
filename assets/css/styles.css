@@ -526,6 +526,26 @@ h1,h2,h3,h4{
   line-clamp:2;
   overflow:hidden;
 }
+/* Circulitos de color (o pastillas de kilaje) en la tarjeta: mismo
+   mecanismo que el selector de la ficha, ver initVariantesTarjeta en
+   site.js. Se ven ya en el catálogo para que quede claro que hay más de
+   una opción antes de entrar a la ficha. */
+.card__variantes{
+  display:flex; flex-wrap:wrap;
+  gap:8px;
+}
+.card__swatch{
+  width:44px; height:44px;
+  flex:none;
+  border-radius:50%;
+  box-shadow:inset 0 0 0 1.5px rgba(10,35,64,.18);
+  transition:box-shadow .18s ease, transform .18s ease;
+}
+.card__swatch:hover{ transform:scale(1.08); }
+.card__swatch.is-active{
+  box-shadow:0 0 0 2.5px #fff, 0 0 0 4.5px var(--orange);
+}
+
 .card__foot{
   display:flex; align-items:center; justify-content:space-between;
   gap:10px;
@@ -1177,6 +1197,26 @@ h1,h2,h3,h4{
   font-weight:800; font-size:1.35rem;
   color:var(--orange);
 }
+/* Selector de color/kilaje dentro de la ficha (ver pintarFicha en site.js) */
+.modal__variantes{
+  display:flex; flex-wrap:wrap;
+  gap:10px;
+  margin:14px 0 0;
+}
+.modal__variantes[hidden]{ display:none; }
+.modal__swatch{
+  width:44px; height:44px;
+  flex:none;
+  border-radius:50%;
+  box-shadow:inset 0 0 0 1.5px rgba(10,35,64,.18);
+  transition:box-shadow .18s ease, transform .18s ease;
+}
+.modal__swatch:hover{ transform:scale(1.08); }
+.modal__swatch.is-active{
+  box-shadow:0 0 0 2.5px var(--cream), 0 0 0 4.5px var(--orange);
+}
+.modal__add{ width:100%; margin-bottom:10px; }
+
 .modal__desc{ color:var(--muted); font-size:.97rem; }
 .modal__specs{ margin:18px 0 22px; }
 .modal__specs li{
