@@ -646,7 +646,11 @@
 
       if (suma > 0) txt += `\n\nTotal: ${CONFIG.moneda} ${formatoPrecio.format(suma)}`;
       if (aConsultar > 0) txt += suma > 0 ? `\n(+ ${aConsultar} producto(s) a consultar)` : "";
-      if (entrega) txt += `\n\nEntrega: ${entrega.dataset.texto}`;
+      if (entrega) {
+        txt += `\n\nEntrega: ${entrega.dataset.texto}`;
+        const cp = entrega.value === "envio" ? $("#envio-cp")?.value.trim() : "";
+        if (cp) txt += `\nCódigo postal: ${cp}`;
+      }
 
       if (esTransferencia) {
         txt += transfirio
@@ -727,6 +731,9 @@
                   <option value="" selected disabled>Elegí tu provincia…</option>
                   ${PROVINCIAS_ENVIO.map((p) => `<option value="${escapar(p)}">${escapar(p)}</option>`).join("")}
                 </select>
+                <input type="text" id="envio-cp" class="entrega__cp" inputmode="numeric"
+                       pattern="[0-9]{4}" maxlength="4" placeholder="Código postal (opcional)"
+                       aria-label="Código postal de destino">
               </div>
             </fieldset>
 
@@ -911,6 +918,13 @@
         if (navigator.clipboard) navigator.clipboard.writeText(texto).then(listo).catch(listo);
         else listo();
       }
+    });
+
+    /* El código postal no cambia el precio, pero sí el mensaje de WhatsApp:
+       lo repintamos mientras el cliente escribe, sin esperar a que salga
+       del campo. */
+    modal.addEventListener("input", (e) => {
+      if (e.target.id === "envio-cp") pintarCarrito();
     });
 
     /* Al cambiar la forma de entrega o el medio de pago se rearma el mensaje */
