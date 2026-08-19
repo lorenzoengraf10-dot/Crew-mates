@@ -29,6 +29,26 @@
                          "orange" (por defecto) | "green" | "navy"
    detalles  (lista)     OPCIONAL. Puntos que se ven al abrir la ficha.
    agotado   (true)      OPCIONAL. Marca el producto como sin stock.
+
+   variantes (lista)     OPCIONAL. Para el mismo producto en varios colores
+                         o tamaños (ej. un termo en 8 colores, una yerba en
+                         1 kg y 500 g). Si lo usás, NO pongas precio/desc/
+                         img/detalles/agotado arriba: van adentro de cada
+                         variante. Arriba solo queda nombre/sub/etiqueta.
+                         Cada variante:
+                           label    (texto)   Ej: "Negro", "1 kg". OBLIGATORIO.
+                           swatch   (texto)   OPCIONAL. Color hex (ej "#1c1a19").
+                                    Si lo ponés, se ve como circulito de
+                                    color para elegir. Si NO lo ponés, se ve
+                                    como pastilla de texto con el label
+                                    (para tamaños/pesos en vez de colores).
+                           precio, desc, img, img2, detalles, agotado →
+                           igual que en un producto normal, pero uno por
+                           variante.
+                         En la ficha del producto, tocar una variante
+                         cambia la foto, el precio y la descripción de
+                         arriba. La primera variante de la lista es la que
+                         se ve por defecto en la tarjeta del catálogo.
    ========================================================================= */
 
 const CONFIG = {
@@ -197,20 +217,26 @@ const PRODUCTOS = {
     {
       nombre: "Imperial cincelado",
       sub: "calabaza",
-      precio: 32000,
-      desc: "Calabaza forrada en cuero negro, con virola cincelada.",
-      img: "assets/img/mates/imperial-cincelado-negro-1.jpg",
-      img2: "assets/img/mates/imperial-cincelado-negro-2.jpg",
-      detalles: ["Cuero negro", "Virola cincelada"]
-    },
-    {
-      nombre: "Imperial cincelado en borravino",
-      sub: "calabaza",
-      precio: 32000,
-      desc: "Calabaza forrada en cuero borravino, con virola cincelada.",
-      img: "assets/img/mates/imperial-cincelado-borravino-1.jpg",
-      img2: "assets/img/mates/imperial-cincelado-borravino-2.jpg",
-      detalles: ["Cuero borravino", "Virola cincelada"]
+      variantes: [
+        {
+          label: "Negro",
+          swatch: "#1c1a19",
+          precio: 32000,
+          desc: "Calabaza forrada en cuero negro, con virola cincelada.",
+          img: "assets/img/mates/imperial-cincelado-negro-1.jpg",
+          img2: "assets/img/mates/imperial-cincelado-negro-2.jpg",
+          detalles: ["Cuero negro", "Virola cincelada"]
+        },
+        {
+          label: "Borravino",
+          swatch: "#5c2030",
+          precio: 32000,
+          desc: "Calabaza forrada en cuero borravino, con virola cincelada.",
+          img: "assets/img/mates/imperial-cincelado-borravino-1.jpg",
+          img2: "assets/img/mates/imperial-cincelado-borravino-2.jpg",
+          detalles: ["Cuero borravino", "Virola cincelada"]
+        }
+      ]
     },
     {
       nombre: "Torpedo clásico",
@@ -237,14 +263,28 @@ const PRODUCTOS = {
       detalles: ["Cuero liso borravino", "Virola cincelada"]
     },
     {
-      nombre: "Torpedo croco en borravino",
+      nombre: "Torpedo croco",
       sub: "calabaza",
-      precio: 38000,
-      desc: "Torpedo en cuero croco borravino, con virola de alpaca cincelada y bombilla de regalo.",
-      img: "assets/img/mates/torpedo-croco-borravino.jpg",
       etiqueta: "Premium",
       color: "navy",
-      detalles: ["Cuero croco borravino", "Virola de alpaca cincelada", "Bombilla de regalo"]
+      variantes: [
+        {
+          label: "Borravino",
+          swatch: "#5c2030",
+          precio: 38000,
+          desc: "Torpedo en cuero croco borravino, con virola de alpaca cincelada y bombilla de regalo.",
+          img: "assets/img/mates/torpedo-croco-borravino.jpg",
+          detalles: ["Cuero croco borravino", "Virola de alpaca cincelada", "Bombilla de regalo"]
+        },
+        {
+          label: "Negro",
+          swatch: "#1c1a19",
+          precio: 38000,
+          desc: "Torpedo en cuero croco negro, con bombilla de regalo.",
+          img: "assets/img/mates/torpedo-croco-negro.jpg",
+          detalles: ["Cuero croco negro", "Bombilla de regalo"]
+        }
+      ]
     },
     {
       nombre: "Imperial croco negro",
@@ -268,30 +308,26 @@ const PRODUCTOS = {
       detalles: ["Cuero croco", "Virola cincelada", "Bombilla de regalo"]
     },
     {
-      nombre: "Torpedo croco negro",
+      nombre: "Camionero repujado",
       sub: "calabaza",
-      precio: 38000,
-      desc: "Torpedo en cuero croco negro, con bombilla de regalo.",
-      img: "assets/img/mates/torpedo-croco-negro.jpg",
-      etiqueta: "Premium",
-      color: "navy",
-      detalles: ["Cuero croco negro", "Bombilla de regalo"]
-    },
-    {
-      nombre: "Camionero repujado negro",
-      sub: "calabaza",
-      precio: 26000,
-      desc: "Camionero repujado, virola de acero inoxidable, con bombilla de regalo.",
-      img: "assets/img/mates/camionero-repujado-negro.jpg",
-      detalles: ["Cuero repujado negro", "Virola de acero inoxidable", "Bombilla de regalo"]
-    },
-    {
-      nombre: "Camionero repujado borravino",
-      sub: "calabaza",
-      precio: 26000,
-      desc: "Camionero repujado, virola de acero inoxidable, con bombilla de regalo.",
-      img: "assets/img/mates/camionero-repujado-borravino.jpg",
-      detalles: ["Cuero repujado borravino", "Virola de acero inoxidable", "Bombilla de regalo"]
+      variantes: [
+        {
+          label: "Negro",
+          swatch: "#1c1a19",
+          precio: 26000,
+          desc: "Camionero repujado, virola de acero inoxidable, con bombilla de regalo.",
+          img: "assets/img/mates/camionero-repujado-negro.jpg",
+          detalles: ["Cuero repujado negro", "Virola de acero inoxidable", "Bombilla de regalo"]
+        },
+        {
+          label: "Borravino",
+          swatch: "#5c2030",
+          precio: 26000,
+          desc: "Camionero repujado, virola de acero inoxidable, con bombilla de regalo.",
+          img: "assets/img/mates/camionero-repujado-borravino.jpg",
+          detalles: ["Cuero repujado borravino", "Virola de acero inoxidable", "Bombilla de regalo"]
+        }
+      ]
     }
   ],
 
@@ -381,18 +417,23 @@ const PRODUCTOS = {
      ====================================================================== */
   yerbas: [
     {
-      nombre: "Verdecita 1 kg",
-      precio: 7500,
-      desc: "Yerba mate elaborada despalada, padrón uruguayo.",
-      img: "assets/img/yerbas/verdecita-1kg.jpg",
-      detalles: ["1 kg", "Elaborada despalada", "Padrón uruguayo"]
-    },
-    {
-      nombre: "Verdecita 500 g",
-      precio: 4500,
-      desc: "Yerba mate elaborada despalada, padrón uruguayo.",
-      img: "assets/img/yerbas/verdecita-500g.jpg",
-      detalles: ["500 g", "Elaborada despalada", "Padrón uruguayo"]
+      nombre: "Verdecita",
+      variantes: [
+        {
+          label: "1 kg",
+          precio: 7500,
+          desc: "Yerba mate elaborada despalada, padrón uruguayo.",
+          img: "assets/img/yerbas/verdecita-1kg.jpg",
+          detalles: ["1 kg", "Elaborada despalada", "Padrón uruguayo"]
+        },
+        {
+          label: "500 g",
+          precio: 4500,
+          desc: "Yerba mate elaborada despalada, padrón uruguayo.",
+          img: "assets/img/yerbas/verdecita-500g.jpg",
+          detalles: ["500 g", "Elaborada despalada", "Padrón uruguayo"]
+        }
+      ]
     },
     {
       nombre: "Yerba Barão",
@@ -441,70 +482,76 @@ const PRODUCTOS = {
     },
     /* Stanley System 1,2 lt: mismo termo, cambia solo el color */
     {
-      nombre: "Stanley System Negro",
+      nombre: "Stanley System",
       sub: "stanley12",
-      precio: 30000,
-      desc: "Termo Stanley System 1,2 litros, pico cebador, color negro.",
-      img: "assets/img/termos/stanley-negro.jpg",
       etiqueta: "Original",
       color: "navy",
-      detalles: ["1,2 litros", "Pico cebador", "Producto original Stanley"]
-    },
-    {
-      nombre: "Stanley System Blanco",
-      sub: "stanley12",
-      precio: 30000,
-      desc: "Termo Stanley System 1,2 litros, pico cebador, color blanco.",
-      img: "assets/img/termos/stanley-blanco.jpg",
-      detalles: ["1,2 litros", "Pico cebador", "Producto original Stanley"]
-    },
-    {
-      nombre: "Stanley System Rosa",
-      sub: "stanley12",
-      precio: 30000,
-      desc: "Termo Stanley System 1,2 litros, pico cebador, color rosa.",
-      img: "assets/img/termos/stanley-rosa.jpg",
-      detalles: ["1,2 litros", "Pico cebador", "Producto original Stanley"]
-    },
-    {
-      nombre: "Stanley System Naranja",
-      sub: "stanley12",
-      precio: 30000,
-      desc: "Termo Stanley System 1,2 litros, pico cebador, color naranja.",
-      img: "assets/img/termos/stanley-naranja.jpg",
-      detalles: ["1,2 litros", "Pico cebador", "Producto original Stanley"]
-    },
-    {
-      nombre: "Stanley System Gris",
-      sub: "stanley12",
-      precio: 30000,
-      desc: "Termo Stanley System 1,2 litros, pico cebador, color gris.",
-      img: "assets/img/termos/stanley-gris.jpg",
-      detalles: ["1,2 litros", "Pico cebador", "Producto original Stanley"]
-    },
-    {
-      nombre: "Stanley System Menta",
-      sub: "stanley12",
-      precio: 30000,
-      desc: "Termo Stanley System 1,2 litros, pico cebador, color menta.",
-      img: "assets/img/termos/stanley-menta.jpg",
-      detalles: ["1,2 litros", "Pico cebador", "Producto original Stanley"]
-    },
-    {
-      nombre: "Stanley System Turquesa",
-      sub: "stanley12",
-      precio: 30000,
-      desc: "Termo Stanley System 1,2 litros, pico cebador, color turquesa.",
-      img: "assets/img/termos/stanley-turquesa.jpg",
-      detalles: ["1,2 litros", "Pico cebador", "Producto original Stanley"]
-    },
-    {
-      nombre: "Stanley System Cobre",
-      sub: "stanley12",
-      precio: 30000,
-      desc: "Termo Stanley System 1,2 litros, pico cebador, color cobre.",
-      img: "assets/img/termos/stanley-cobre.jpg",
-      detalles: ["1,2 litros", "Pico cebador", "Producto original Stanley"]
+      variantes: [
+        {
+          label: "Negro",
+          swatch: "#1c1a19",
+          precio: 30000,
+          desc: "Termo Stanley System 1,2 litros, pico cebador, color negro.",
+          img: "assets/img/termos/stanley-negro.jpg",
+          detalles: ["1,2 litros", "Pico cebador", "Producto original Stanley"]
+        },
+        {
+          label: "Blanco",
+          swatch: "#f2f0eb",
+          precio: 30000,
+          desc: "Termo Stanley System 1,2 litros, pico cebador, color blanco.",
+          img: "assets/img/termos/stanley-blanco.jpg",
+          detalles: ["1,2 litros", "Pico cebador", "Producto original Stanley"]
+        },
+        {
+          label: "Rosa",
+          swatch: "#e8a7b8",
+          precio: 30000,
+          desc: "Termo Stanley System 1,2 litros, pico cebador, color rosa.",
+          img: "assets/img/termos/stanley-rosa.jpg",
+          detalles: ["1,2 litros", "Pico cebador", "Producto original Stanley"]
+        },
+        {
+          label: "Naranja",
+          swatch: "#e2631f",
+          precio: 30000,
+          desc: "Termo Stanley System 1,2 litros, pico cebador, color naranja.",
+          img: "assets/img/termos/stanley-naranja.jpg",
+          detalles: ["1,2 litros", "Pico cebador", "Producto original Stanley"]
+        },
+        {
+          label: "Gris",
+          swatch: "#8a8d90",
+          precio: 30000,
+          desc: "Termo Stanley System 1,2 litros, pico cebador, color gris.",
+          img: "assets/img/termos/stanley-gris.jpg",
+          detalles: ["1,2 litros", "Pico cebador", "Producto original Stanley"]
+        },
+        {
+          label: "Menta",
+          swatch: "#a8d5c8",
+          precio: 30000,
+          desc: "Termo Stanley System 1,2 litros, pico cebador, color menta.",
+          img: "assets/img/termos/stanley-menta.jpg",
+          detalles: ["1,2 litros", "Pico cebador", "Producto original Stanley"]
+        },
+        {
+          label: "Turquesa",
+          swatch: "#3e9aa8",
+          precio: 30000,
+          desc: "Termo Stanley System 1,2 litros, pico cebador, color turquesa.",
+          img: "assets/img/termos/stanley-turquesa.jpg",
+          detalles: ["1,2 litros", "Pico cebador", "Producto original Stanley"]
+        },
+        {
+          label: "Cobre",
+          swatch: "#b56f47",
+          precio: 30000,
+          desc: "Termo Stanley System 1,2 litros, pico cebador, color cobre.",
+          img: "assets/img/termos/stanley-cobre.jpg",
+          detalles: ["1,2 litros", "Pico cebador", "Producto original Stanley"]
+        }
+      ]
     }
   ]
 

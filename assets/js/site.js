@@ -35,8 +35,16 @@
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-+|-+$/g, "");
 
-  const linkProducto = (categoria, producto) =>
-    `${location.origin}${location.pathname}#producto=${categoria}:${slugify(producto.nombre)}`;
+  const linkProducto = (categoria, producto, variante) =>
+    `${location.origin}${location.pathname}#producto=${categoria}:${slugify(producto.nombre)}` +
+    (variante ? `:${slugify(variante.label)}` : "");
+
+  /* Para productos con variantes (color, kilaje): la variante "de portada"
+     es la primera sin agotado, o la primera de todas si no queda ninguna. */
+  function varianteDefault(producto) {
+    if (!producto.variantes) return null;
+    return producto.variantes.find((v) => !v.agotado) || producto.variantes[0];
+  }
 
   function activarLinksWa(ctx = document) {
     $$("[data-wa]", ctx).forEach((el) => {
@@ -186,8 +194,10 @@
             <p class="modal__cat" id="modal-cat"></p>
             <h2 class="modal__title" id="modal-title"></h2>
             <p class="modal__price" id="modal-price"></p>
+            <div class="modal__variantes" id="modal-variantes" hidden></div>
             <p class="modal__desc" id="modal-desc"></p>
             <ul class="modal__specs" id="modal-specs"></ul>
+            <button type="button" class="btn btn--orange modal__add" id="modal-add" hidden>Agregar al pedido</button>
             <a class="btn btn--wa modal__cta" id="modal-wa">Consultar por WhatsApp</a>
             <button type="button" class="btn btn--ghost modal__share" id="modal-share">Copiar link de este producto</button>
             <p class="modal__note">Te respondemos apenas lo vemos. Coordinamos envío o retiro en el showroom.</p>
@@ -204,6 +214,20 @@
      --------------------------------------------------------------------- */
 
   function precioHTML(producto) {
+    if (producto.variantes) {
+      const precios = producto.variantes
+        .filter((v) => !v.agotado && typeof v.precio === "number" && v.precio > 0)
+        .map((v) => v.precio);
+      if (!precios.length) {
+        return producto.variantes.every((v) => v.agotado)
+          ? '<span class="card__price">Sin stock<small>Consultá reposición</small></span>'
+          : '<span class="card__price">A consultar<small>Te pasamos el precio</small></span>';
+      }
+      const min = Math.min(...precios);
+      return min === Math.max(...precios)
+        ? `<span class="card__price">${CONFIG.moneda} ${formatoPrecio.format(min)}</span>`
+        : `<span class="card__price">Desde ${CONFIG.moneda} ${formatoPrecio.format(min)}</span>`;
+    }
     if (producto.agotado) {
       return '<span class="card__price">Sin stock<small>Consultá reposición</small></span>';
     }
@@ -219,6 +243,13 @@
       ? `<span class="card__tag card__tag--${producto.color || "orange"}">${escapar(producto.etiqueta)}</span>`
       : "";
 
+    /* Para un producto con variantes (color/kilaje), la tarjeta muestra la
+       de portada (varianteDefault); el color/kilaje se elige recién en la
+       ficha, tocando la foto. */
+    const variante = varianteDefault(producto);
+    const img = variante ? variante.img : producto.img;
+    const desc = variante ? variante.desc : producto.desc;
+
     const mensaje =
       `Hola Crewmates! 🧉 Me interesa: ${producto.nombre}` +
       (sub ? ` (${sub})` : "") + `. ¿Tienen stock?`;
@@ -227,18 +258,20 @@
     art.className = "card";
     art.dataset.categoria = categoria;
     art.dataset.index = indice;
+    art.dataset.slug = slugify(producto.nombre);
+    art.dataset.variante = variante ? variante.label : "";
     art.dataset.sub = producto.sub || "";
 
     art.innerHTML = `
       <div class="card__media" data-abrir>
         ${etiqueta}
-        <img src="${escapar(producto.img || "")}" alt="${escapar(producto.nombre)}"
+        <img src="${escapar(img || "")}" alt="${escapar(producto.nombre)}"
              loading="lazy" decoding="async">
       </div>
       <div class="card__body">
         ${sub ? `<span class="card__sub">${escapar(sub)}</span>` : ""}
         <h3 class="card__name">${escapar(producto.nombre)}</h3>
-        <p class="card__desc">${escapar(producto.desc || "")}</p>
+        <p class="card__desc">${escapar(desc || "")}</p>
         <div class="card__foot">
           ${precioHTML(producto)}
           <button class="btn card__add" data-agregar type="button">Agregar al pedido</button>
@@ -247,7 +280,7 @@
       </div>`;
 
     const media = $(".card__media", art);
-    if (!producto.img) {
+    if (!img) {
       media.classList.add("is-empty");
     } else {
       $("img", media).addEventListener("error", () => media.classList.add("is-empty"), { once: true });
@@ -422,10 +455,19 @@
     cargar() {
       try {
         const guardado = JSON.parse(localStorage.getItem(CARRITO_KEY) || "[]");
-        /* Solo conservamos lo que todavía existe en el catálogo */
-        this.items = guardado.filter(
-          (it) => PRODUCTOS[it.categoria] && PRODUCTOS[it.categoria][it.indice]
-        );
+        /* Solo conservamos lo que todavía existe en el catálogo, resuelto
+           por slug (no por índice): así un pedido guardado sobrevive a que
+           se reordenen o se unifiquen productos en variantes. Si el
+           producto tiene variantes y la que estaba guardada ya no existe,
+           se descarta esa línea entera en vez de reemplazarla por otra
+           variante sin que el cliente lo haya pedido. */
+        this.items = guardado.filter((it) => {
+          if (!it || typeof it.slug !== "string" || !PRODUCTOS[it.categoria]) return false;
+          const base = PRODUCTOS[it.categoria].find((p) => slugify(p.nombre) === it.slug);
+          if (!base) return false;
+          if (!base.variantes) return true;
+          return base.variantes.some((v) => v.label === it.variante);
+        });
       } catch {
         this.items = [];
       }
@@ -440,28 +482,45 @@
       }
     },
 
+    /* Devuelve el producto "efectivo" de una línea del carrito: si tiene
+       variante, el nombre y precio son los de esa variante puntual. */
     producto(it) {
-      return PRODUCTOS[it.categoria][it.indice];
+      const base = PRODUCTOS[it.categoria] &&
+        PRODUCTOS[it.categoria].find((p) => slugify(p.nombre) === it.slug);
+      if (!base) return null;
+      if (!base.variantes) return base;
+      const v = base.variantes.find((v) => v.label === it.variante) || varianteDefault(base);
+      if (!v) return base;
+      return { nombre: `${base.nombre} — ${v.label}`, precio: v.precio, img: v.img, agotado: v.agotado };
     },
 
-    agregar(categoria, indice) {
-      const ya = this.items.find((it) => it.categoria === categoria && it.indice === indice);
+    agregar(categoria, slug, variante) {
+      variante = variante || null;
+      const ya = this.items.find(
+        (it) => it.categoria === categoria && it.slug === slug && it.variante === variante
+      );
       if (ya) ya.cantidad += 1;
-      else this.items.push({ categoria, indice, cantidad: 1 });
+      else this.items.push({ categoria, slug, variante, cantidad: 1 });
       this.guardar();
       pintarCarrito();
     },
 
-    cambiar(categoria, indice, delta) {
-      const it = this.items.find((i) => i.categoria === categoria && i.indice === indice);
+    cambiar(categoria, slug, variante, delta) {
+      variante = variante || null;
+      const it = this.items.find(
+        (i) => i.categoria === categoria && i.slug === slug && i.variante === variante
+      );
       if (!it) return;
       it.cantidad += delta;
-      if (it.cantidad < 1) this.quitar(categoria, indice);
+      if (it.cantidad < 1) this.quitar(categoria, slug, variante);
       else { this.guardar(); pintarCarrito(); }
     },
 
-    quitar(categoria, indice) {
-      this.items = this.items.filter((i) => !(i.categoria === categoria && i.indice === indice));
+    quitar(categoria, slug, variante) {
+      variante = variante || null;
+      this.items = this.items.filter(
+        (i) => !(i.categoria === categoria && i.slug === slug && i.variante === variante)
+      );
       this.guardar();
       pintarCarrito();
     },
@@ -639,7 +698,7 @@
             ? `${CONFIG.moneda} ${formatoPrecio.format(p.precio * it.cantidad)}`
             : "A consultar";
         return `
-          <article class="citem" data-cat="${escapar(it.categoria)}" data-idx="${it.indice}">
+          <article class="citem" data-cat="${escapar(it.categoria)}" data-slug="${escapar(it.slug)}" data-variante="${escapar(it.variante || "")}">
             <div class="citem__media">
               ${p.img ? `<img src="${escapar(p.img)}" alt="" loading="lazy">` : ""}
             </div>
@@ -701,7 +760,7 @@
         e.preventDefault();
         const card = btnAdd.closest(".card");
         if (!card) return;
-        Carrito.agregar(card.dataset.categoria, Number(card.dataset.index));
+        Carrito.agregar(card.dataset.categoria, card.dataset.slug, card.dataset.variante || null);
         btnAdd.classList.add("is-ok");
         const original = btnAdd.dataset.original || btnAdd.innerHTML;
         btnAdd.dataset.original = original;
@@ -720,10 +779,10 @@
 
       const fila = e.target.closest(".citem");
       if (fila) {
-        const cat = fila.dataset.cat, idx = Number(fila.dataset.idx);
-        if (e.target.closest("[data-mas]"))    Carrito.cambiar(cat, idx, +1);
-        if (e.target.closest("[data-menos]"))  Carrito.cambiar(cat, idx, -1);
-        if (e.target.closest("[data-quitar]")) Carrito.quitar(cat, idx);
+        const cat = fila.dataset.cat, slug = fila.dataset.slug, variante = fila.dataset.variante || null;
+        if (e.target.closest("[data-mas]"))    Carrito.cambiar(cat, slug, variante, +1);
+        if (e.target.closest("[data-menos]"))  Carrito.cambiar(cat, slug, variante, -1);
+        if (e.target.closest("[data-quitar]")) Carrito.quitar(cat, slug, variante);
       }
 
       /* Copiar alias / CVU / titular al portapapeles */
@@ -764,39 +823,43 @@
     const elPre = $("#modal-price"), elDesc = $("#modal-desc"), elSpecs = $("#modal-specs");
     const elWa = $("#modal-wa"), media = $(".modal__media", modal);
     const elThumbs = $("#modal-thumbs"), elShare = $("#modal-share");
+    const elVariantes = $("#modal-variantes"), elAdd = $("#modal-add");
 
     let ultimoFoco = null;
     let fotosActuales = [];
-    let categoriaAbierta = null, indiceAbierto = null;
+    let categoriaAbierta = null, indiceAbierto = null, varianteActual = null;
 
-    function abrir(categoria, indice) {
-      const p = PRODUCTOS[categoria] && PRODUCTOS[categoria][indice];
-      if (!p) return;
-
-      categoriaAbierta = categoria;
-      indiceAbierto = indice;
+    /* Dibuja toda la ficha (foto, precio, descripción, specs, selector de
+       variantes) para el producto p con la variante elegida en ese momento
+       (varianteActual). La usan tanto abrir() como el click en una opción
+       del selector, para no repetir la lógica de armado. */
+    function pintarFicha(p) {
+      const v = p.variantes ? varianteActual : null;
+      const efectivo = v
+        ? { precio: v.precio, desc: v.desc, img: v.img, img2: v.img2, detalles: v.detalles, agotado: v.agotado }
+        : p;
 
       const sub = p.sub ? SUBS[p.sub] || p.sub : "";
-      const nombreCat = (CATEGORIAS[categoria] && CATEGORIAS[categoria].nombre) || "";
+      const nombreCat = (CATEGORIAS[categoriaAbierta] && CATEGORIAS[categoriaAbierta].nombre) || "";
 
       elCat.textContent = sub ? `${nombreCat} · ${sub}` : nombreCat;
-      elTit.textContent = p.nombre;
-      elDesc.textContent = p.desc || "";
+      elTit.textContent = v ? `${p.nombre} — ${v.label}` : p.nombre;
+      elDesc.textContent = efectivo.desc || "";
 
-      elPre.textContent = p.agotado
+      elPre.textContent = efectivo.agotado
         ? "Sin stock por el momento"
-        : typeof p.precio === "number" && p.precio > 0
-        ? `${CONFIG.moneda} ${formatoPrecio.format(p.precio)}`
+        : typeof efectivo.precio === "number" && efectivo.precio > 0
+        ? `${CONFIG.moneda} ${formatoPrecio.format(efectivo.precio)}`
         : "Precio a consultar";
 
-      elSpecs.innerHTML = (p.detalles || []).map((d) => `<li>${escapar(d)}</li>`).join("");
+      elSpecs.innerHTML = (efectivo.detalles || []).map((d) => `<li>${escapar(d)}</li>`).join("");
 
-      fotosActuales = [p.img, p.img2].filter(Boolean);
+      fotosActuales = [efectivo.img, efectivo.img2].filter(Boolean);
 
       media.classList.remove("is-empty");
       if (fotosActuales.length) {
         elImg.src = fotosActuales[0];
-        elImg.alt = p.nombre;
+        elImg.alt = elTit.textContent;
         elImg.onerror = () => media.classList.add("is-empty");
       } else {
         elImg.removeAttribute("src");
@@ -815,9 +878,47 @@
         elThumbs.hidden = true;
       }
 
+      /* Selector de color/kilaje: círculo de color si la variante tiene
+         swatch, o pastilla de texto si no (tamaño/peso en vez de color).
+         Mismo mecanismo de "tocar y cambiar la foto de arriba" que ya usan
+         las pastillas de #modal-thumbs, solo que acá también puede cambiar
+         precio, descripción y specs. */
+      if (p.variantes && p.variantes.length > 1) {
+        elVariantes.innerHTML = p.variantes
+          .map((variante) => {
+            const activa = variante === v;
+            const cls = activa ? " is-active" : "";
+            const current = activa ? ' aria-current="true"' : "";
+            return variante.swatch
+              ? `<button type="button" class="modal__swatch${cls}" data-variante="${escapar(variante.label)}"
+                         style="background:${escapar(variante.swatch)}" aria-label="${escapar(variante.label)}"${current}></button>`
+              : `<button type="button" class="pill pill--sm${cls}" data-variante="${escapar(variante.label)}"${current}>${escapar(variante.label)}</button>`;
+          })
+          .join("");
+        elVariantes.hidden = false;
+      } else {
+        elVariantes.innerHTML = "";
+        elVariantes.hidden = true;
+      }
+
+      if (elAdd) elAdd.hidden = !p.variantes;
+
       elWa.dataset.wa =
-        `Hola Crewmates! 🧉 Me interesa: ${p.nombre}` + (sub ? ` (${sub})` : "") + `. ¿Tienen stock?`;
+        `Hola Crewmates! 🧉 Me interesa: ${elTit.textContent}` + (sub ? ` (${sub})` : "") + `. ¿Tienen stock?`;
       activarLinksWa(modal);
+    }
+
+    function abrir(categoria, indice, varianteLabel) {
+      const p = PRODUCTOS[categoria] && PRODUCTOS[categoria][indice];
+      if (!p) return;
+
+      categoriaAbierta = categoria;
+      indiceAbierto = indice;
+      varianteActual = p.variantes
+        ? p.variantes.find((v) => v.label === varianteLabel) || varianteDefault(p)
+        : null;
+
+      pintarFicha(p);
 
       ultimoFoco = document.activeElement;
       modal.hidden = false;
@@ -835,7 +936,7 @@
       const disparador = e.target.closest("[data-abrir]");
       if (disparador) {
         const card = disparador.closest(".card");
-        if (card) abrir(card.dataset.categoria, Number(card.dataset.index));
+        if (card) abrir(card.dataset.categoria, Number(card.dataset.index), card.dataset.variante || undefined);
         return;
       }
 
@@ -847,10 +948,29 @@
         return;
       }
 
+      const btnVariante = e.target.closest("[data-variante]");
+      if (btnVariante && elVariantes.contains(btnVariante)) {
+        const p = PRODUCTOS[categoriaAbierta] && PRODUCTOS[categoriaAbierta][indiceAbierto];
+        if (!p || !p.variantes) return;
+        varianteActual = p.variantes.find((v) => v.label === btnVariante.dataset.variante) || varianteActual;
+        pintarFicha(p);
+        return;
+      }
+
+      if (e.target.closest("#modal-add")) {
+        const p = PRODUCTOS[categoriaAbierta] && PRODUCTOS[categoriaAbierta][indiceAbierto];
+        if (!p) return;
+        Carrito.agregar(categoriaAbierta, slugify(p.nombre), varianteActual ? varianteActual.label : null);
+        const original = elAdd.textContent;
+        elAdd.textContent = "Agregado ✓";
+        setTimeout(() => { elAdd.textContent = original; }, 1200);
+        return;
+      }
+
       if (e.target.closest("#modal-share")) {
         const p = PRODUCTOS[categoriaAbierta] && PRODUCTOS[categoriaAbierta][indiceAbierto];
         if (!p) return;
-        const link = linkProducto(categoriaAbierta, p);
+        const link = linkProducto(categoriaAbierta, p, varianteActual);
         const original = elShare.textContent;
         const listo = () => {
           elShare.textContent = "Copiado ✓";
@@ -869,20 +989,27 @@
     });
 
     /* Si alguien entra con un link tipo #producto=categoria:slug (el que
-       genera el botón "Copiar link"), abrimos esa ficha directo. Si el hash
-       no corresponde a ningún producto (cambió a otra sección, o el link
-       está mal escrito) y la ficha estaba abierta por un link directo, se
-       cierra sola en vez de quedar tapando la sección a la que se navegó. */
+       genera el botón "Copiar link"), abrimos esa ficha directo. Puede
+       venir con la variante puntual (#producto=categoria:slug:variante) —
+       si esa variante ya no existe, igual abre el producto en su variante
+       por defecto. Si el hash no corresponde a ningún producto (cambió a
+       otra sección, o el link está mal escrito) y la ficha estaba abierta
+       por un link directo, se cierra sola en vez de quedar tapando la
+       sección a la que se navegó. */
     function abrirDesdeHash() {
-      const m = location.hash.match(/^#producto=([a-z0-9-]+):(.+)$/i);
-      const [, categoria, slug] = m || [];
+      const m = location.hash.match(/^#producto=([a-z0-9-]+):([^:]+)(?::(.+))?$/i);
+      const [, categoria, slug, varianteSlug] = m || [];
       const lista = categoria && PRODUCTOS[categoria];
       const indice = lista ? lista.findIndex((p) => slugify(p.nombre) === slug) : -1;
       if (indice === -1) {
         if (!modal.hidden) cerrar();
         return;
       }
-      abrir(categoria, indice);
+      const p = lista[indice];
+      const variante = varianteSlug && p.variantes
+        ? p.variantes.find((v) => slugify(v.label) === varianteSlug)
+        : null;
+      abrir(categoria, indice, variante ? variante.label : undefined);
     }
     abrirDesdeHash();
     window.addEventListener("hashchange", abrirDesdeHash);
