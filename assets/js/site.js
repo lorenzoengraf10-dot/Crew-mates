@@ -525,6 +525,31 @@
     }
   };
 
+  /* Peso aproximado del pedido (kg), para estimar el envío */
+  function pesoCarrito() {
+    const EMBALAJE_KG = 0.1;
+    return Carrito.items.reduce(
+      (kg, it) => kg + (PESO_CATEGORIA_KG[it.categoria] || 0) * it.cantidad,
+      EMBALAJE_KG
+    );
+  }
+
+  /* Calcula el envío a una provincia y actualiza el precio mostrado, el
+     texto que se manda por WhatsApp, y repinta el carrito. */
+  function actualizarEnvio(provincia) {
+    if (!provincia) return;
+    const input = $('input[name="entrega"][value="envio"]');
+    const precioSpan = $("[data-envio-precio]");
+
+    estimateEnvio(provincia, pesoCarrito()).then((resultado) => {
+      if (!resultado.ok) return;
+      const precioTexto = `${CONFIG.moneda} ${formatoPrecio.format(resultado.precio)}`;
+      if (precioSpan) precioSpan.textContent = precioTexto;
+      if (input) input.dataset.texto = `Envío a domicilio — ${provincia} (estimado ${precioTexto})`;
+      pintarCarrito();
+    });
+  }
+
   function renderCarrito() {
     const cont = $("[data-carrito]");
     if (!cont) return;
@@ -551,10 +576,16 @@
               </label>
               <label class="entrega__op">
                 <input type="radio" name="entrega" value="envio"
-                       data-texto="Envío a domicilio (a coordinar)">
+                       data-texto="Envío a domicilio (elegí tu provincia)">
                 <span class="entrega__nombre">Envío a todo el país</span>
-                <span class="entrega__precio">A coordinar</span>
+                <span class="entrega__precio" data-envio-precio>A coordinar</span>
               </label>
+              <div class="entrega__provincia" data-envio-provincia hidden>
+                <select id="envio-select" aria-label="Provincia de destino del envío">
+                  <option value="" selected disabled>Elegí tu provincia…</option>
+                  ${PROVINCIAS_ENVIO.map((p) => `<option value="${escapar(p)}">${escapar(p)}</option>`).join("")}
+                </select>
+              </div>
             </fieldset>
 
             ${CONFIG.pago && CONFIG.pago.alias ? `
@@ -742,6 +773,14 @@
 
     /* Al cambiar la forma de entrega o el medio de pago se rearma el mensaje */
     modal.addEventListener("change", (e) => {
+      if (e.target.name === "entrega") {
+        const provinciaBox = $("[data-envio-provincia]");
+        if (provinciaBox) provinciaBox.hidden = e.target.value !== "envio";
+      }
+      if (e.target.id === "envio-select") {
+        actualizarEnvio(e.target.value);
+        return;
+      }
       if (e.target.name === "entrega" || e.target.name === "pago" || e.target.id === "pago-hecho") {
         pintarCarrito();
       }
