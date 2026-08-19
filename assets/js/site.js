@@ -998,7 +998,14 @@
        sección a la que se navegó. */
     function abrirDesdeHash() {
       const m = location.hash.match(/^#producto=([a-z0-9-]+):([^:]+)(?::(.+))?$/i);
-      const [, categoria, slug, varianteSlug] = m || [];
+      const [, categoriaCrudo, slugCrudo, varianteSlugCrudo] = m || [];
+      /* La URL puede llegar con mayúsculas (alguien la retipeó, un corrector
+         la capitalizó, etc.) — slugify() siempre da minúsculas y las claves
+         de PRODUCTOS también, así que hay que bajar a minúsculas acá antes
+         de comparar/buscar. */
+      const categoria = categoriaCrudo && categoriaCrudo.toLowerCase();
+      const slug = slugCrudo && slugCrudo.toLowerCase();
+      const varianteSlug = varianteSlugCrudo && varianteSlugCrudo.toLowerCase();
       const lista = categoria && PRODUCTOS[categoria];
       const indice = lista ? lista.findIndex((p) => slugify(p.nombre) === slug) : -1;
       if (indice === -1) {
