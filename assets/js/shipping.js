@@ -15,10 +15,13 @@
    poniendo la diferencia de su bolsillo en cada pedido. Ante la duda,
    mejor pasarse que quedar corto.
 
-   estimateEnvio() siempre devuelve una Promise, aunque hoy resuelva al
-   instante desde esta tabla. El día que se quiera conectar una cotización
-   real (API de MiCorreo), se reescribe solo el interior de esta función,
-   sin tocar nada de lo que la usa en site.js.
+   estimateEnvio() es la tabla de acá abajo — el respaldo que SIEMPRE
+   funciona, sin depender de ninguna cuenta externa. cotizarEnvioReal() es
+   la cotización real contra Correo Argentino (MiCorreo), cuando ya se
+   cargaron las credenciales en el servidor (ver api/cotizar-envio.js) y el
+   cliente cargó su código postal. site.js intenta primero la real y, si
+   no está disponible o falla, usa esta tabla — así el sitio nunca se
+   rompe por una cotización real caída.
    ========================================================================= */
 
 const ZONAS_ENVIO = {
@@ -67,4 +70,20 @@ function estimateEnvio(provincia, pesoKg) {
   const kgExtra = Math.max(0, Math.ceil(pesoKg - 1));
   const precio = zona.base + kgExtra * zona.porKgExtra;
   return Promise.resolve({ ok: true, zona: zona.nombre, precio });
+}
+
+/* Cotización real contra Correo Argentino (MiCorreo), vía la función
+   serverless api/cotizar-envio.js — ahí vive la clave secreta, nunca acá.
+   Si no hay credenciales cargadas todavía, o la API de Correo Argentino
+   falla por lo que sea (caída, cambio de formato, sin conexión), esto
+   devuelve {ok:false} sin tirar ningún error: quien la llama tiene que
+   usar estimateEnvio() como respaldo en ese caso. */
+function cotizarEnvioReal(cp, pesoKg) {
+  return fetch("/api/cotizar-envio", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ cp, pesoKg })
+  })
+    .then((r) => (r.ok ? r.json() : { ok: false }))
+    .catch(() => ({ ok: false }));
 }

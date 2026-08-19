@@ -677,14 +677,36 @@
     if (!provincia) return;
     const input = $('input[name="entrega"][value="envio"]');
     const precioSpan = $("[data-envio-precio]");
+    const nota = $("[data-envio-nota]");
+    const cp = $("#envio-cp")?.value.trim();
+    const peso = pesoCarrito();
 
-    estimateEnvio(provincia, pesoCarrito()).then((resultado) => {
-      if (!resultado.ok) return;
+    const pintar = (resultado, esReal) => {
+      if (!resultado.ok) return false;
       const precioTexto = `${CONFIG.moneda} ${formatoPrecio.format(resultado.precio)}`;
       if (precioSpan) precioSpan.textContent = precioTexto;
-      if (input) input.dataset.texto = `Envío a domicilio — ${provincia} (estimado ${precioTexto})`;
+      if (nota) {
+        nota.hidden = !esReal;
+        nota.textContent = esReal ? "✓ Cotización real de Correo Argentino" : "";
+      }
+      if (input) {
+        input.dataset.texto = esReal
+          ? `Envío a domicilio — ${provincia} (cotización real ${precioTexto})`
+          : `Envío a domicilio — ${provincia} (estimado ${precioTexto})`;
+      }
       pintarCarrito();
-    });
+      return true;
+    };
+
+    const conTablaLocal = () => estimateEnvio(provincia, peso).then((resultado) => pintar(resultado, false));
+
+    if (cp && /^\d{4}$/.test(cp)) {
+      cotizarEnvioReal(cp, peso).then((real) => {
+        if (!pintar(real, true)) conTablaLocal();
+      });
+    } else {
+      conTablaLocal();
+    }
   }
 
   /* Si ya se eligió una provincia, cada vez que cambia lo que hay en el
@@ -732,8 +754,9 @@
                   ${PROVINCIAS_ENVIO.map((p) => `<option value="${escapar(p)}">${escapar(p)}</option>`).join("")}
                 </select>
                 <input type="text" id="envio-cp" class="entrega__cp" inputmode="numeric"
-                       pattern="[0-9]{4}" maxlength="4" placeholder="Código postal (opcional)"
+                       pattern="[0-9]{4}" maxlength="4" placeholder="Código postal (opcional, para el precio real)"
                        aria-label="Código postal de destino">
+                <small class="entrega__envio-nota" data-envio-nota hidden></small>
               </div>
             </fieldset>
 
@@ -924,7 +947,15 @@
        lo repintamos mientras el cliente escribe, sin esperar a que salga
        del campo. */
     modal.addEventListener("input", (e) => {
-      if (e.target.id === "envio-cp") pintarCarrito();
+      if (e.target.id !== "envio-cp") return;
+      const provincia = $("#envio-select")?.value;
+      /* Con provincia ya elegida, un CP de 4 dígitos dispara la cotización
+         real de una. Si todavía no hay provincia, no hay de dónde sacar un
+         precio de respaldo si la cotización real fallara, así que esperamos
+         a que se elija una (repinta igual para que el mensaje de WhatsApp
+         quede al día mientras tanto). */
+      if (provincia && /^\d{4}$/.test(e.target.value.trim())) actualizarEnvio(provincia);
+      else pintarCarrito();
     });
 
     /* Al cambiar la forma de entrega o el medio de pago se rearma el mensaje */
