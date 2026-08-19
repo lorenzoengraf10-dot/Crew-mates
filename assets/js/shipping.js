@@ -9,6 +9,12 @@
    tanto contra el cotizador público de Correo Argentino, sobre todo por
    la inflación.
 
+   A propósito llevan un margen de ~20-25% arriba de lo que se estima que
+   sale realmente: si el número queda un poco alto, el cliente paga de más
+   por el envío y no pasa nada grave; si quedara bajo, el negocio termina
+   poniendo la diferencia de su bolsillo en cada pedido. Ante la duda,
+   mejor pasarse que quedar corto.
+
    estimateEnvio() siempre devuelve una Promise, aunque hoy resuelva al
    instante desde esta tabla. El día que se quiera conectar una cotización
    real (API de MiCorreo), se reescribe solo el interior de esta función,
@@ -19,20 +25,20 @@ const ZONAS_ENVIO = {
   cercania: {
     nombre: "Buenos Aires y Río Negro",
     provincias: ["Buenos Aires", "CABA", "Río Negro"],
-    base: 3800,
-    porKgExtra: 850
+    base: 4600,
+    porKgExtra: 1050
   },
   centroCuyo: {
     nombre: "Centro y Cuyo",
     provincias: ["Córdoba", "Santa Fe", "Entre Ríos", "La Pampa", "Mendoza", "San Luis", "San Juan"],
-    base: 4600,
-    porKgExtra: 950
+    base: 5600,
+    porKgExtra: 1150
   },
   patagoniaSur: {
     nombre: "Patagonia sur",
     provincias: ["Neuquén", "Chubut", "Santa Cruz", "Tierra del Fuego"],
-    base: 4900,
-    porKgExtra: 1050
+    base: 6000,
+    porKgExtra: 1300
   },
   norte: {
     nombre: "Norte (NOA/NEA)",
@@ -40,8 +46,8 @@ const ZONAS_ENVIO = {
       "Formosa", "Chaco", "Misiones", "Corrientes", "Salta",
       "Jujuy", "Tucumán", "Santiago del Estero", "Catamarca", "La Rioja"
     ],
-    base: 6200,
-    porKgExtra: 1300
+    base: 7500,
+    porKgExtra: 1600
   }
 };
 
