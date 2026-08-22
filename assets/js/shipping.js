@@ -1,56 +1,46 @@
 /* =========================================================================
-   ENVÍO — tabla de tarifas por zona (estimado, tipo Correo Argentino)
+   ENVÍO — zonas geográficas + cotización (estimado, tipo Correo Argentino)
    -------------------------------------------------------------------------
-   Este archivo es igual en Crewmates y en ROAR: es geografía y tarifas de
-   Correo Argentino, no depende de qué vende cada negocio (los dos orígenes
-   —Carmen de Patagones y Viedma— están a ~30 km entre sí).
+   Este archivo es igual en Crewmates y en ROAR: ZONAS_ENVIO es geografía
+   (qué provincias caen "cerca" o "lejos" de Carmen de Patagones/Viedma,
+   que están a ~30 km entre sí), no depende de qué vende cada negocio.
 
-   Son cifras de referencia para 2026. Conviene chequearlas de tanto en
-   tanto contra el cotizador público de Correo Argentino, sobre todo por
-   la inflación.
+   Los PRECIOS de cada zona NO están acá — cada sitio los define en su
+   propio products.js (TARIFAS_ENVIO), porque cuánto cobrar de envío es
+   una decisión de cada negocio, no algo fijo. Actualizarlos ahí no
+   requiere tocar este archivo ni pedir ayuda.
 
-   A propósito llevan un margen de ~20-25% arriba de lo que se estima que
-   sale realmente: si el número queda un poco alto, el cliente paga de más
-   por el envío y no pasa nada grave; si quedara bajo, el negocio termina
-   poniendo la diferencia de su bolsillo en cada pedido. Ante la duda,
-   mejor pasarse que quedar corto.
-
-   estimateEnvio() es la tabla de acá abajo — el respaldo que SIEMPRE
-   funciona, sin depender de ninguna cuenta externa. cotizarEnvioReal() es
-   la cotización real contra Correo Argentino (MiCorreo), cuando ya se
-   cargaron las credenciales en el servidor (ver api/cotizar-envio.js) y el
-   cliente cargó su código postal. site.js intenta primero la real y, si
-   no está disponible o falla, usa esta tabla — así el sitio nunca se
-   rompe por una cotización real caída.
+   estimateEnvio() es la tabla de referencia — el respaldo que SIEMPRE
+   funciona, sin depender de ninguna cuenta externa. Es un precio
+   ESTIMADO: como cualquier tabla fija, se puede desactualizar (inflación,
+   cambios de tarifa real), por eso conviene revisarla de tanto en tanto y
+   por eso el sitio siempre lo aclara como "estimado", nunca como precio
+   final. cotizarEnvioReal() es la cotización real contra Correo Argentino
+   (MiCorreo), cuando ya se cargaron las credenciales en el servidor (ver
+   api/cotizar-envio.js) y el cliente cargó su código postal. site.js
+   intenta primero la real y, si no está disponible o falla, usa esta
+   tabla — así el sitio nunca se rompe por una cotización real caída.
    ========================================================================= */
 
 const ZONAS_ENVIO = {
   cercania: {
     nombre: "Buenos Aires y Río Negro",
-    provincias: ["Buenos Aires", "CABA", "Río Negro"],
-    base: 4600,
-    porKgExtra: 1050
+    provincias: ["Buenos Aires", "CABA", "Río Negro"]
   },
   centroCuyo: {
     nombre: "Centro y Cuyo",
-    provincias: ["Córdoba", "Santa Fe", "Entre Ríos", "La Pampa", "Mendoza", "San Luis", "San Juan"],
-    base: 5600,
-    porKgExtra: 1150
+    provincias: ["Córdoba", "Santa Fe", "Entre Ríos", "La Pampa", "Mendoza", "San Luis", "San Juan"]
   },
   patagoniaSur: {
     nombre: "Patagonia sur",
-    provincias: ["Neuquén", "Chubut", "Santa Cruz", "Tierra del Fuego"],
-    base: 6000,
-    porKgExtra: 1300
+    provincias: ["Neuquén", "Chubut", "Santa Cruz", "Tierra del Fuego"]
   },
   norte: {
     nombre: "Norte (NOA/NEA)",
     provincias: [
       "Formosa", "Chaco", "Misiones", "Corrientes", "Salta",
       "Jujuy", "Tucumán", "Santiago del Estero", "Catamarca", "La Rioja"
-    ],
-    base: 7500,
-    porKgExtra: 1600
+    ]
   }
 };
 
@@ -59,16 +49,24 @@ const PROVINCIAS_ENVIO = Object.values(ZONAS_ENVIO)
   .flatMap((zona) => zona.provincias)
   .sort((a, b) => a.localeCompare(b, "es"));
 
-function zonaDeProvincia(provincia) {
-  return Object.values(ZONAS_ENVIO).find((zona) => zona.provincias.includes(provincia)) || null;
+/* Devuelve la CLAVE de la zona (ej. "cercania"), no el objeto, para poder
+   buscar tanto el nombre (acá) como el precio (en TARIFAS_ENVIO, en el
+   products.js de cada sitio) con la misma clave. */
+function claveZonaDeProvincia(provincia) {
+  const entrada = Object.entries(ZONAS_ENVIO).find(([, zona]) => zona.provincias.includes(provincia));
+  return entrada ? entrada[0] : null;
 }
 
-function estimateEnvio(provincia, pesoKg) {
-  const zona = zonaDeProvincia(provincia);
-  if (!zona) return Promise.resolve({ ok: false });
+/* tarifas viene de products.js (TARIFAS_ENVIO): { [claveZona]: {base, porKgExtra} }.
+   Cada sitio pasa el suyo — así el precio es decisión de cada negocio. */
+function estimateEnvio(provincia, pesoKg, tarifas) {
+  const clave = claveZonaDeProvincia(provincia);
+  const zona = clave && ZONAS_ENVIO[clave];
+  const tarifa = clave && tarifas && tarifas[clave];
+  if (!zona || !tarifa) return Promise.resolve({ ok: false });
 
   const kgExtra = Math.max(0, Math.ceil(pesoKg - 1));
-  const precio = zona.base + kgExtra * zona.porKgExtra;
+  const precio = tarifa.base + kgExtra * tarifa.porKgExtra;
   return Promise.resolve({ ok: true, zona: zona.nombre, precio });
 }
 

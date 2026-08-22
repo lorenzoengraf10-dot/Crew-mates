@@ -706,8 +706,11 @@
       const precioTexto = `${CONFIG.moneda} ${formatoPrecio.format(resultado.precio)}`;
       if (precioSpan) precioSpan.textContent = precioTexto;
       if (nota) {
-        nota.hidden = !esReal;
-        nota.textContent = esReal ? "✓ Cotización real de Correo Argentino" : "";
+        nota.hidden = false;
+        nota.classList.toggle("entrega__envio-nota--real", esReal);
+        nota.textContent = esReal
+          ? "✓ Cotización real de Correo Argentino"
+          : "Estimado — puede variar, se confirma por WhatsApp";
       }
       if (input) {
         input.dataset.texto = esReal
@@ -718,7 +721,7 @@
       return true;
     };
 
-    const conTablaLocal = () => estimateEnvio(provincia, peso).then((resultado) => pintar(resultado, false));
+    const conTablaLocal = () => estimateEnvio(provincia, peso, TARIFAS_ENVIO).then((resultado) => pintar(resultado, false));
 
     if (cp && /^\d{4}$/.test(cp)) {
       cotizarEnvioReal(cp, peso).then((real) => {
