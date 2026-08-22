@@ -1261,6 +1261,14 @@ h1,h2,h3,h4{
   color:var(--green-soft);
 }
 .modal__price small.oferta strong{ font-weight:800; color:var(--green); }
+.modal__price small.sin-cuotas{
+  display:block;
+  margin-top:6px;
+  font-family:var(--font-body);
+  font-size:.9rem;
+  font-weight:400;
+  color:var(--muted);
+}
 /* Selector de color/kilaje dentro de la ficha (ver pintarFicha en site.js) */
 .modal__variantes{
   display:flex; flex-wrap:wrap;

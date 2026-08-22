@@ -65,6 +65,14 @@
     const monto = `${CONFIG.moneda} ${formatoPrecio.format(conDescuento)}`;
     return `<small class="oferta">${desde ? "Desde " : ""}<strong>${monto}</strong> con transferencia o efectivo</small>`;
   };
+  /* Las yerbas no entran en el descuento por efectivo/transferencia ni en
+     las cuotas: en vez del precio con descuento, se aclara que no aplican
+     cuotas. */
+  const SIN_CUOTAS_CATEGORIAS = ["yerbas"];
+  const lineaPrecioExtra = (precio, desde, categoria) =>
+    SIN_CUOTAS_CATEGORIAS.includes(categoria)
+      ? '<small class="sin-cuotas">No aplican cuotas</small>'
+      : precioEfectivoHTML(precio, desde);
   /* El mismo 20% de precioEfectivoHTML, aplicado al total del carrito según
      el medio de pago elegido (efectivo/transferencia sí, tarjeta no). */
   const NOMBRE_PAGO = { efectivo: "Efectivo", transferencia: "Transferencia", tarjeta: "Tarjeta de crédito" };
@@ -240,7 +248,7 @@
      Tarjetas de producto
      --------------------------------------------------------------------- */
 
-  function precioHTML(producto) {
+  function precioHTML(producto, categoria) {
     if (producto.variantes) {
       const precios = producto.variantes
         .filter((v) => !v.agotado && typeof v.precio === "number" && v.precio > 0)
@@ -252,13 +260,13 @@
       }
       const min = Math.min(...precios);
       const desde = min !== Math.max(...precios);
-      return `<span class="card__price">${desde ? "Desde " : ""}${CONFIG.moneda} ${formatoPrecio.format(min)}${precioEfectivoHTML(min, desde)}</span>`;
+      return `<span class="card__price">${desde ? "Desde " : ""}${CONFIG.moneda} ${formatoPrecio.format(min)}${lineaPrecioExtra(min, desde, categoria)}</span>`;
     }
     if (producto.agotado) {
       return '<span class="card__price">Sin stock<small>Consultá reposición</small></span>';
     }
     if (typeof producto.precio === "number" && producto.precio > 0) {
-      return `<span class="card__price">${CONFIG.moneda} ${formatoPrecio.format(producto.precio)}${precioEfectivoHTML(producto.precio)}</span>`;
+      return `<span class="card__price">${CONFIG.moneda} ${formatoPrecio.format(producto.precio)}${lineaPrecioExtra(producto.precio, false, categoria)}</span>`;
     }
     return '<span class="card__price">A consultar<small>Te pasamos el precio</small></span>';
   }
@@ -323,7 +331,7 @@
         <p class="card__desc">${escapar(desc || "")}</p>
         ${variantesHTML}
         <div class="card__foot">
-          ${precioHTML(producto)}
+          ${precioHTML(producto, categoria)}
           <button class="btn card__add" data-agregar type="button">Agregar al pedido</button>
           <a class="card__consulta" data-wa="${escapar(mensaje)}">Consultar por WhatsApp</a>
         </div>
@@ -516,7 +524,7 @@
       }
 
       const precioViejo = $(".card__price", card);
-      if (precioViejo) precioViejo.outerHTML = precioHTML(variante);
+      if (precioViejo) precioViejo.outerHTML = precioHTML(variante, card.dataset.categoria);
 
       $$("[data-variante]", $(".card__variantes", card)).forEach((b) => {
         b.classList.toggle("is-active", b === btn);
@@ -1068,7 +1076,7 @@
       elPre.innerHTML = efectivo.agotado
         ? "Sin stock por el momento"
         : typeof efectivo.precio === "number" && efectivo.precio > 0
-        ? `${CONFIG.moneda} ${formatoPrecio.format(efectivo.precio)}${precioEfectivoHTML(efectivo.precio)}`
+        ? `${CONFIG.moneda} ${formatoPrecio.format(efectivo.precio)}${lineaPrecioExtra(efectivo.precio, false, categoriaAbierta)}`
         : "Precio a consultar";
 
       elSpecs.innerHTML = (efectivo.detalles || []).map((d) => `<li>${escapar(d)}</li>`).join("");
