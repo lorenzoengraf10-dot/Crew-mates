@@ -54,6 +54,42 @@
     });
   }
 
+  /* Bloquear el scroll de fondo mientras el carrito o la ficha están
+     abiertos. Un simple "overflow:hidden" en el body no alcanza en Safari
+     de iOS (deja scrollear igual y a veces "atrapa" la pantalla): hay que
+     fijar el body en su lugar y devolverlo al cerrar. Con contador, por si
+     el carrito y la ficha llegaran a estar abiertos a la vez. */
+  let bloqueosScroll = 0;
+  let scrollGuardado = 0;
+  function bloquearScroll() {
+    if (bloqueosScroll === 0) {
+      scrollGuardado = window.scrollY;
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollGuardado}px`;
+      document.body.style.left = "0";
+      document.body.style.right = "0";
+    }
+    bloqueosScroll++;
+  }
+  function desbloquearScroll() {
+    bloqueosScroll = Math.max(0, bloqueosScroll - 1);
+    if (bloqueosScroll === 0) {
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.left = "";
+      document.body.style.right = "";
+      /* El sitio usa scroll-behavior:smooth (para los links del menú), pero
+         acá tiene que ser instantáneo: si no, el salto de vuelta queda
+         animando un rato y da la sensación de que la pantalla no responde
+         justo al cerrar. */
+      const htmlEl = document.documentElement;
+      const previo = htmlEl.style.scrollBehavior;
+      htmlEl.style.scrollBehavior = "auto";
+      window.scrollTo(0, scrollGuardado);
+      htmlEl.style.scrollBehavior = previo;
+    }
+  }
+
   const formatoPrecio = new Intl.NumberFormat("es-AR", { maximumFractionDigits: 0 });
 
   /* Descuento por pagar en efectivo o transferencia (evita el costo de
@@ -859,6 +895,7 @@
               Se abre WhatsApp con el pedido ya escrito. Ahí te confirmamos stock,
               precio final y forma de pago.
             </p>
+            <button class="btn btn--ghost cart__cerrar" data-cart-close type="button">Cerrar y seguir viendo el catálogo</button>
             <button class="cart__vaciar" data-cart-vaciar>Vaciar el pedido</button>
           </footer>
         </aside>
@@ -954,8 +991,8 @@
     const modal = $("#cart");
     if (!modal) return;
 
-    const abrir = () => { modal.hidden = false; document.body.style.overflow = "hidden"; };
-    const cerrar = () => { modal.hidden = true; document.body.style.overflow = ""; };
+    const abrir = () => { modal.hidden = false; bloquearScroll(); };
+    const cerrar = () => { modal.hidden = true; desbloquearScroll(); };
 
     document.addEventListener("click", (e) => {
       /* Agregar al pedido desde una tarjeta */
@@ -1149,13 +1186,13 @@
 
       ultimoFoco = document.activeElement;
       modal.hidden = false;
-      document.body.style.overflow = "hidden";
+      bloquearScroll();
       $(".modal__close", modal).focus();
     }
 
     function cerrar() {
       modal.hidden = true;
-      document.body.style.overflow = "";
+      desbloquearScroll();
       if (ultimoFoco) ultimoFoco.focus();
     }
 

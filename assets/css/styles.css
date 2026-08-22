@@ -749,19 +749,26 @@ h1,h2,h3,h4{
 .cart__panel{
   position:absolute; top:0; right:0; bottom:0;
   width:min(100%, 440px);
-  display:flex; flex-direction:column;
   background:var(--cream);
   box-shadow:var(--shadow-lg);
   animation:deslizar .28s cubic-bezier(.2,.8,.3,1);
+  /* Todo el panel scrollea como una sola pieza (encabezado + productos +
+     entrega + pago + total). Antes solo scrolleaba .cart__body: con el
+     pie más alto (3 medios de pago) su contenido se salía del panel sin
+     ninguna forma de llegar a "Vaciar el pedido" ni al botón de cerrar
+     de más abajo. */
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
 }
 @keyframes deslizar{ from{ transform:translateX(100%) } }
 
 .cart__head{
+  position:sticky; top:0; z-index:2;
   display:flex; align-items:center; justify-content:space-between;
   gap:12px;
   padding:20px var(--gutter);
+  background:var(--cream);
   border-bottom:1px solid var(--line);
-  flex:none;
 }
 .cart__title{ font-size:1.4rem; }
 .cart__close{
@@ -774,10 +781,7 @@ h1,h2,h3,h4{
 .cart__close:hover{ background:var(--orange); color:#fff; }
 
 .cart__body{
-  flex:1 1 auto;
-  overflow-y:auto;
   padding:16px var(--gutter);
-  -webkit-overflow-scrolling:touch;
 }
 
 .cart__vacio{
@@ -845,7 +849,6 @@ h1,h2,h3,h4{
 .citem__quitar:hover{ background:rgba(238,91,35,.12); color:var(--orange); }
 
 .cart__foot{
-  flex:none;
   padding:18px var(--gutter) 22px;
   border-top:1px solid var(--line);
   background:var(--cream-2);
@@ -990,6 +993,7 @@ h1,h2,h3,h4{
   color:var(--muted);
   text-align:center;
 }
+.cart__cerrar{ width:100%; min-height:46px; margin-top:14px; }
 .cart__vaciar{
   display:block;
   width:100%;
