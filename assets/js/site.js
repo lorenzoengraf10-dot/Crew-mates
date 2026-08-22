@@ -65,6 +65,12 @@
     const monto = `${CONFIG.moneda} ${formatoPrecio.format(conDescuento)}`;
     return `<small class="oferta">${desde ? "Desde " : ""}<strong>${monto}</strong> con transferencia o efectivo</small>`;
   };
+  /* El mismo 20% de precioEfectivoHTML, aplicado al total del carrito según
+     el medio de pago elegido (efectivo/transferencia sí, tarjeta no). */
+  const NOMBRE_PAGO = { efectivo: "Efectivo", transferencia: "Transferencia", tarjeta: "Tarjeta de crédito" };
+  const tieneDescuentoPorPago = (metodoPago) => metodoPago === "efectivo" || metodoPago === "transferencia";
+  const conDescuentoSiCorresponde = (monto, metodoPago) =>
+    tieneDescuentoPorPago(metodoPago) ? Math.round(monto * (1 - DESCUENTO_EFECTIVO)) : monto;
 
   const ICONO_WA =
     '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.6 2 2.2 6.4 2.2 11.84c0 1.74.46 3.44 1.32 4.94L2 22l5.36-1.4a9.8 9.8 0 0 0 4.68 1.19h.01c5.43 0 9.84-4.4 9.84-9.84 0-2.63-1.03-5.1-2.89-6.96A9.77 9.77 0 0 0 12.04 2Zm4.5 13.84c-.25-.13-1.46-.72-1.68-.8-.23-.08-.39-.13-.56.13-.16.24-.64.79-.78.96-.15.16-.29.18-.53.06-.25-.13-1.04-.39-1.98-1.22-.73-.65-1.23-1.46-1.37-1.7-.15-.25-.02-.38.1-.5.11-.11.25-.29.37-.44.13-.15.17-.25.25-.42.09-.16.04-.31-.02-.44-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.41-.56-.42h-.48c-.16 0-.43.06-.65.31-.22.24-.85.83-.85 2.03s.87 2.35.99 2.51c.12.16 1.71 2.61 4.15 3.66.58.25 1.03.4 1.39.51.58.19 1.11.16 1.53.1.47-.07 1.46-.6 1.66-1.18.21-.58.21-1.07.15-1.18-.06-.1-.22-.16-.47-.29Z"/></svg>';
@@ -657,14 +663,24 @@
         return `• ${it.cantidad} × ${p.nombre} — ${precio}`;
       });
 
-      const esTransferencia = pago && pago.value === "transferencia";
+      const metodoPago = pago ? pago.value : null;
+      const esTransferencia = metodoPago === "transferencia";
+      const nombrePago = NOMBRE_PAGO[metodoPago] || null;
 
       let txt = esTransferencia
         ? "Hola Crewmates! 🧉 Quiero confirmar este pedido con *Transferencia*:\n\n"
+        : nombrePago
+        ? `Hola Crewmates! 🧉 Quiero hacer este pedido, pagando con *${nombrePago}*:\n\n`
         : "Hola Crewmates! 🧉 Quiero hacer este pedido:\n\n";
       txt += lineas.join("\n");
 
-      if (suma > 0) txt += `\n\nTotal: ${CONFIG.moneda} ${formatoPrecio.format(suma)}`;
+      if (suma > 0) {
+        const sumaFinal = conDescuentoSiCorresponde(suma, metodoPago);
+        txt += sumaFinal !== suma
+          ? `\n\nTotal de lista: ${CONFIG.moneda} ${formatoPrecio.format(suma)}` +
+            `\nTotal con ${nombrePago.toLowerCase()} (20% off): ${CONFIG.moneda} ${formatoPrecio.format(sumaFinal)}`
+          : `\n\nTotal: ${CONFIG.moneda} ${formatoPrecio.format(suma)}`;
+      }
       if (aConsultar > 0) txt += suma > 0 ? `\n(+ ${aConsultar} producto(s) a consultar)` : "";
       if (entrega) {
         txt += `\n\nEntrega: ${entrega.dataset.texto}`;
@@ -783,19 +799,26 @@
               </div>
             </fieldset>
 
-            ${CONFIG.pago && CONFIG.pago.alias ? `
             <fieldset class="entrega">
               <legend class="entrega__tit">Medio de pago</legend>
               <label class="entrega__op">
-                <input type="radio" name="pago" value="transferencia" checked>
-                <span class="entrega__nombre">Transferencia</span>
+                <input type="radio" name="pago" value="efectivo" checked>
+                <span class="entrega__nombre">Efectivo</span>
+                <span class="entrega__precio entrega__precio--gratis">-20%</span>
               </label>
               <label class="entrega__op">
-                <input type="radio" name="pago" value="wa">
-                <span class="entrega__nombre">Coordinar por WhatsApp</span>
+                <input type="radio" name="pago" value="transferencia">
+                <span class="entrega__nombre">Transferencia</span>
+                <span class="entrega__precio entrega__precio--gratis">-20%</span>
+              </label>
+              <label class="entrega__op">
+                <input type="radio" name="pago" value="tarjeta">
+                <span class="entrega__nombre">Tarjeta de crédito</span>
+                <span class="entrega__precio">3 cuotas</span>
               </label>
 
-              <div class="pagobox" data-pagobox>
+              ${CONFIG.pago && CONFIG.pago.alias ? `
+              <div class="pagobox" data-pagobox hidden>
                 <p class="pagobox__tit">Datos para la transferencia</p>
                 ${CONFIG.pago.titular ? `
                 <div class="pagobox__fila">
@@ -818,8 +841,8 @@
                   <input type="checkbox" id="pago-hecho">
                   Ya realicé la transferencia
                 </label>
-              </div>
-            </fieldset>` : ""}
+              </div>` : ""}
+            </fieldset>
 
             <div class="cart__total" data-cart-total></div>
 
@@ -886,23 +909,29 @@
     if (foot) foot.hidden = false;
 
     const { suma, aConsultar } = Carrito.total();
+    const pago = $('input[name="pago"]:checked');
+    const metodoPago = pago ? pago.value : null;
+    const sumaFinal = conDescuentoSiCorresponde(suma, metodoPago);
+    const hayDescuento = suma > 0 && sumaFinal !== suma;
+
     const elTotal = $("[data-cart-total]");
     if (elTotal) {
       elTotal.innerHTML = suma > 0
-        ? `<span>Total</span><strong>${CONFIG.moneda} ${formatoPrecio.format(suma)}</strong>
+        ? `<span>Total</span><strong>${CONFIG.moneda} ${formatoPrecio.format(sumaFinal)}</strong>
+           ${hayDescuento
+             ? `<small class="cart__ahorro">Precio de lista ${CONFIG.moneda} ${formatoPrecio.format(suma)} · Ahorrás ${CONFIG.moneda} ${formatoPrecio.format(suma - sumaFinal)} pagando en ${NOMBRE_PAGO[metodoPago].toLowerCase()}</small>`
+             : ""}
            ${aConsultar ? `<small>+ ${aConsultar} a consultar</small>` : ""}`
         : `<span>Total</span><strong>A consultar</strong>`;
     }
 
     /* Mostrar los datos de transferencia solo si eligió pagar así */
-    const pago = $('input[name="pago"]:checked');
     const pagobox = $("[data-pagobox]");
-    if (pagobox) pagobox.hidden = !pago || pago.value !== "transferencia";
+    if (pagobox) pagobox.hidden = metodoPago !== "transferencia";
 
     const cta = $("[data-cart-cta]");
     if (cta) {
-      cta.textContent =
-        pago && pago.value === "transferencia" ? "Confirmar el pedido" : "Hacer el pedido";
+      cta.textContent = metodoPago === "transferencia" ? "Confirmar el pedido" : "Hacer el pedido";
     }
 
     const wa = $("#cart-wa");

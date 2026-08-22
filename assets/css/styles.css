@@ -981,6 +981,7 @@ h1,h2,h3,h4{
   font-size:.8rem;
   color:var(--muted);
 }
+.cart__total small.cart__ahorro{ color:var(--green-soft); font-weight:500; }
 
 .cart__cta{ width:100%; min-height:52px; font-size:1.05rem; }
 .cart__nota{
