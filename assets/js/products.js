@@ -167,7 +167,7 @@ const PRODUCTOS = {
     {
       nombre: "Mate Galleta",
       sub: "criollos",
-      precio: 22000,
+      precio: 28600,
       desc: "Mate de calabaza criolla con base de cuero crudo y costura en tiento de potro.",
       img: "assets/img/mates/mate-galleta.jpg",
       detalles: ["Calabaza criolla", "Base de cuero crudo", "Costura en tiento de potro"]
@@ -175,7 +175,7 @@ const PRODUCTOS = {
     {
       nombre: "Criollo coquito",
       sub: "criollos",
-      precio: 18000,
+      precio: 23400,
       desc: "Mate de calabaza criollo con base de cuero con costura trenzada.",
       img: "assets/img/mates/criollo-coquito.jpg",
       detalles: ["Calabaza criolla", "Base de cuero", "Costura trenzada"]
@@ -183,7 +183,7 @@ const PRODUCTOS = {
     {
       nombre: "Camionero criollo",
       sub: "criollos",
-      precio: 18000,
+      precio: 23400,
       desc: "Mate de calabaza criollo con base de cuero con costura trenzada.",
       img: "assets/img/mates/camionero-criollo.jpg",
       detalles: ["Calabaza criolla", "Base de cuero", "Costura trenzada"]
@@ -193,7 +193,7 @@ const PRODUCTOS = {
     {
       nombre: "Imperial algarrobo",
       sub: "algarrobo",
-      precio: 22000,
+      precio: 28600,
       desc: "Mate de algarrobo, con bombilla de regalo.",
       img: "assets/img/mates/imperial-algarrobo.jpg",
       detalles: ["Algarrobo macizo", "Bombilla de regalo"]
@@ -201,7 +201,7 @@ const PRODUCTOS = {
     {
       nombre: "Ranchero Blanco",
       sub: "algarrobo",
-      precio: 34000,
+      precio: 44200,
       desc: "Mate ranchero de algarrobo, cruz con puntos de alpaca. Viene con bombilla de regalo.",
       img: "assets/img/mates/ranchero-blanco.jpg",
       etiqueta: "Nuevo",
@@ -211,7 +211,7 @@ const PRODUCTOS = {
     {
       nombre: "Camionero algarrobo",
       sub: "algarrobo",
-      precio: 14000,
+      precio: 18200,
       desc: "Camionero de algarrobo, con bombilla de regalo.",
       img: "assets/img/mates/camionero-algarrobo.jpg",
       detalles: ["Algarrobo macizo", "Bombilla de regalo"]
@@ -219,7 +219,7 @@ const PRODUCTOS = {
     {
       nombre: "Imperial algarrobo cincelado",
       sub: "algarrobo",
-      precio: 25000,
+      precio: 32500,
       desc: "Imperial de algarrobo cincelado, con bombilla de regalo.",
       img: "assets/img/mates/imperial-algarrobo-cincelado.jpg",
       detalles: ["Algarrobo macizo", "Virola cincelada", "Bombilla de regalo"]
@@ -233,7 +233,7 @@ const PRODUCTOS = {
         {
           label: "Negro",
           swatch: "#1c1a19",
-          precio: 32000,
+          precio: 41600,
           desc: "Calabaza forrada en cuero negro, con virola cincelada.",
           img: "assets/img/mates/imperial-cincelado-negro-1.jpg",
           img2: "assets/img/mates/imperial-cincelado-negro-2.jpg",
@@ -242,7 +242,7 @@ const PRODUCTOS = {
         {
           label: "Borravino",
           swatch: "#5c2030",
-          precio: 32000,
+          precio: 41600,
           desc: "Calabaza forrada en cuero borravino, con virola cincelada.",
           img: "assets/img/mates/imperial-cincelado-borravino-1.jpg",
           img2: "assets/img/mates/imperial-cincelado-borravino-2.jpg",
@@ -253,7 +253,7 @@ const PRODUCTOS = {
     {
       nombre: "Torpedo clásico",
       sub: "calabaza",
-      precio: 30000,
+      precio: 39000,
       desc: "Torpedo forrado en cuero negro, con bombilla de regalo.",
       img: "assets/img/mates/torpedo-clasico.jpg",
       detalles: ["Cuero negro", "Bombilla de regalo"]
@@ -261,7 +261,7 @@ const PRODUCTOS = {
     {
       nombre: "Mate imperial",
       sub: "calabaza",
-      precio: 30000,
+      precio: 39000,
       desc: "Imperial forrado en cuero negro, con guarda de acero y bombilla de regalo.",
       img: "assets/img/mates/imperial-negro.jpg",
       detalles: ["Cuero negro", "Guarda de acero", "Bombilla de regalo"]
@@ -269,7 +269,7 @@ const PRODUCTOS = {
     {
       nombre: "Imperial liso borravino",
       sub: "calabaza",
-      precio: 30000,
+      precio: 39000,
       desc: "Calabaza forrada en cuero liso borravino, con virola cincelada.",
       img: "assets/img/mates/imperial-liso-borravino.jpg",
       detalles: ["Cuero liso borravino", "Virola cincelada"]
@@ -283,7 +283,7 @@ const PRODUCTOS = {
         {
           label: "Borravino",
           swatch: "#5c2030",
-          precio: 38000,
+          precio: 49400,
           desc: "Torpedo en cuero croco borravino, con virola de alpaca cincelada y bombilla de regalo.",
           img: "assets/img/mates/torpedo-croco-borravino.jpg",
           detalles: ["Cuero croco borravino", "Virola de alpaca cincelada", "Bombilla de regalo"]
@@ -291,7 +291,7 @@ const PRODUCTOS = {
         {
           label: "Negro",
           swatch: "#1c1a19",
-          precio: 38000,
+          precio: 49400,
           desc: "Torpedo en cuero croco negro, con bombilla de regalo.",
           img: "assets/img/mates/torpedo-croco-negro.jpg",
           detalles: ["Cuero croco negro", "Bombilla de regalo"]
@@ -301,7 +301,7 @@ const PRODUCTOS = {
     {
       nombre: "Imperial croco negro",
       sub: "calabaza",
-      precio: 38000,
+      precio: 49400,
       desc: "Imperial en cuero croco negro, con bombilla de regalo.",
       img: "assets/img/mates/imperial-croco-negro.jpg",
       etiqueta: "Premium",
@@ -311,7 +311,7 @@ const PRODUCTOS = {
     {
       nombre: "Imperial croco cincelado",
       sub: "calabaza",
-      precio: 38000,
+      precio: 49400,
       desc: "Imperial en cuero croco, con virola cincelada y bombilla de regalo.",
       img: "assets/img/mates/imperial-croco-cincelado-1.jpg",
       img2: "assets/img/mates/imperial-croco-cincelado-2.jpg",
@@ -326,7 +326,7 @@ const PRODUCTOS = {
         {
           label: "Negro",
           swatch: "#1c1a19",
-          precio: 26000,
+          precio: 33800,
           desc: "Camionero repujado, virola de acero inoxidable, con bombilla de regalo.",
           img: "assets/img/mates/camionero-repujado-negro.jpg",
           detalles: ["Cuero repujado negro", "Virola de acero inoxidable", "Bombilla de regalo"]
@@ -334,7 +334,7 @@ const PRODUCTOS = {
         {
           label: "Borravino",
           swatch: "#5c2030",
-          precio: 26000,
+          precio: 33800,
           desc: "Camionero repujado, virola de acero inoxidable, con bombilla de regalo.",
           img: "assets/img/mates/camionero-repujado-borravino.jpg",
           detalles: ["Cuero repujado borravino", "Virola de acero inoxidable", "Bombilla de regalo"]
@@ -349,14 +349,14 @@ const PRODUCTOS = {
   canastas: [
     {
       nombre: "Canasta de cuerina",
-      precio: 11500,
+      precio: 15000,
       desc: "Canasta matera de cuerina, con dos manijas y divisiones internas.",
       img: "assets/img/canastas/canasta-cuerina.jpg",
       detalles: ["Cuerina", "Dos manijas", "Divisiones internas"]
     },
     {
       nombre: "Canasta 100% cuero",
-      precio: 32000,
+      precio: 41600,
       desc: "Canasta matera 100% cuero, con dos manijas y divisiones internas.",
       img: "assets/img/canastas/canasta-100-cuero.jpg",
       etiqueta: "Premium",
@@ -371,7 +371,7 @@ const PRODUCTOS = {
   bombillas: [
     {
       nombre: "Bombilla pico de loro",
-      precio: 6500,
+      precio: 8500,
       desc: "Bombilla pico de loro de acero inoxidable.",
       img: "assets/img/bombillas/pico-de-loro.jpg",
       detalles: [
@@ -381,7 +381,7 @@ const PRODUCTOS = {
     },
     {
       nombre: "Bombillón pico del rey",
-      precio: 28000,
+      precio: 36400,
       desc: "Bombillón premium de alpaca, pico de rey.",
       img: "assets/img/bombillas/bombillon-pico-del-rey.jpg",
       detalles: [
@@ -391,7 +391,7 @@ const PRODUCTOS = {
     },
     {
       nombre: "Bombillón recto de alpaca",
-      precio: 28000,
+      precio: 36400,
       desc: "Bombillón de alpaca con caña recta. Mide 18 cm aproximadamente.",
       img: "assets/img/bombillas/bombillon-recto-alpaca.jpg",
       detalles: [
@@ -402,7 +402,7 @@ const PRODUCTOS = {
     },
     {
       nombre: "Bombillón premium curvo",
-      precio: 28000,
+      precio: 36400,
       desc: "Bombillón de alpaca y bronce, con caña curva.",
       img: "assets/img/bombillas/bombillon-premium-curvo.jpg",
       detalles: [
@@ -413,7 +413,7 @@ const PRODUCTOS = {
     },
     {
       nombre: "Bombillón pico de loro de alpaca y bronce",
-      precio: 28000,
+      precio: 36400,
       desc: "Bombillón de alpaca y bronce, pico de loro. Mide 18 cm aproximadamente.",
       img: "assets/img/bombillas/bombillon-pico-de-loro-alpaca-bronce.jpg",
       detalles: [
@@ -433,14 +433,14 @@ const PRODUCTOS = {
       variantes: [
         {
           label: "1 kg",
-          precio: 7500,
+          precio: 9800,
           desc: "Yerba mate elaborada despalada, padrón uruguayo.",
           img: "assets/img/yerbas/verdecita-1kg.jpg",
           detalles: ["1 kg", "Elaborada despalada", "Padrón uruguayo"]
         },
         {
           label: "500 g",
-          precio: 4500,
+          precio: 5900,
           desc: "Yerba mate elaborada despalada, padrón uruguayo.",
           img: "assets/img/yerbas/verdecita-500g.jpg",
           detalles: ["500 g", "Elaborada despalada", "Padrón uruguayo"]
@@ -449,14 +449,14 @@ const PRODUCTOS = {
     },
     {
       nombre: "Yerba Barão",
-      precio: 8000,
+      precio: 10400,
       desc: "Erva-mate tipo uruguayo, importada de Brasil.",
       img: "assets/img/yerbas/barao.jpg",
       detalles: ["1 kg", "Tipo uruguayo", "Origen Brasil"]
     },
     {
       nombre: "Yerba Mate Latina 1 kg",
-      precio: 7500,
+      precio: 9800,
       desc: "Mate intenso y cremoso, con molienda fina estilo uruguayo y sabor herbal bien marcado.",
       img: "assets/img/yerbas/latina-1kg.jpg",
       etiqueta: "Nuevo",
@@ -465,7 +465,7 @@ const PRODUCTOS = {
     },
     {
       nombre: "Centenaria 1 kg",
-      precio: 8000,
+      precio: 10400,
       desc: "Yerba brasileña Seleme Centenaria Original, para un mate más intenso y diferente al argentino clásico.",
       img: "assets/img/yerbas/centenaria-1kg.jpg",
       detalles: ["1 kg", "Origen Brasil"]
@@ -479,7 +479,7 @@ const PRODUCTOS = {
     {
       nombre: "Termo media manija acero inox",
       sub: "1lt",
-      precio: 20000,
+      precio: 26000,
       desc: "Termo media manija de acero inoxidable, terminación natural.",
       img: "assets/img/termos/media-manija-acero.jpg",
       detalles: ["Acero inoxidable", "Con manija", "Pico cebador"]
@@ -487,7 +487,7 @@ const PRODUCTOS = {
     {
       nombre: "Termo media manija negro",
       sub: "1lt",
-      precio: 22000,
+      precio: 28600,
       desc: "Termo media manija de acero inox, color negro.",
       img: "assets/img/termos/media-manija-negro.jpg",
       detalles: ["Acero inoxidable", "Color negro", "Con manija", "Pico cebador"]
@@ -502,7 +502,7 @@ const PRODUCTOS = {
         {
           label: "Negro",
           swatch: "#1c1a19",
-          precio: 30000,
+          precio: 39000,
           desc: "Termo Stanley System 1,2 litros, pico cebador, color negro.",
           img: "assets/img/termos/stanley-negro.jpg",
           detalles: ["1,2 litros", "Pico cebador", "Producto original Stanley"]
@@ -510,7 +510,7 @@ const PRODUCTOS = {
         {
           label: "Blanco",
           swatch: "#f2f0eb",
-          precio: 30000,
+          precio: 39000,
           desc: "Termo Stanley System 1,2 litros, pico cebador, color blanco.",
           img: "assets/img/termos/stanley-blanco.jpg",
           detalles: ["1,2 litros", "Pico cebador", "Producto original Stanley"]
@@ -518,7 +518,7 @@ const PRODUCTOS = {
         {
           label: "Rosa",
           swatch: "#e8a7b8",
-          precio: 30000,
+          precio: 39000,
           desc: "Termo Stanley System 1,2 litros, pico cebador, color rosa.",
           img: "assets/img/termos/stanley-rosa.jpg",
           detalles: ["1,2 litros", "Pico cebador", "Producto original Stanley"]
@@ -526,7 +526,7 @@ const PRODUCTOS = {
         {
           label: "Naranja",
           swatch: "#e2631f",
-          precio: 30000,
+          precio: 39000,
           desc: "Termo Stanley System 1,2 litros, pico cebador, color naranja.",
           img: "assets/img/termos/stanley-naranja.jpg",
           detalles: ["1,2 litros", "Pico cebador", "Producto original Stanley"]
@@ -534,7 +534,7 @@ const PRODUCTOS = {
         {
           label: "Gris",
           swatch: "#8a8d90",
-          precio: 30000,
+          precio: 39000,
           desc: "Termo Stanley System 1,2 litros, pico cebador, color gris.",
           img: "assets/img/termos/stanley-gris.jpg",
           detalles: ["1,2 litros", "Pico cebador", "Producto original Stanley"]
@@ -542,7 +542,7 @@ const PRODUCTOS = {
         {
           label: "Menta",
           swatch: "#a8d5c8",
-          precio: 30000,
+          precio: 39000,
           desc: "Termo Stanley System 1,2 litros, pico cebador, color menta.",
           img: "assets/img/termos/stanley-menta.jpg",
           detalles: ["1,2 litros", "Pico cebador", "Producto original Stanley"]
@@ -550,7 +550,7 @@ const PRODUCTOS = {
         {
           label: "Turquesa",
           swatch: "#3e9aa8",
-          precio: 30000,
+          precio: 39000,
           desc: "Termo Stanley System 1,2 litros, pico cebador, color turquesa.",
           img: "assets/img/termos/stanley-turquesa.jpg",
           detalles: ["1,2 litros", "Pico cebador", "Producto original Stanley"]
@@ -558,7 +558,7 @@ const PRODUCTOS = {
         {
           label: "Cobre",
           swatch: "#b56f47",
-          precio: 30000,
+          precio: 39000,
           desc: "Termo Stanley System 1,2 litros, pico cebador, color cobre.",
           img: "assets/img/termos/stanley-cobre.jpg",
           detalles: ["1,2 litros", "Pico cebador", "Producto original Stanley"]

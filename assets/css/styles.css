@@ -385,6 +385,37 @@ h1,h2,h3,h4{
 }
 .catnav__inner::-webkit-scrollbar{ display:none; }
 
+/* Cartel de cuotas: franja angosta debajo de la barra de categorías, con
+   el texto pasando en loop. Mismo naranja oscuro que .pill.is-active
+   (ya verificado en 4.62:1 de contraste con texto claro encima). */
+.cuotas{
+  overflow:hidden;
+  background:#D04510;
+}
+.cuotas__track{
+  display:flex;
+  width:max-content;
+  padding-block:8px;
+  animation:cuotas-scroll 18s linear infinite;
+}
+.cuotas__track span{
+  flex:none;
+  font-family:var(--font-display);
+  font-weight:700;
+  font-size:.78rem;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:var(--cream);
+  white-space:nowrap;
+}
+@keyframes cuotas-scroll{
+  from{ transform:translateX(0); }
+  to{ transform:translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce){
+  .cuotas__track{ animation:none; }
+}
+
 .pill{
   flex:none;
   display:inline-flex; align-items:center;
@@ -571,6 +602,14 @@ h1,h2,h3,h4{
   letter-spacing:.02em;
   white-space:nowrap;
 }
+.card__price small.oferta{
+  margin-top:3px;
+  font-size:.8rem;
+  font-weight:500;
+  color:var(--green-soft);
+  white-space:normal;
+}
+.card__price small.oferta strong{ font-weight:800; color:var(--green); }
 
 .card__foot{ flex-direction:column; align-items:stretch; gap:10px; }
 
@@ -1211,6 +1250,15 @@ h1,h2,h3,h4{
   font-weight:800; font-size:1.35rem;
   color:var(--orange);
 }
+.modal__price small.oferta{
+  display:block;
+  margin-top:6px;
+  font-family:var(--font-body);
+  font-size:1rem;
+  font-weight:500;
+  color:var(--green-soft);
+}
+.modal__price small.oferta strong{ font-weight:800; color:var(--green); }
 /* Selector de color/kilaje dentro de la ficha (ver pintarFicha en site.js) */
 .modal__variantes{
   display:flex; flex-wrap:wrap;

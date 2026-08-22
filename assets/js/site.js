@@ -56,6 +56,16 @@
 
   const formatoPrecio = new Intl.NumberFormat("es-AR", { maximumFractionDigits: 0 });
 
+  /* Descuento por pagar en efectivo o transferencia (evita el costo de
+     financiar las 3 cuotas sin interés con tarjeta). Se muestra como una
+     segunda línea debajo del precio de lista, en tarjeta y en la ficha. */
+  const DESCUENTO_EFECTIVO = 0.2;
+  const precioEfectivoHTML = (precio, desde) => {
+    const conDescuento = Math.round(precio * (1 - DESCUENTO_EFECTIVO));
+    const monto = `${CONFIG.moneda} ${formatoPrecio.format(conDescuento)}`;
+    return `<small class="oferta">${desde ? "Desde " : ""}<strong>${monto}</strong> con transferencia o efectivo</small>`;
+  };
+
   const ICONO_WA =
     '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.6 2 2.2 6.4 2.2 11.84c0 1.74.46 3.44 1.32 4.94L2 22l5.36-1.4a9.8 9.8 0 0 0 4.68 1.19h.01c5.43 0 9.84-4.4 9.84-9.84 0-2.63-1.03-5.1-2.89-6.96A9.77 9.77 0 0 0 12.04 2Zm4.5 13.84c-.25-.13-1.46-.72-1.68-.8-.23-.08-.39-.13-.56.13-.16.24-.64.79-.78.96-.15.16-.29.18-.53.06-.25-.13-1.04-.39-1.98-1.22-.73-.65-1.23-1.46-1.37-1.7-.15-.25-.02-.38.1-.5.11-.11.25-.29.37-.44.13-.15.17-.25.25-.42.09-.16.04-.31-.02-.44-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.41-.56-.42h-.48c-.16 0-.43.06-.65.31-.22.24-.85.83-.85 2.03s.87 2.35.99 2.51c.12.16 1.71 2.61 4.15 3.66.58.25 1.03.4 1.39.51.58.19 1.11.16 1.53.1.47-.07 1.46-.6 1.66-1.18.21-.58.21-1.07.15-1.18-.06-.1-.22-.16-.47-.29Z"/></svg>';
 
@@ -64,6 +74,10 @@
 
   const WORDMARK =
     '<span class="brand__line">crew</span><span class="brand__line">mates<i class="brand__dot"></i></span>';
+
+  /* Cartel de cuotas: se repite varias veces en la misma franja para que,
+     al hacer loop la animación, no se note el corte (ver .cuotas__track). */
+  const CUOTAS_TEXTO = Array(6).fill("3 cuotas sin interés").join(" &nbsp;•&nbsp; ") + " &nbsp;•&nbsp; ";
 
   /* ---------------------------------------------------------------------
      Encabezado
@@ -111,7 +125,14 @@
             .map(([id, cat]) => `<button class="pill" data-filtro="${id}" type="button">${escapar(cat.nombre)}</button>`)
             .join("")}
         </div>
-      </nav>`;
+      </nav>
+
+      <div class="cuotas" role="note" aria-label="3 cuotas sin interés">
+        <div class="cuotas__track" aria-hidden="true">
+          <span>${CUOTAS_TEXTO}</span>
+          <span>${CUOTAS_TEXTO}</span>
+        </div>
+      </div>`;
   }
 
   /* ---------------------------------------------------------------------
@@ -224,15 +245,14 @@
           : '<span class="card__price">A consultar<small>Te pasamos el precio</small></span>';
       }
       const min = Math.min(...precios);
-      return min === Math.max(...precios)
-        ? `<span class="card__price">${CONFIG.moneda} ${formatoPrecio.format(min)}</span>`
-        : `<span class="card__price">Desde ${CONFIG.moneda} ${formatoPrecio.format(min)}</span>`;
+      const desde = min !== Math.max(...precios);
+      return `<span class="card__price">${desde ? "Desde " : ""}${CONFIG.moneda} ${formatoPrecio.format(min)}${precioEfectivoHTML(min, desde)}</span>`;
     }
     if (producto.agotado) {
       return '<span class="card__price">Sin stock<small>Consultá reposición</small></span>';
     }
     if (typeof producto.precio === "number" && producto.precio > 0) {
-      return `<span class="card__price">${CONFIG.moneda} ${formatoPrecio.format(producto.precio)}</span>`;
+      return `<span class="card__price">${CONFIG.moneda} ${formatoPrecio.format(producto.precio)}${precioEfectivoHTML(producto.precio)}</span>`;
     }
     return '<span class="card__price">A consultar<small>Te pasamos el precio</small></span>';
   }
@@ -1013,10 +1033,10 @@
       elTit.textContent = v ? `${p.nombre} — ${v.label}` : p.nombre;
       elDesc.textContent = efectivo.desc || "";
 
-      elPre.textContent = efectivo.agotado
+      elPre.innerHTML = efectivo.agotado
         ? "Sin stock por el momento"
         : typeof efectivo.precio === "number" && efectivo.precio > 0
-        ? `${CONFIG.moneda} ${formatoPrecio.format(efectivo.precio)}`
+        ? `${CONFIG.moneda} ${formatoPrecio.format(efectivo.precio)}${precioEfectivoHTML(efectivo.precio)}`
         : "Precio a consultar";
 
       elSpecs.innerHTML = (efectivo.detalles || []).map((d) => `<li>${escapar(d)}</li>`).join("");
