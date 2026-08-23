@@ -604,12 +604,19 @@ h1,h2,h3,h4{
 }
 .card__price small.oferta{
   margin-top:3px;
-  font-size:.8rem;
+  font-size:.95rem;
   font-weight:500;
   color:var(--green-soft);
   white-space:normal;
 }
 .card__price small.oferta strong{ font-weight:800; color:var(--green); }
+.card__price small.sin-cuotas{
+  margin-top:3px;
+  font-size:.95rem;
+  font-weight:500;
+  color:var(--muted);
+  white-space:normal;
+}
 
 .card__foot{ flex-direction:column; align-items:stretch; gap:10px; }
 
@@ -800,6 +807,10 @@ h1,h2,h3,h4{
   padding:14px 0;
   border-bottom:1px solid var(--line);
 }
+/* Producto que el cliente bajó a 0: sigue en la lista (no se saca solo),
+   pero se ve apagado para marcar que no está en el pedido todavía. */
+.citem--pausa{ opacity:.55; }
+.citem--pausa .citem__precio{ color:var(--muted); font-weight:600; font-size:.92rem; }
 .citem__media{
   flex:none;
   width:74px; aspect-ratio:4/5;
@@ -832,6 +843,8 @@ h1,h2,h3,h4{
   color:var(--navy);
 }
 .citem__cant button:hover{ background:rgba(16,54,95,.07); }
+.citem__cant button:disabled{ color:var(--line); cursor:not-allowed; }
+.citem__cant button:disabled:hover{ background:none; }
 .citem__cant span{
   min-width:34px;
   text-align:center;
@@ -1269,7 +1282,7 @@ h1,h2,h3,h4{
   display:block;
   margin-top:6px;
   font-family:var(--font-body);
-  font-size:.9rem;
+  font-size:1rem;
   font-weight:400;
   color:var(--muted);
 }

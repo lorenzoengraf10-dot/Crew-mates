@@ -115,6 +115,10 @@
   const tieneDescuentoPorPago = (metodoPago) => metodoPago === "efectivo" || metodoPago === "transferencia";
   const conDescuentoSiCorresponde = (monto, metodoPago) =>
     tieneDescuentoPorPago(metodoPago) ? Math.round(monto * (1 - DESCUENTO_EFECTIVO)) : monto;
+  /* Total real a cobrar: la parte de categorías sin cuotas (yerbas) nunca
+     se descuenta, el resto sí si paga en efectivo/transferencia. */
+  const totalConDescuento = (suma, sumaSinDescuento, metodoPago) =>
+    sumaSinDescuento + conDescuentoSiCorresponde(suma - sumaSinDescuento, metodoPago);
 
   const ICONO_WA =
     '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.6 2 2.2 6.4 2.2 11.84c0 1.74.46 3.44 1.32 4.94L2 22l5.36-1.4a9.8 9.8 0 0 0 4.68 1.19h.01c5.43 0 9.84-4.4 9.84-9.84 0-2.63-1.03-5.1-2.89-6.96A9.77 9.77 0 0 0 12.04 2Zm4.5 13.84c-.25-.13-1.46-.72-1.68-.8-.23-.08-.39-.13-.56.13-.16.24-.64.79-.78.96-.15.16-.29.18-.53.06-.25-.13-1.04-.39-1.98-1.22-.73-.65-1.23-1.46-1.37-1.7-.15-.25-.02-.38.1-.5.11-.11.25-.29.37-.44.13-.15.17-.25.25-.42.09-.16.04-.31-.02-.44-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.41-.56-.42h-.48c-.16 0-.43.06-.65.31-.22.24-.85.83-.85 2.03s.87 2.35.99 2.51c.12.16 1.71 2.61 4.15 3.66.58.25 1.03.4 1.39.51.58.19 1.11.16 1.53.1.47-.07 1.46-.6 1.66-1.18.21-.58.21-1.07.15-1.18-.06-.1-.22-.16-.47-.29Z"/></svg>';
@@ -648,15 +652,21 @@
       recalcularEnvioSiCorresponde();
     },
 
+    /* Bajar a 0 NO saca el producto de la lista: queda ahí en pausa, por si
+       el cliente se arrepiente y quiere volver a sumarlo sin tener que
+       buscarlo de nuevo en el catálogo. Sacarlo del todo es lo que hace el
+       botón "×" (quitar). Un producto en 0 no cuenta en el total ni
+       aparece en el mensaje de WhatsApp (ver pintarCarrito y mensaje). */
     cambiar(categoria, slug, variante, delta) {
       variante = variante || null;
       const it = this.items.find(
         (i) => i.categoria === categoria && i.slug === slug && i.variante === variante
       );
       if (!it) return;
-      it.cantidad += delta;
-      if (it.cantidad < 1) this.quitar(categoria, slug, variante);
-      else { this.guardar(); pintarCarrito(); recalcularEnvioSiCorresponde(); }
+      it.cantidad = Math.max(0, it.cantidad + delta);
+      this.guardar();
+      pintarCarrito();
+      recalcularEnvioSiCorresponde();
     },
 
     quitar(categoria, slug, variante) {
@@ -680,15 +690,22 @@
     },
 
     /* Total de lo que tiene precio cargado. Los que están "a consultar"
-       se cuentan aparte para no mostrar un total que engañe. */
+       se cuentan aparte para no mostrar un total que engañe. sumaSinDescuento
+       es la parte de categorías que no entran en el 20% de efectivo/
+       transferencia (yerbas): se suma aparte para nunca descontarla. */
     total() {
-      let suma = 0, aConsultar = 0;
+      let suma = 0, aConsultar = 0, sumaSinDescuento = 0;
       this.items.forEach((it) => {
         const p = this.producto(it);
-        if (typeof p.precio === "number" && p.precio > 0) suma += p.precio * it.cantidad;
-        else aConsultar += it.cantidad;
+        if (typeof p.precio === "number" && p.precio > 0) {
+          const subtotal = p.precio * it.cantidad;
+          suma += subtotal;
+          if (SIN_CUOTAS_CATEGORIAS.includes(it.categoria)) sumaSinDescuento += subtotal;
+        } else {
+          aConsultar += it.cantidad;
+        }
       });
-      return { suma, aConsultar };
+      return { suma, aConsultar, sumaSinDescuento };
     },
 
     /* El mensaje que se abre en WhatsApp, ya con todo el detalle */
@@ -696,16 +713,19 @@
       const entrega = $('input[name="entrega"]:checked');
       const pago = $('input[name="pago"]:checked');
       const transfirio = $("#pago-hecho")?.checked;
-      const { suma, aConsultar } = this.total();
+      const { suma, aConsultar, sumaSinDescuento } = this.total();
 
-      const lineas = this.items.map((it) => {
-        const p = this.producto(it);
-        const precio =
-          typeof p.precio === "number" && p.precio > 0
-            ? `${CONFIG.moneda} ${formatoPrecio.format(p.precio * it.cantidad)}`
-            : "a consultar";
-        return `• ${it.cantidad} × ${p.nombre} — ${precio}`;
-      });
+      /* Los que quedaron en 0 (en pausa, ver cambiar()) no van en el pedido */
+      const lineas = this.items
+        .filter((it) => it.cantidad > 0)
+        .map((it) => {
+          const p = this.producto(it);
+          const precio =
+            typeof p.precio === "number" && p.precio > 0
+              ? `${CONFIG.moneda} ${formatoPrecio.format(p.precio * it.cantidad)}`
+              : "a consultar";
+          return `• ${it.cantidad} × ${p.nombre} — ${precio}`;
+        });
 
       const metodoPago = pago ? pago.value : null;
       const esTransferencia = metodoPago === "transferencia";
@@ -719,7 +739,7 @@
       txt += lineas.join("\n");
 
       if (suma > 0) {
-        const sumaFinal = conDescuentoSiCorresponde(suma, metodoPago);
+        const sumaFinal = totalConDescuento(suma, sumaSinDescuento, metodoPago);
         txt += sumaFinal !== suma
           ? `\n\nTotal de lista: ${CONFIG.moneda} ${formatoPrecio.format(suma)}` +
             `\nTotal con ${nombrePago.toLowerCase()} (20% off): ${CONFIG.moneda} ${formatoPrecio.format(sumaFinal)}`
@@ -753,8 +773,16 @@
 
   /* Calcula el envío a una provincia y actualiza el precio mostrado, el
      texto que se manda por WhatsApp, y repinta el carrito. */
+  /* Cada llamada saca un número propio: si el usuario cambia de provincia o
+     CP antes de que llegue una cotización anterior, esa respuesta vieja se
+     descarta en vez de pisar la más nueva (podía pasar con la real de
+     Correo Argentino, que tarda más que la tabla local). */
+  let envioSolicitudId = 0;
   function actualizarEnvio(provincia) {
     if (!provincia) return;
+    const solicitudId = ++envioSolicitudId;
+    const esVigente = () => solicitudId === envioSolicitudId;
+
     const input = $('input[name="entrega"][value="envio"]');
     const precioSpan = $("[data-envio-precio]");
     const nota = $("[data-envio-nota]");
@@ -781,10 +809,13 @@
       return true;
     };
 
-    const conTablaLocal = () => estimateEnvio(provincia, peso, TARIFAS_ENVIO).then((resultado) => pintar(resultado, false));
+    const conTablaLocal = () => estimateEnvio(provincia, peso, TARIFAS_ENVIO).then((resultado) => {
+      if (esVigente()) pintar(resultado, false);
+    });
 
     if (cp && /^\d{4}$/.test(cp)) {
       cotizarEnvioReal(cp, peso).then((real) => {
+        if (!esVigente()) return;
         if (!pintar(real, true)) conTablaLocal();
       });
     } else {
@@ -928,12 +959,14 @@
     body.innerHTML = Carrito.items
       .map((it) => {
         const p = Carrito.producto(it);
-        const precio =
-          typeof p.precio === "number" && p.precio > 0
-            ? `${CONFIG.moneda} ${formatoPrecio.format(p.precio * it.cantidad)}`
-            : "A consultar";
+        const enPausa = it.cantidad === 0;
+        const precio = enPausa
+          ? "En pausa — tocá + para sumarlo de nuevo"
+          : typeof p.precio === "number" && p.precio > 0
+          ? `${CONFIG.moneda} ${formatoPrecio.format(p.precio * it.cantidad)}`
+          : "A consultar";
         return `
-          <article class="citem" data-cat="${escapar(it.categoria)}" data-slug="${escapar(it.slug)}" data-variante="${escapar(it.variante || "")}">
+          <article class="citem${enPausa ? " citem--pausa" : ""}" data-cat="${escapar(it.categoria)}" data-slug="${escapar(it.slug)}" data-variante="${escapar(it.variante || "")}">
             <div class="citem__media">
               ${p.img ? `<img src="${escapar(p.img)}" alt="" loading="lazy">` : ""}
             </div>
@@ -941,7 +974,7 @@
               <h3 class="citem__nombre">${escapar(p.nombre)}</h3>
               <p class="citem__precio">${precio}</p>
               <div class="citem__cant">
-                <button data-menos aria-label="Sacar uno de ${escapar(p.nombre)}">−</button>
+                <button data-menos aria-label="Sacar uno de ${escapar(p.nombre)}"${enPausa ? " disabled" : ""}>−</button>
                 <span aria-live="polite">${it.cantidad}</span>
                 <button data-mas aria-label="Sumar uno de ${escapar(p.nombre)}">+</button>
               </div>
@@ -953,10 +986,10 @@
 
     if (foot) foot.hidden = false;
 
-    const { suma, aConsultar } = Carrito.total();
+    const { suma, aConsultar, sumaSinDescuento } = Carrito.total();
     const pago = $('input[name="pago"]:checked');
     const metodoPago = pago ? pago.value : null;
-    const sumaFinal = conDescuentoSiCorresponde(suma, metodoPago);
+    const sumaFinal = totalConDescuento(suma, sumaSinDescuento, metodoPago);
     const hayDescuento = suma > 0 && sumaFinal !== suma;
 
     const elTotal = $("[data-cart-total]");
