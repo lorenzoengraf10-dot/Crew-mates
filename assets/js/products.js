@@ -371,6 +371,30 @@ const PRODUCTOS = {
      ====================================================================== */
   canastas: [
     {
+      nombre: "Matera 2 compartimentos",
+      etiqueta: "Premium",
+      color: "navy",
+      variantes: [
+        {
+          label: "Avejentada",
+          swatch: "#5a3a24",
+          precio: 65000,
+          desc: "Matera de cuero vacuno avejentado con dos compartimentos, correa ajustable y grabado de sol.",
+          img: "assets/img/canastas/matera-2-comp-avejentada-1.jpg",
+          detalles: ["100% cuero vacuno avejentado", "Dos compartimentos", "Correa ajustable con hebilla", "Grabado de sol"]
+        },
+        {
+          label: "Negra",
+          swatch: "#1c1a19",
+          precio: 65000,
+          desc: "Matera de cuero vacuno con dos compartimentos, correa ajustable y grabado de sol.",
+          img: "assets/img/canastas/matera-2-comp-negra-1.jpg",
+          img2: "assets/img/canastas/matera-2-comp-negra-2.jpg",
+          detalles: ["100% cuero vacuno", "Dos compartimentos", "Correa ajustable con hebilla", "Grabado de sol"]
+        }
+      ]
+    },
+    {
       nombre: "Canasta de cuerina",
       precio: 15000,
       desc: "Canasta matera de cuerina, con dos manijas y divisiones internas.",
@@ -385,30 +409,6 @@ const PRODUCTOS = {
       etiqueta: "Premium",
       color: "navy",
       detalles: ["100% cuero", "Dos manijas", "Divisiones internas"]
-    },
-    {
-      nombre: "Matera 2 compartimentos",
-      etiqueta: "Premium",
-      color: "navy",
-      variantes: [
-        {
-          label: "Negra",
-          swatch: "#1c1a19",
-          precio: 65000,
-          desc: "Matera de cuero vacuno con dos compartimentos, correa ajustable y grabado de sol.",
-          img: "assets/img/canastas/matera-2-comp-negra-1.jpg",
-          img2: "assets/img/canastas/matera-2-comp-negra-2.jpg",
-          detalles: ["100% cuero vacuno", "Dos compartimentos", "Correa ajustable con hebilla", "Grabado de sol"]
-        },
-        {
-          label: "Avejentada",
-          swatch: "#5a3a24",
-          precio: 65000,
-          desc: "Matera de cuero vacuno avejentado con dos compartimentos, correa ajustable y grabado de sol.",
-          img: "assets/img/canastas/matera-2-comp-avejentada-1.jpg",
-          detalles: ["100% cuero vacuno avejentado", "Dos compartimentos", "Correa ajustable con hebilla", "Grabado de sol"]
-        }
-      ]
     }
   ],
 
