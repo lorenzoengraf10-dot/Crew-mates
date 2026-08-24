@@ -385,6 +385,30 @@ const PRODUCTOS = {
       etiqueta: "Premium",
       color: "navy",
       detalles: ["100% cuero", "Dos manijas", "Divisiones internas"]
+    },
+    {
+      nombre: "Matera 2 compartimentos",
+      etiqueta: "Premium",
+      color: "navy",
+      variantes: [
+        {
+          label: "Negra",
+          swatch: "#1c1a19",
+          precio: 65000,
+          desc: "Matera de cuero vacuno con dos compartimentos, correa ajustable y grabado de sol.",
+          img: "assets/img/canastas/matera-2-comp-negra-1.jpg",
+          img2: "assets/img/canastas/matera-2-comp-negra-2.jpg",
+          detalles: ["100% cuero vacuno", "Dos compartimentos", "Correa ajustable con hebilla", "Grabado de sol"]
+        },
+        {
+          label: "Avejentada",
+          swatch: "#5a3a24",
+          precio: 65000,
+          desc: "Matera de cuero vacuno avejentado con dos compartimentos, correa ajustable y grabado de sol.",
+          img: "assets/img/canastas/matera-2-comp-avejentada-1.jpg",
+          detalles: ["100% cuero vacuno avejentado", "Dos compartimentos", "Correa ajustable con hebilla", "Grabado de sol"]
+        }
+      ]
     }
   ],
 
@@ -443,6 +467,19 @@ const PRODUCTOS = {
         "Alpaca y bronce",
         "Pico de loro",
         "18 cm aproximadamente"
+      ]
+    },
+    {
+      nombre: "Bombillón recto Purinox",
+      precio: 32500,
+      desc: "Bombillón recto de acero inoxidable Purinox, con filtro grande.",
+      img: "assets/img/bombillas/bombillon-recto-purinox-1.jpg",
+      img2: "assets/img/bombillas/bombillon-recto-purinox-2.jpg",
+      etiqueta: "Nuevo",
+      detalles: [
+        "Acero inoxidable Purinox",
+        "Caña recta",
+        "Filtro grande"
       ]
     }
   ],
