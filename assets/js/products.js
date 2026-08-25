@@ -29,6 +29,12 @@
                          "orange" (por defecto) | "green" | "navy"
    detalles  (lista)     OPCIONAL. Puntos que se ven al abrir la ficha.
    agotado   (true)      OPCIONAL. Marca el producto como sin stock.
+   sinCuotas (true)      OPCIONAL. Para productos que NO tienen el 20% de
+                         descuento por efectivo/transferencia (hoy: las
+                         yerbas). En vez del precio con descuento, muestra
+                         "No aplican cuotas". Va arriba del todo aunque el
+                         producto tenga variantes (es una marca por
+                         producto, no por variante ni por categoría).
 
    variantes (lista)     OPCIONAL. Para el mismo producto en varios colores
                          o tamaños (ej. un termo en 8 colores, una yerba en
@@ -490,6 +496,7 @@ const PRODUCTOS = {
   yerbas: [
     {
       nombre: "Verdecita",
+      sinCuotas: true,
       variantes: [
         {
           label: "1 kg",
@@ -510,6 +517,7 @@ const PRODUCTOS = {
     {
       nombre: "Yerba Barão",
       precio: 10400,
+      sinCuotas: true,
       desc: "Erva-mate tipo uruguayo, importada de Brasil.",
       img: "assets/img/yerbas/barao.jpg",
       detalles: ["1 kg", "Tipo uruguayo", "Origen Brasil"]
@@ -517,6 +525,7 @@ const PRODUCTOS = {
     {
       nombre: "Yerba Mate Latina 1 kg",
       precio: 9800,
+      sinCuotas: true,
       desc: "Mate intenso y cremoso, con molienda fina estilo uruguayo y sabor herbal bien marcado.",
       img: "assets/img/yerbas/latina-1kg.jpg",
       etiqueta: "Nuevo",
@@ -526,9 +535,33 @@ const PRODUCTOS = {
     {
       nombre: "Centenaria 1 kg",
       precio: 10400,
+      sinCuotas: true,
       desc: "Yerba brasileña Seleme Centenaria Original, para un mate más intenso y diferente al argentino clásico.",
       img: "assets/img/yerbas/centenaria-1kg.jpg",
       detalles: ["1 kg", "Origen Brasil"]
+    },
+    {
+      nombre: "Yerbera de gamuza premium 500g",
+      etiqueta: "Premium",
+      color: "navy",
+      variantes: [
+        {
+          label: "Negra",
+          swatch: "#1c1a19",
+          precio: 18200,
+          desc: "Yerbera de gamuza premium, cierre con cremallera. Capacidad 500 g.",
+          img: "assets/img/yerbas/yerbera-gamuza-negra.jpg",
+          detalles: ["Gamuza premium", "Cierre con cremallera", "Capacidad 500 g"]
+        },
+        {
+          label: "Camel",
+          swatch: "#c9a15a",
+          precio: 18200,
+          desc: "Yerbera de gamuza premium, cierre con cremallera. Capacidad 500 g.",
+          img: "assets/img/yerbas/yerbera-gamuza-camel.jpg",
+          detalles: ["Gamuza premium", "Cierre con cremallera", "Capacidad 500 g"]
+        }
+      ]
     }
   ],
 

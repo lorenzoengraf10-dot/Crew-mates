@@ -101,12 +101,14 @@
     const monto = `${CONFIG.moneda} ${formatoPrecio.format(conDescuento)}`;
     return `<small class="oferta">${desde ? "Desde " : ""}<strong>${monto}</strong> con transferencia o efectivo</small>`;
   };
-  /* Las yerbas no entran en el descuento por efectivo/transferencia ni en
-     las cuotas: en vez del precio con descuento, se aclara que no aplican
-     cuotas. */
-  const SIN_CUOTAS_CATEGORIAS = ["yerbas"];
-  const lineaPrecioExtra = (precio, desde, categoria) =>
-    SIN_CUOTAS_CATEGORIAS.includes(categoria)
+  /* Los productos con sinCuotas:true (ver products.js — hoy son las yerbas
+     en sí, no las yerberas ni el resto) no entran en el descuento por
+     efectivo/transferencia ni en las cuotas: en vez del precio con
+     descuento, se aclara que no aplican cuotas. Es una marca por producto,
+     no por categoría, porque una misma categoría puede tener productos con
+     descuento y sin descuento a la vez (ej: yerbas y yerberas). */
+  const lineaPrecioExtra = (precio, desde, sinCuotas) =>
+    sinCuotas
       ? '<small class="sin-cuotas">No aplican cuotas</small>'
       : precioEfectivoHTML(precio, desde);
   /* El mismo 20% de precioEfectivoHTML, aplicado al total del carrito según
@@ -288,7 +290,7 @@
      Tarjetas de producto
      --------------------------------------------------------------------- */
 
-  function precioHTML(producto, categoria) {
+  function precioHTML(producto, sinCuotas = producto.sinCuotas) {
     if (producto.variantes) {
       const precios = producto.variantes
         .filter((v) => !v.agotado && typeof v.precio === "number" && v.precio > 0)
@@ -300,13 +302,13 @@
       }
       const min = Math.min(...precios);
       const desde = min !== Math.max(...precios);
-      return `<span class="card__price">${desde ? "Desde " : ""}${CONFIG.moneda} ${formatoPrecio.format(min)}${lineaPrecioExtra(min, desde, categoria)}</span>`;
+      return `<span class="card__price">${desde ? "Desde " : ""}${CONFIG.moneda} ${formatoPrecio.format(min)}${lineaPrecioExtra(min, desde, sinCuotas)}</span>`;
     }
     if (producto.agotado) {
       return '<span class="card__price">Sin stock<small>Consultá reposición</small></span>';
     }
     if (typeof producto.precio === "number" && producto.precio > 0) {
-      return `<span class="card__price">${CONFIG.moneda} ${formatoPrecio.format(producto.precio)}${lineaPrecioExtra(producto.precio, false, categoria)}</span>`;
+      return `<span class="card__price">${CONFIG.moneda} ${formatoPrecio.format(producto.precio)}${lineaPrecioExtra(producto.precio, false, sinCuotas)}</span>`;
     }
     return '<span class="card__price">A consultar<small>Te pasamos el precio</small></span>';
   }
@@ -371,7 +373,7 @@
         <p class="card__desc">${escapar(desc || "")}</p>
         ${variantesHTML}
         <div class="card__foot">
-          ${precioHTML(producto, categoria)}
+          ${precioHTML(producto)}
           <button class="btn card__add" data-agregar type="button">Agregar al pedido</button>
           <a class="card__consulta" data-wa="${escapar(mensaje)}">Consultar por WhatsApp</a>
         </div>
@@ -564,7 +566,7 @@
       }
 
       const precioViejo = $(".card__price", card);
-      if (precioViejo) precioViejo.outerHTML = precioHTML(variante, card.dataset.categoria);
+      if (precioViejo) precioViejo.outerHTML = precioHTML(variante, producto.sinCuotas);
 
       $$("[data-variante]", $(".card__variantes", card)).forEach((b) => {
         b.classList.toggle("is-active", b === btn);
@@ -637,7 +639,7 @@
       if (!base.variantes) return base;
       const v = base.variantes.find((v) => v.label === it.variante) || varianteDefault(base);
       if (!v) return base;
-      return { nombre: `${base.nombre} — ${v.label}`, precio: v.precio, img: v.img, agotado: v.agotado };
+      return { nombre: `${base.nombre} — ${v.label}`, precio: v.precio, img: v.img, agotado: v.agotado, sinCuotas: base.sinCuotas };
     },
 
     agregar(categoria, slug, variante) {
@@ -691,8 +693,9 @@
 
     /* Total de lo que tiene precio cargado. Los que están "a consultar"
        se cuentan aparte para no mostrar un total que engañe. sumaSinDescuento
-       es la parte de categorías que no entran en el 20% de efectivo/
-       transferencia (yerbas): se suma aparte para nunca descontarla. */
+       es la parte de productos con sinCuotas:true (ver products.js) que no
+       entran en el 20% de efectivo/transferencia: se suma aparte para
+       nunca descontarla. */
     total() {
       let suma = 0, aConsultar = 0, sumaSinDescuento = 0;
       this.items.forEach((it) => {
@@ -700,7 +703,7 @@
         if (typeof p.precio === "number" && p.precio > 0) {
           const subtotal = p.precio * it.cantidad;
           suma += subtotal;
-          if (SIN_CUOTAS_CATEGORIAS.includes(it.categoria)) sumaSinDescuento += subtotal;
+          if (p.sinCuotas) sumaSinDescuento += subtotal;
         } else {
           aConsultar += it.cantidad;
         }
@@ -1146,7 +1149,7 @@
       elPre.innerHTML = efectivo.agotado
         ? "Sin stock por el momento"
         : typeof efectivo.precio === "number" && efectivo.precio > 0
-        ? `${CONFIG.moneda} ${formatoPrecio.format(efectivo.precio)}${lineaPrecioExtra(efectivo.precio, false, categoriaAbierta)}`
+        ? `${CONFIG.moneda} ${formatoPrecio.format(efectivo.precio)}${lineaPrecioExtra(efectivo.precio, false, p.sinCuotas)}`
         : "Precio a consultar";
 
       elSpecs.innerHTML = (efectivo.detalles || []).map((d) => `<li>${escapar(d)}</li>`).join("");
