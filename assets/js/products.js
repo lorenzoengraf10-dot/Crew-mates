@@ -477,7 +477,7 @@ const PRODUCTOS = {
     },
     {
       nombre: "Bombillón recto Purinox",
-      precio: 32500,
+      precio: 36400,
       desc: "Bombillón recto de acero inoxidable Purinox, con filtro grande.",
       img: "assets/img/bombillas/bombillon-recto-purinox-1.jpg",
       img2: "assets/img/bombillas/bombillon-recto-purinox-2.jpg",
@@ -500,14 +500,14 @@ const PRODUCTOS = {
       variantes: [
         {
           label: "1 kg",
-          precio: 9800,
+          precio: 7500,
           desc: "Yerba mate elaborada despalada, padrón uruguayo.",
           img: "assets/img/yerbas/verdecita-1kg.jpg",
           detalles: ["1 kg", "Elaborada despalada", "Padrón uruguayo"]
         },
         {
           label: "500 g",
-          precio: 5900,
+          precio: 4500,
           desc: "Yerba mate elaborada despalada, padrón uruguayo.",
           img: "assets/img/yerbas/verdecita-500g.jpg",
           detalles: ["500 g", "Elaborada despalada", "Padrón uruguayo"]
@@ -516,7 +516,7 @@ const PRODUCTOS = {
     },
     {
       nombre: "Yerba Barão",
-      precio: 10400,
+      precio: 8000,
       sinCuotas: true,
       desc: "Erva-mate tipo uruguayo, importada de Brasil.",
       img: "assets/img/yerbas/barao.jpg",
@@ -524,7 +524,7 @@ const PRODUCTOS = {
     },
     {
       nombre: "Yerba Mate Latina 1 kg",
-      precio: 9800,
+      precio: 7500,
       sinCuotas: true,
       desc: "Mate intenso y cremoso, con molienda fina estilo uruguayo y sabor herbal bien marcado.",
       img: "assets/img/yerbas/latina-1kg.jpg",
@@ -534,7 +534,7 @@ const PRODUCTOS = {
     },
     {
       nombre: "Centenaria 1 kg",
-      precio: 10400,
+      precio: 8000,
       sinCuotas: true,
       desc: "Yerba brasileña Seleme Centenaria Original, para un mate más intenso y diferente al argentino clásico.",
       img: "assets/img/yerbas/centenaria-1kg.jpg",
