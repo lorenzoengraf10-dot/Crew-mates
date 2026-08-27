@@ -81,9 +81,9 @@ const CONFIG = {
      Si los dejás vacíos, ese paso no aparece: el sitio le dice al cliente
      que el pago se coordina por WhatsApp, y el pedido llega igual. */
   pago: {
-    titular: "",
-    alias: "",
-    cvu: ""
+    titular: "Franco Valentin Meligner",
+    alias: "crewmates.mp",
+    cvu: "0000003100097816792641"
   }
 };
 
