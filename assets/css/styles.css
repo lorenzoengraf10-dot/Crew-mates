@@ -445,6 +445,17 @@ h1,h2,h3,h4{
   font-size:.84rem;
 }
 
+/* ============================ RECIÉN LLEGADOS ============================
+   Franja destacada entre el hero y el catálogo, con los productos recién
+   cargados de cualquier categoría. Reusa .grid y .card tal cual. */
+.nuevos{
+  padding:clamp(32px, 5vw, 56px) 0;
+  background:var(--cream-2);
+  border-bottom:1px solid var(--line);
+  scroll-margin-top:var(--header-h);
+}
+.nuevos[hidden]{ display:none; }
+
 /* ============================ CATÁLOGO ============================
    Todas las secciones (mates, termos, bombillas...) viven acá, una debajo
    de otra en la misma página. Las pastillas de arriba muestran u ocultan

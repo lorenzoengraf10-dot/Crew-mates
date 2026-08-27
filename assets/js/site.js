@@ -501,6 +501,40 @@
     activarLinksWa(cont);
   }
 
+  /* ---------------------------------------------------------------------
+     Recién llegados — junta los productos marcados "nuevo: true" en
+     products.js, de cualquier categoría, y los muestra en una franja
+     propia arriba del catálogo. Reusa tarjeta() tal cual: cada tarjeta
+     lleva su categoria/índice reales, así que agregar al pedido, elegir
+     variante o abrir la ficha desde acá funciona exactamente igual que
+     desde el catálogo normal (son el mismo mecanismo, no uno paralelo).
+     Si no hay ningún producto marcado, la sección se oculta sola. */
+  function renderRecienLlegados() {
+    const seccion = $("#recien-llegados");
+    const cont = $("[data-nuevos]", seccion || document);
+    if (!seccion || !cont) return;
+
+    const items = [];
+    Object.keys(PRODUCTOS).forEach((categoria) => {
+      (PRODUCTOS[categoria] || []).forEach((producto, indice) => {
+        if (producto.nuevo) items.push({ producto, categoria, indice });
+      });
+    });
+
+    if (!items.length) {
+      seccion.hidden = true;
+      return;
+    }
+
+    seccion.hidden = false;
+    const frag = document.createDocumentFragment();
+    items.forEach(({ producto, categoria, indice }) => frag.appendChild(tarjeta(producto, categoria, indice)));
+    cont.innerHTML = "";
+    cont.appendChild(frag);
+
+    activarLinksWa(cont);
+  }
+
   /* Pastillas de arriba: filtran qué sección se ve */
   function initFiltroCatalogo() {
     const barra = $("#catnav");
@@ -1402,6 +1436,7 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     renderHeader();
+    renderRecienLlegados();
     renderCatalogoCompleto();
     renderTestimonios();
     renderFooter();

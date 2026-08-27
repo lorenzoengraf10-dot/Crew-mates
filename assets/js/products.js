@@ -35,6 +35,13 @@
                          "No aplican cuotas". Va arriba del todo aunque el
                          producto tenga variantes (es una marca por
                          producto, no por variante ni por categoría).
+   nuevo     (true)      OPCIONAL. Lo suma a la sección "Recién llegados",
+                         arriba del todo del sitio, además de aparecer en
+                         su categoría de siempre (no lo saca de ahí, lo
+                         suma en las dos partes). Sacá el "true" (o borrá
+                         la línea) cuando el producto deje de ser una
+                         novedad. Va arriba del todo aunque el producto
+                         tenga variantes.
 
    variantes (lista)     OPCIONAL. Para el mismo producto en varios colores
                          o tamaños (ej. un termo en 8 colores, una yerba en
@@ -192,6 +199,74 @@ const PRODUCTOS = {
      MATES  ·  subcategorías: criollos | calabaza | algarrobo
      ====================================================================== */
   mates: [
+    /* --- Recién llegados: se muestran primero --- */
+    {
+      nombre: "Torpedo rey",
+      sub: "calabaza",
+      etiqueta: "Premium",
+      color: "navy",
+      nuevo: true,
+      variantes: [
+        {
+          label: "Negro",
+          swatch: "#1c1a19",
+          precio: 67600,
+          desc: "Torpedo calabaza lustrada negra, con virola ancha y base de estrella en alpaca.",
+          img: "assets/img/mates/torpedo-rey-negro-1.jpg",
+          img2: "assets/img/mates/torpedo-rey-negro-2.jpg",
+          detalles: ["Calabaza lustrada negra", "Virola ancha de alpaca", "Base de estrella de alpaca"]
+        },
+        {
+          label: "Marrón",
+          swatch: "#a35a2e",
+          precio: 67600,
+          desc: "Torpedo calabaza lustrada marrón claro, con virola ancha y base de estrella en alpaca.",
+          img: "assets/img/mates/torpedo-rey-marron-1.jpg",
+          img2: "assets/img/mates/torpedo-rey-marron-2.jpg",
+          detalles: ["Calabaza lustrada marrón claro", "Virola ancha de alpaca", "Base de estrella de alpaca"]
+        }
+      ]
+    },
+    {
+      nombre: "Torpedo base bolitas",
+      sub: "calabaza",
+      etiqueta: "Premium",
+      color: "navy",
+      nuevo: true,
+      variantes: [
+        {
+          label: "Negro",
+          swatch: "#1c1a19",
+          precio: 65000,
+          desc: "Torpedo calabaza lustrada negra, con virola ancha y base de bolitas en alpaca.",
+          img: "assets/img/mates/torpedo-base-bolitas-negro-1.jpg",
+          img2: "assets/img/mates/torpedo-base-bolitas-negro-2.jpg",
+          detalles: ["Calabaza lustrada negra", "Virola ancha de alpaca", "Base de bolitas de alpaca"]
+        },
+        {
+          label: "Marrón",
+          swatch: "#a35a2e",
+          precio: 65000,
+          desc: "Torpedo calabaza lisa marrón, con virola ancha y base de bolitas en alpaca.",
+          img: "assets/img/mates/torpedo-base-bolitas-marron-1.jpg",
+          img2: "assets/img/mates/torpedo-base-bolitas-marron-2.jpg",
+          detalles: ["Calabaza lisa marrón", "Virola ancha de alpaca", "Base de bolitas de alpaca"]
+        }
+      ]
+    },
+    {
+      nombre: "Imperial repujado base bolitas",
+      sub: "calabaza",
+      precio: 65000,
+      etiqueta: "Premium",
+      color: "navy",
+      nuevo: true,
+      desc: "Imperial en cuero negro repujado, con virola cincelada y base de bolitas en alpaca.",
+      img: "assets/img/mates/imperial-repujado-base-bolitas-negro-1.jpg",
+      img2: "assets/img/mates/imperial-repujado-base-bolitas-negro-2.jpg",
+      detalles: ["Cuero repujado negro", "Virola cincelada de alpaca", "Base de bolitas de alpaca"]
+    },
+
     /* --- Criollos: calabaza forma criolla, base de cuero --- */
     {
       nombre: "Mate Galleta",
@@ -328,69 +403,6 @@ const PRODUCTOS = {
       ]
     },
     {
-      nombre: "Torpedo rey",
-      sub: "calabaza",
-      etiqueta: "Premium",
-      color: "navy",
-      variantes: [
-        {
-          label: "Negro",
-          swatch: "#1c1a19",
-          precio: 67600,
-          desc: "Torpedo calabaza lustrada negra, con virola ancha y base de estrella en alpaca.",
-          img: "assets/img/mates/torpedo-rey-negro-1.jpg",
-          img2: "assets/img/mates/torpedo-rey-negro-2.jpg",
-          detalles: ["Calabaza lustrada negra", "Virola ancha de alpaca", "Base de estrella de alpaca"]
-        },
-        {
-          label: "Marrón",
-          swatch: "#a35a2e",
-          precio: 67600,
-          desc: "Torpedo calabaza lustrada marrón claro, con virola ancha y base de estrella en alpaca.",
-          img: "assets/img/mates/torpedo-rey-marron-1.jpg",
-          img2: "assets/img/mates/torpedo-rey-marron-2.jpg",
-          detalles: ["Calabaza lustrada marrón claro", "Virola ancha de alpaca", "Base de estrella de alpaca"]
-        }
-      ]
-    },
-    {
-      nombre: "Torpedo base bolitas",
-      sub: "calabaza",
-      etiqueta: "Premium",
-      color: "navy",
-      variantes: [
-        {
-          label: "Negro",
-          swatch: "#1c1a19",
-          precio: 65000,
-          desc: "Torpedo calabaza lustrada negra, con virola ancha y base de bolitas en alpaca.",
-          img: "assets/img/mates/torpedo-base-bolitas-negro-1.jpg",
-          img2: "assets/img/mates/torpedo-base-bolitas-negro-2.jpg",
-          detalles: ["Calabaza lustrada negra", "Virola ancha de alpaca", "Base de bolitas de alpaca"]
-        },
-        {
-          label: "Marrón",
-          swatch: "#a35a2e",
-          precio: 65000,
-          desc: "Torpedo calabaza lisa marrón, con virola ancha y base de bolitas en alpaca.",
-          img: "assets/img/mates/torpedo-base-bolitas-marron-1.jpg",
-          img2: "assets/img/mates/torpedo-base-bolitas-marron-2.jpg",
-          detalles: ["Calabaza lisa marrón", "Virola ancha de alpaca", "Base de bolitas de alpaca"]
-        }
-      ]
-    },
-    {
-      nombre: "Imperial repujado base bolitas",
-      sub: "calabaza",
-      precio: 65000,
-      etiqueta: "Premium",
-      color: "navy",
-      desc: "Imperial en cuero negro repujado, con virola cincelada y base de bolitas en alpaca.",
-      img: "assets/img/mates/imperial-repujado-base-bolitas-negro-1.jpg",
-      img2: "assets/img/mates/imperial-repujado-base-bolitas-negro-2.jpg",
-      detalles: ["Cuero repujado negro", "Virola cincelada de alpaca", "Base de bolitas de alpaca"]
-    },
-    {
       nombre: "Imperial croco negro",
       sub: "calabaza",
       precio: 49400,
@@ -443,6 +455,7 @@ const PRODUCTOS = {
       nombre: "Matera 2 compartimentos",
       etiqueta: "Premium",
       color: "navy",
+      nuevo: true,
       variantes: [
         {
           label: "Avejentada",
@@ -485,6 +498,20 @@ const PRODUCTOS = {
      BOMBILLAS Y BOMBILLONES
      ====================================================================== */
   bombillas: [
+    {
+      nombre: "Bombillón recto Purinox",
+      precio: 36400,
+      desc: "Bombillón recto de acero inoxidable Purinox, con filtro grande.",
+      img: "assets/img/bombillas/bombillon-recto-purinox-1.jpg",
+      img2: "assets/img/bombillas/bombillon-recto-purinox-2.jpg",
+      etiqueta: "Nuevo",
+      nuevo: true,
+      detalles: [
+        "Acero inoxidable Purinox",
+        "Caña recta",
+        "Filtro grande"
+      ]
+    },
     {
       nombre: "Bombilla pico de loro",
       precio: 8500,
@@ -538,25 +565,36 @@ const PRODUCTOS = {
         "18 cm aproximadamente"
       ]
     },
-    {
-      nombre: "Bombillón recto Purinox",
-      precio: 36400,
-      desc: "Bombillón recto de acero inoxidable Purinox, con filtro grande.",
-      img: "assets/img/bombillas/bombillon-recto-purinox-1.jpg",
-      img2: "assets/img/bombillas/bombillon-recto-purinox-2.jpg",
-      etiqueta: "Nuevo",
-      detalles: [
-        "Acero inoxidable Purinox",
-        "Caña recta",
-        "Filtro grande"
-      ]
-    }
   ],
 
   /* ======================================================================
      YERBAS Y YERBERAS
      ====================================================================== */
   yerbas: [
+    {
+      nombre: "Yerbera de gamuza premium 500g",
+      etiqueta: "Premium",
+      color: "navy",
+      nuevo: true,
+      variantes: [
+        {
+          label: "Negra",
+          swatch: "#1c1a19",
+          precio: 18200,
+          desc: "Yerbera de gamuza premium, cierre con cremallera. Capacidad 500 g.",
+          img: "assets/img/yerbas/yerbera-gamuza-negra.jpg",
+          detalles: ["Gamuza premium", "Cierre con cremallera", "Capacidad 500 g"]
+        },
+        {
+          label: "Camel",
+          swatch: "#c9a15a",
+          precio: 18200,
+          desc: "Yerbera de gamuza premium, cierre con cremallera. Capacidad 500 g.",
+          img: "assets/img/yerbas/yerbera-gamuza-camel.jpg",
+          detalles: ["Gamuza premium", "Cierre con cremallera", "Capacidad 500 g"]
+        }
+      ]
+    },
     {
       nombre: "Verdecita",
       sinCuotas: true,
@@ -602,29 +640,6 @@ const PRODUCTOS = {
       desc: "Yerba brasileña Seleme Centenaria Original, para un mate más intenso y diferente al argentino clásico.",
       img: "assets/img/yerbas/centenaria-1kg.jpg",
       detalles: ["1 kg", "Origen Brasil"]
-    },
-    {
-      nombre: "Yerbera de gamuza premium 500g",
-      etiqueta: "Premium",
-      color: "navy",
-      variantes: [
-        {
-          label: "Negra",
-          swatch: "#1c1a19",
-          precio: 18200,
-          desc: "Yerbera de gamuza premium, cierre con cremallera. Capacidad 500 g.",
-          img: "assets/img/yerbas/yerbera-gamuza-negra.jpg",
-          detalles: ["Gamuza premium", "Cierre con cremallera", "Capacidad 500 g"]
-        },
-        {
-          label: "Camel",
-          swatch: "#c9a15a",
-          precio: 18200,
-          desc: "Yerbera de gamuza premium, cierre con cremallera. Capacidad 500 g.",
-          img: "assets/img/yerbas/yerbera-gamuza-camel.jpg",
-          detalles: ["Gamuza premium", "Cierre con cremallera", "Capacidad 500 g"]
-        }
-      ]
     }
   ],
 

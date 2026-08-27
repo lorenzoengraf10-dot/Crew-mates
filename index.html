@@ -61,7 +61,7 @@
 <link rel="preload" as="image" href="assets/img/fondos/hero.jpg" fetchpriority="high">
 
 <!-- Nuestra hoja de estilos va primero y con ?v= para forzar recarga cuando cambia -->
-<link rel="stylesheet" href="assets/css/styles.css?v=26">
+<link rel="stylesheet" href="assets/css/styles.css?v=27">
 
 <!-- Las tipografías se cargan aparte: si tardan o fallan, el sitio igual se ve bien -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -95,6 +95,21 @@
         <li><strong>Retiro</strong> en Carmen de Patagones</li>
         <li><strong>Atención</strong> personalizada</li>
       </ul>
+    </div>
+  </section>
+
+  <!-- ============================ RECIÉN LLEGADOS ============================
+       Se arma por JS (ver renderRecienLlegados en site.js): junta los
+       productos marcados con "nuevo: true" en products.js, de cualquier
+       categoría, y los muestra acá primero. Si no hay ninguno marcado,
+       la sección entera se oculta sola. -->
+  <section class="nuevos" id="recien-llegados" hidden>
+    <div class="wrap sec-head">
+      <p class="eyebrow"><span class="eyebrow__dot"></span> Recién llegados</p>
+      <h2 class="sec-title">Lo último que sumamos</h2>
+    </div>
+    <div class="wrap">
+      <div class="grid" data-nuevos></div>
     </div>
   </section>
 
@@ -187,8 +202,8 @@
 <!-- vercel.json cachea /assets/ por 24hs. Sin el ?v=, un navegador que ya
      entró se queda con el JS viejo un día entero aunque haya deploy nuevo:
      hay que subir este número cada vez que cambie products.js o site.js. -->
-<script src="assets/js/products.js?v=11"></script>
+<script src="assets/js/products.js?v=12"></script>
 <script src="assets/js/shipping.js?v=4"></script>
-<script src="assets/js/site.js?v=15"></script>
+<script src="assets/js/site.js?v=16"></script>
 </body>
 </html>
