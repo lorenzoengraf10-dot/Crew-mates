@@ -563,6 +563,8 @@
       if (img && variante.img) {
         img.src = variante.img;
         media.classList.remove("is-empty");
+      } else {
+        media.classList.add("is-empty");
       }
 
       const precioViejo = $(".card__price", card);

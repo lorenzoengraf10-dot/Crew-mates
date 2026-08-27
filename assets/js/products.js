@@ -328,6 +328,58 @@ const PRODUCTOS = {
       ]
     },
     {
+      nombre: "Torpedo rey",
+      sub: "calabaza",
+      etiqueta: "Premium",
+      color: "navy",
+      variantes: [
+        {
+          label: "Negro",
+          swatch: "#1c1a19",
+          precio: 67600,
+          desc: "Torpedo calabaza lustrada negra, con virola ancha y base de estrella en alpaca.",
+          img: "assets/img/mates/torpedo-rey-negro-1.jpg",
+          img2: "assets/img/mates/torpedo-rey-negro-2.jpg",
+          detalles: ["Calabaza lustrada negra", "Virola ancha de alpaca", "Base de estrella de alpaca"]
+        },
+        {
+          label: "Marrón",
+          swatch: "#a35a2e",
+          precio: 67600,
+          desc: "Torpedo calabaza lustrada marrón claro, con virola ancha y base de estrella en alpaca.",
+          img: "assets/img/mates/torpedo-rey-marron-1.jpg",
+          img2: "assets/img/mates/torpedo-rey-marron-2.jpg",
+          detalles: ["Calabaza lustrada marrón claro", "Virola ancha de alpaca", "Base de estrella de alpaca"]
+        }
+      ]
+    },
+    {
+      nombre: "Torpedo base bolitas",
+      sub: "calabaza",
+      etiqueta: "Premium",
+      color: "navy",
+      variantes: [
+        {
+          label: "Negro",
+          swatch: "#1c1a19",
+          precio: 65000,
+          desc: "Torpedo calabaza lustrada negra, con virola ancha y base de bolitas en alpaca.",
+          img: "assets/img/mates/torpedo-base-bolitas-negro-1.jpg",
+          img2: "assets/img/mates/torpedo-base-bolitas-negro-2.jpg",
+          detalles: ["Calabaza lustrada negra", "Virola ancha de alpaca", "Base de bolitas de alpaca"]
+        },
+        {
+          label: "Marrón",
+          swatch: "#a35a2e",
+          precio: 65000,
+          desc: "Torpedo calabaza lisa marrón, con virola ancha y base de bolitas en alpaca.",
+          img: "assets/img/mates/torpedo-base-bolitas-marron-1.jpg",
+          img2: "assets/img/mates/torpedo-base-bolitas-marron-2.jpg",
+          detalles: ["Calabaza lisa marrón", "Virola ancha de alpaca", "Base de bolitas de alpaca"]
+        }
+      ]
+    },
+    {
       nombre: "Imperial croco negro",
       sub: "calabaza",
       precio: 49400,
