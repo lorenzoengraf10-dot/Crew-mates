@@ -380,6 +380,17 @@ const PRODUCTOS = {
       ]
     },
     {
+      nombre: "Imperial repujado base bolitas",
+      sub: "calabaza",
+      precio: 65000,
+      etiqueta: "Premium",
+      color: "navy",
+      desc: "Imperial en cuero negro repujado, con virola cincelada y base de bolitas en alpaca.",
+      img: "assets/img/mates/imperial-repujado-base-bolitas-negro-1.jpg",
+      img2: "assets/img/mates/imperial-repujado-base-bolitas-negro-2.jpg",
+      detalles: ["Cuero repujado negro", "Virola cincelada de alpaca", "Base de bolitas de alpaca"]
+    },
+    {
       nombre: "Imperial croco negro",
       sub: "calabaza",
       precio: 49400,
