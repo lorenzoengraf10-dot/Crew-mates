@@ -209,7 +209,7 @@ const PRODUCTOS = {
         {
           label: "Negro",
           swatch: "#1c1a19",
-          precio: 35000,
+          precio: 45500,
           desc: "Imperial en cuero negro repujado, con virola cincelada y bombilla de regalo.",
           img: "assets/img/mates/imperial-repujado-negro-1.jpg",
           img2: "assets/img/mates/imperial-repujado-negro-2.jpg",
@@ -218,7 +218,7 @@ const PRODUCTOS = {
         {
           label: "Borravino",
           swatch: "#5c2030",
-          precio: 35000,
+          precio: 45500,
           desc: "Imperial en cuero borravino repujado, con virola cincelada y bombilla de regalo.",
           img: "assets/img/mates/imperial-repujado-borravino-1.jpg",
           img2: "assets/img/mates/imperial-repujado-borravino-2.jpg",
