@@ -3,6 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Google tag (gtag.js) — mandado a cargar lo antes posible, como pide
+     Google. Es "async" así que no atrasa el dibujado de la página aunque
+     esté arriba de todo. Los eventos de catálogo (ver producto, agregar
+     al pedido, mandar pedido por WhatsApp) se disparan desde site.js. -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-DNWETYPEF9"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-DNWETYPEF9');
+</script>
+
 <title>Crewmates | Mates, termos y accesorios — Carmen de Patagones</title>
 <meta name="description" content="Mates de calabaza, algarrobo y criollos, termos Stanley, bombillas, yerberas y canastas. Showroom en Carmen de Patagones, Buenos Aires. Envíos a todo el país.">
 <meta name="keywords" content="mates, yerba mate, termos, bombillas, yerberas, canastas materas, Carmen de Patagones, Buenos Aires, Argentina">
@@ -204,6 +218,6 @@
      hay que subir este número cada vez que cambie products.js o site.js. -->
 <script src="assets/js/products.js?v=14"></script>
 <script src="assets/js/shipping.js?v=4"></script>
-<script src="assets/js/site.js?v=16"></script>
+<script src="assets/js/site.js?v=17"></script>
 </body>
 </html>

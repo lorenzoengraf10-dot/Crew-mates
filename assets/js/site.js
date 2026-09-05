@@ -54,6 +54,38 @@
     });
   }
 
+  /* ---------------------------------------------------------------------
+     Analytics (Google Analytics 4)
+     ---------------------------------------------------------------------
+     Los 3 momentos que le importan al dueño para saber si el catálogo
+     funciona: alguien mira la ficha de un producto (view_item), lo agrega
+     al pedido (add_to_cart) y manda el pedido armado por WhatsApp
+     (generate_lead — no "purchase": todavía no pagó nada, recién ahí
+     empieza a hablar con el negocio). Se usan los nombres de evento
+     estándar de GA4 para que aparezcan solos en sus reportes de
+     ecommerce, con moneda y valor.
+
+     evento() nunca debe romper el sitio si gtag no cargó (bloqueador de
+     anuncios, sin conexión a Google, etc.): agregar al carrito o abrir
+     una ficha tiene que funcionar igual aunque falle la analítica. */
+  const MONEDA_GA = "ARS";
+
+  function evento(nombre, params) {
+    if (typeof gtag === "function") gtag("event", nombre, params);
+  }
+
+  function itemGA(categoria, producto, variante) {
+    const precio = variante ? variante.precio : producto.precio;
+    return {
+      item_id: slugify(producto.nombre),
+      item_name: producto.nombre,
+      item_category: (CATEGORIAS[categoria] && CATEGORIAS[categoria].nombre) || categoria,
+      item_variant: variante ? variante.label : undefined,
+      price: typeof precio === "number" ? precio : undefined,
+      quantity: 1
+    };
+  }
+
   /* Bloquear el scroll de fondo mientras el carrito o la ficha están
      abiertos. Un simple "overflow:hidden" en el body no alcanza en Safari
      de iOS (deja scrollear igual y a veces "atrapa" la pantalla): hay que
@@ -1073,7 +1105,17 @@
         e.preventDefault();
         const card = btnAdd.closest(".card");
         if (!card) return;
-        Carrito.agregar(card.dataset.categoria, card.dataset.slug, card.dataset.variante || null);
+        const categoria = card.dataset.categoria, slug = card.dataset.slug, varianteLabel = card.dataset.variante || null;
+        Carrito.agregar(categoria, slug, varianteLabel);
+        const base = PRODUCTOS[categoria] && PRODUCTOS[categoria].find((prod) => slugify(prod.nombre) === slug);
+        if (base) {
+          const variante = base.variantes ? (base.variantes.find((v) => v.label === varianteLabel) || varianteDefault(base)) : null;
+          evento("add_to_cart", {
+            currency: MONEDA_GA,
+            value: itemGA(categoria, base, variante).price,
+            items: [itemGA(categoria, base, variante)]
+          });
+        }
         btnAdd.classList.add("is-ok");
         const original = btnAdd.dataset.original || btnAdd.innerHTML;
         btnAdd.dataset.original = original;
@@ -1089,6 +1131,35 @@
       if (e.target.closest("[data-cart-close]")) { cerrar(); return; }
 
       if (e.target.closest("[data-cart-vaciar]")) { Carrito.vaciar(); return; }
+
+      /* Mandó el pedido armado por WhatsApp: es la conversión real del
+         sitio (todavía no pagó nada, pero acá es donde el catálogo
+         termina su trabajo y arranca la charla con el negocio). No
+         bloqueamos el click: el link abre en pestaña nueva, así que
+         medir y navegar no compiten entre sí. */
+      if (e.target.closest("#cart-wa")) {
+        const { suma, sumaSinDescuento } = Carrito.total();
+        const pago = $('input[name="pago"]:checked');
+        const metodoPago = pago ? pago.value : null;
+        const valor = totalConDescuento(suma, sumaSinDescuento, metodoPago);
+        const items = Carrito.items
+          .filter((it) => it.cantidad > 0)
+          .map((it) => {
+            const p = Carrito.producto(it);
+            if (!p) return null;
+            return {
+              item_id: it.slug,
+              item_name: p.nombre,
+              item_category: (CATEGORIAS[it.categoria] && CATEGORIAS[it.categoria].nombre) || it.categoria,
+              item_variant: it.variante || undefined,
+              price: typeof p.precio === "number" ? p.precio : undefined,
+              quantity: it.cantidad
+            };
+          })
+          .filter(Boolean);
+        evento("generate_lead", { currency: MONEDA_GA, value: valor > 0 ? valor : undefined, items });
+        return;
+      }
 
       const fila = e.target.closest(".citem");
       if (fila) {
@@ -1256,6 +1327,12 @@
 
       pintarFicha(p);
 
+      evento("view_item", {
+        currency: MONEDA_GA,
+        value: itemGA(categoria, p, varianteActual).price,
+        items: [itemGA(categoria, p, varianteActual)]
+      });
+
       ultimoFoco = document.activeElement;
       modal.hidden = false;
       bloquearScroll();
@@ -1297,6 +1374,11 @@
         const p = PRODUCTOS[categoriaAbierta] && PRODUCTOS[categoriaAbierta][indiceAbierto];
         if (!p) return;
         Carrito.agregar(categoriaAbierta, slugify(p.nombre), varianteActual ? varianteActual.label : null);
+        evento("add_to_cart", {
+          currency: MONEDA_GA,
+          value: itemGA(categoriaAbierta, p, varianteActual).price,
+          items: [itemGA(categoriaAbierta, p, varianteActual)]
+        });
         const original = elAdd.textContent;
         elAdd.textContent = "Agregado ✓";
         setTimeout(() => { elAdd.textContent = original; }, 1200);
