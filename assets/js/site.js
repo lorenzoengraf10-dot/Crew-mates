@@ -86,6 +86,57 @@
     };
   }
 
+  /* ---------------------------------------------------------------------
+     Cartelito de cookies
+     ---------------------------------------------------------------------
+     index.html arranca "Consent Mode" en denied (ver el script de gtag):
+     hasta que el visitante contesta acá, no se guarda nada. La decisión
+     queda en localStorage, así no se le vuelve a preguntar en su próxima
+     visita. */
+  const COOKIES_KEY = "crewmates-cookies";
+
+  function actualizarConsentimiento(otorgado) {
+    if (typeof gtag !== "function") return;
+    const estado = otorgado ? "granted" : "denied";
+    gtag("consent", "update", {
+      ad_storage: estado,
+      ad_user_data: estado,
+      ad_personalization: estado,
+      analytics_storage: estado
+    });
+  }
+
+  function initCookies() {
+    const bar = $("[data-cookies]");
+    if (!bar) return;
+
+    let guardado = null;
+    try { guardado = localStorage.getItem(COOKIES_KEY); } catch {
+      /* Sin localStorage (modo privado, etc.): mostramos el cartelito
+         igual, simplemente se lo va a volver a preguntar la próxima vez. */
+    }
+
+    if (guardado === "aceptado") { actualizarConsentimiento(true); return; }
+    if (guardado === "rechazado") return;
+
+    bar.hidden = false;
+    document.body.classList.add("cookies-abierto");
+
+    bar.addEventListener("click", (e) => {
+      const acepta = e.target.closest("[data-cookies-aceptar]");
+      const rechaza = e.target.closest("[data-cookies-rechazar]");
+      if (!acepta && !rechaza) return;
+
+      try { localStorage.setItem(COOKIES_KEY, acepta ? "aceptado" : "rechazado"); } catch {
+        /* Si no se puede guardar, no pasa nada grave: solo se le va a
+           volver a preguntar antes de tiempo. */
+      }
+      actualizarConsentimiento(!!acepta);
+      bar.hidden = true;
+      document.body.classList.remove("cookies-abierto");
+    });
+  }
+
   /* Bloquear el scroll de fondo mientras el carrito o la ficha están
      abiertos. Un simple "overflow:hidden" en el body no alcanza en Safari
      de iOS (deja scrollear igual y a veces "atrapa" la pantalla): hay que
@@ -1536,5 +1587,6 @@
     Carrito.cargar();
     initCarrito();
     pintarCarrito();
+    initCookies();
   });
 })();

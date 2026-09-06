@@ -1162,6 +1162,39 @@ h1,h2,h3,h4{
 }
 .footer__bottom p{ margin:0; }
 
+/* ============================ AVISO DE COOKIES ============================
+   Tarjeta chica, no un backdrop de página entera: el resto del sitio se
+   puede seguir usando con el cartelito abierto. Por eso el z-index queda
+   por debajo del carrito (130) y de la ficha (120) — si se abre alguno,
+   lo tapan solos, sin que haga falta ninguna otra lógica. */
+.cookies{
+  position:fixed;
+  left:14px; right:14px;
+  bottom:calc(14px + env(safe-area-inset-bottom, 0px));
+  z-index:100;
+  max-width:440px; margin-inline:auto;
+  display:flex; flex-direction:column; gap:14px;
+  padding:18px;
+  background:var(--navy-deep);
+  color:var(--cream);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow-lg);
+}
+.cookies[hidden]{ display:none; }
+.cookies__texto{ margin:0; font-size:.95rem; line-height:1.5; color:rgba(251,247,240,.88); }
+.cookies__acciones{ display:flex; gap:10px; }
+.cookies__acciones .btn{ flex:1 1 auto; min-height:44px; }
+/* Fondo oscuro: un ghost con texto navy no se lee (mismo ajuste que .bg-photo) */
+.cookies__acciones .btn--ghost{
+  --btn-fg:var(--cream);
+  box-shadow:inset 0 0 0 2px rgba(251,247,240,.5);
+}
+.cookies__acciones .btn--ghost:hover{ --btn-bg:rgba(251,247,240,.14); }
+
+/* Con el cartelito abierto, el botón flotante de WhatsApp se esconde
+   para que no se pisen los dos en la esquina inferior del celular. */
+body.cookies-abierto .fab{ display:none; }
+
 /* ============================ BOTÓN FLOTANTE ============================ */
 
 .fab{

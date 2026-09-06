@@ -7,13 +7,25 @@
 <!-- Google tag (gtag.js) — mandado a cargar lo antes posible, como pide
      Google. Es "async" así que no atrasa el dibujado de la página aunque
      esté arriba de todo. Los eventos de catálogo (ver producto, agregar
-     al pedido, mandar pedido por WhatsApp) se disparan desde site.js. -->
+     al pedido, mandar pedido por WhatsApp) se disparan desde site.js.
+
+     "Consent Mode": arranca en "denied" (no guarda nada todavía) hasta
+     que el visitante contesta el cartelito de cookies (ver site.js,
+     initCookies). Si ya había aceptado antes, site.js lo pasa a
+     "granted" apenas carga la página. -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-DNWETYPEF9"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
+  gtag('consent', 'default', {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied'
+  });
+
+  gtag('js', new Date());
   gtag('config', 'G-DNWETYPEF9');
 </script>
 
@@ -75,7 +87,7 @@
 <link rel="preload" as="image" href="assets/img/fondos/hero.jpg" fetchpriority="high">
 
 <!-- Nuestra hoja de estilos va primero y con ?v= para forzar recarga cuando cambia -->
-<link rel="stylesheet" href="assets/css/styles.css?v=27">
+<link rel="stylesheet" href="assets/css/styles.css?v=28">
 
 <!-- Las tipografías se cargan aparte: si tardan o fallan, el sitio igual se ve bien -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -86,6 +98,20 @@
 <body data-pagina="inicio">
 
 <a class="skip-link" href="#catalogo">Ir al catálogo</a>
+
+<!-- Aviso de cookies: se arma acá el marcado, pero lo muestra/oculta y
+     conecta con el "Consent Mode" de Google site.js (initCookies). Si el
+     visitante ya había elegido antes, ni se dibuja: sigue oculto. -->
+<div class="cookies" data-cookies hidden role="dialog" aria-label="Aviso de cookies">
+  <p class="cookies__texto">
+    Usamos cookies propias y de Google Analytics para entender cómo se usa el sitio.
+    Podés aceptarlas o rechazarlas cuando quieras.
+  </p>
+  <div class="cookies__acciones">
+    <button class="btn btn--ghost btn--sm" type="button" data-cookies-rechazar>Rechazar</button>
+    <button class="btn btn--orange btn--sm" type="button" data-cookies-aceptar>Aceptar</button>
+  </div>
+</div>
 
 <div data-header></div>
 
@@ -218,6 +244,6 @@
      hay que subir este número cada vez que cambie products.js o site.js. -->
 <script src="assets/js/products.js?v=14"></script>
 <script src="assets/js/shipping.js?v=4"></script>
-<script src="assets/js/site.js?v=17"></script>
+<script src="assets/js/site.js?v=18"></script>
 </body>
 </html>
