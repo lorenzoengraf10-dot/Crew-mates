@@ -770,7 +770,6 @@
       else this.items.push({ categoria, slug, variante, cantidad: 1 });
       this.guardar();
       pintarCarrito();
-      recalcularEnvioSiCorresponde();
     },
 
     /* Bajar a 0 NO saca el producto de la lista: queda ahí en pausa, por si
@@ -787,7 +786,6 @@
       it.cantidad = Math.max(0, it.cantidad + delta);
       this.guardar();
       pintarCarrito();
-      recalcularEnvioSiCorresponde();
     },
 
     quitar(categoria, slug, variante) {
@@ -797,7 +795,6 @@
       );
       this.guardar();
       pintarCarrito();
-      recalcularEnvioSiCorresponde();
     },
 
     vaciar() {
@@ -907,12 +904,10 @@
                 <input type="radio" name="entrega" value="envio"
                        data-texto="Envío a domicilio (elegí tu provincia)">
                 <span class="entrega__nombre">Envío a todo el país</span>
-                <span class="entrega__precio" data-envio-precio>A coordinar</span>
               </label>
               <div class="entrega__provincia" data-envio-provincia hidden>
                 <select id="envio-select" aria-label="Provincia de destino del envío">
                   <option value="" selected disabled>Elegí tu provincia…</option>
-                  ${PROVINCIAS_ENVIO.map((p) => `<option value="${escapar(p)}">${escapar(p)}</option>`).join("")}
                 </select>
                 <input type="text" id="envio-cp" class="entrega__cp" inputmode="numeric"
                        pattern="[0-9]{4}" maxlength="4" placeholder="Código postal (opcional, para el precio real)"
