@@ -714,6 +714,17 @@
      así no pierde el pedido si cierra la página sin querer.
      ===================================================================== */
 
+  /* Solo para el <select> de "¿a qué provincia envío?": no calcula ningún
+     precio, es puro dato para que el pedido por WhatsApp diga a dónde hay
+     que mandarlo. El precio del envío se coordina siempre por WhatsApp. */
+  const PROVINCIAS_ARG = [
+    "Buenos Aires", "CABA", "Catamarca", "Chaco", "Chubut", "Córdoba",
+    "Corrientes", "Entre Ríos", "Formosa", "Jujuy", "La Pampa", "La Rioja",
+    "Mendoza", "Misiones", "Neuquén", "Río Negro", "Salta", "San Juan",
+    "San Luis", "Santa Cruz", "Santa Fe", "Santiago del Estero",
+    "Tierra del Fuego", "Tucumán"
+  ];
+
   const CARRITO_KEY = "crewmates-pedido";
 
   const Carrito = {
@@ -879,6 +890,11 @@
 
       return txt;
     }
+  };
+
+  function renderCarrito() {
+    const cont = $("[data-carrito]");
+    if (!cont) return;
 
     cont.outerHTML = `
       <div class="cart" id="cart" hidden>
@@ -908,11 +924,12 @@
               <div class="entrega__provincia" data-envio-provincia hidden>
                 <select id="envio-select" aria-label="Provincia de destino del envío">
                   <option value="" selected disabled>Elegí tu provincia…</option>
+                  ${PROVINCIAS_ARG.map((p) => `<option value="${escapar(p)}">${escapar(p)}</option>`).join("")}
                 </select>
                 <input type="text" id="envio-cp" class="entrega__cp" inputmode="numeric"
-                       pattern="[0-9]{4}" maxlength="4" placeholder="Código postal (opcional, para el precio real)"
+                       pattern="[0-9]{4}" maxlength="4" placeholder="Código postal (opcional)"
                        aria-label="Código postal de destino">
-                <small class="entrega__envio-nota" data-envio-nota hidden></small>
+                <small class="entrega__envio-nota">El costo del envío se coordina por WhatsApp.</small>
               </div>
             </fieldset>
 
@@ -1154,29 +1171,26 @@
       }
     });
 
-    /* El código postal no cambia el precio, pero sí el mensaje de WhatsApp:
-       lo repintamos mientras el cliente escribe, sin esperar a que salga
-       del campo. */
+    /* El código postal es solo un dato para el pedido, no calcula nada:
+       lo repintamos mientras el cliente escribe para que el mensaje de
+       WhatsApp quede al día, sin esperar a que salga del campo. */
     modal.addEventListener("input", (e) => {
       if (e.target.id !== "envio-cp") return;
-      const provincia = $("#envio-select")?.value;
-      /* Con provincia ya elegida, un CP de 4 dígitos dispara la cotización
-         real de una. Si todavía no hay provincia, no hay de dónde sacar un
-         precio de respaldo si la cotización real fallara, así que esperamos
-         a que se elija una (repinta igual para que el mensaje de WhatsApp
-         quede al día mientras tanto). */
-      if (provincia && /^\d{4}$/.test(e.target.value.trim())) actualizarEnvio(provincia);
-      else pintarCarrito();
+      pintarCarrito();
     });
 
-    /* Al cambiar la forma de entrega o el medio de pago se rearma el mensaje */
+    /* Al cambiar la forma de entrega o el medio de pago se rearma el mensaje.
+       Elegir una provincia no calcula ningún precio: solo queda anotada en
+       el pedido, para que se coordine el costo real por WhatsApp. */
     modal.addEventListener("change", (e) => {
       if (e.target.name === "entrega") {
         const provinciaBox = $("[data-envio-provincia]");
         if (provinciaBox) provinciaBox.hidden = e.target.value !== "envio";
       }
       if (e.target.id === "envio-select") {
-        actualizarEnvio(e.target.value);
+        const input = $('input[name="entrega"][value="envio"]');
+        if (input && e.target.value) input.dataset.texto = `Envío a domicilio — ${e.target.value}`;
+        pintarCarrito();
         return;
       }
       if (e.target.name === "entrega" || e.target.name === "pago" || e.target.id === "pago-hecho") {

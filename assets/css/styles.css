@@ -927,12 +927,10 @@ h1,h2,h3,h4{
 .entrega__provincia .entrega__cp:focus-visible{ box-shadow:inset 0 0 0 2px var(--navy); outline:none; }
 .entrega__envio-nota{
   display:block;
-  font-size:.78rem;
+  font-size:.95rem;
   font-weight:600;
   color:var(--muted);
 }
-.entrega__envio-nota--real{ color:var(--green-soft); }
-.entrega__envio-nota[hidden]{ display:none; }
 
 /* Datos de transferencia — solo se ve si eligió "Transferencia" y si
    CONFIG.pago tiene alias cargado (ver pintarCarrito en site.js) */

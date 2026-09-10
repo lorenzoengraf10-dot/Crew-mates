@@ -133,40 +133,6 @@ const SUBS = Object.values(CATEGORIAS).reduce((acc, cat) => {
   return acc;
 }, {});
 
-/* Peso promedio por categoría (kg), para estimar el costo de envío.
-   Son cifras de referencia con embalaje incluido — no hace falta pesar
-   cada producto, y se pueden ajustar acá si algo queda mal calculado. */
-const PESO_CATEGORIA_KG = {
-  mates: 0.35,
-  canastas: 0.5,
-  bombillas: 0.08,
-  yerbas: 0.85,
-  termos: 0.6
-};
-
-/* Cuánto cobrar de envío por zona (estimado, hasta que esté conectada la
-   cotización real de Correo Argentino — ver assets/js/shipping.js).
-   "base" es el precio hasta 1 kg. "porKgExtra" se suma por cada kg que
-   pasa de eso.
-
-   Esto NO sale de ningún lado fijo: son números de referencia. Es
-   PERFECTAMENTE VÁLIDO tocarlos cuando quieras — si cambiaron las
-   tarifas reales de Correo Argentino, o simplemente porque preferís
-   cobrar más o menos de envío. Es tu decisión, no la de nadie más, y no
-   hace falta pedir ayuda para editar estos números.
-
-   Las provincias de cada zona están en assets/js/shipping.js (ZONAS_ENVIO):
-     cercania     → Buenos Aires, CABA, Río Negro
-     centroCuyo   → Córdoba, Santa Fe, Entre Ríos, La Pampa, Mendoza, San Luis, San Juan
-     patagoniaSur → Neuquén, Chubut, Santa Cruz, Tierra del Fuego
-     norte        → Formosa, Chaco, Misiones, Corrientes, Salta, Jujuy, Tucumán, Santiago del Estero, Catamarca, La Rioja */
-const TARIFAS_ENVIO = {
-  cercania: { base: 4600, porKgExtra: 1050 },
-  centroCuyo: { base: 5600, porKgExtra: 1150 },
-  patagoniaSur: { base: 6000, porKgExtra: 1300 },
-  norte: { base: 7500, porKgExtra: 1600 }
-};
-
 /* =========================================================================
    CLIENTES
    -------------------------------------------------------------------------
