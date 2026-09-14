@@ -35,13 +35,22 @@
                          "No aplican cuotas". Va arriba del todo aunque el
                          producto tenga variantes (es una marca por
                          producto, no por variante ni por categoría).
-   nuevo     (true)      OPCIONAL. Lo suma a la sección "Recién llegados",
+   nuevo     (true/número) OPCIONAL. Lo suma a la sección "Recién llegados",
                          arriba del todo del sitio, además de aparecer en
                          su categoría de siempre (no lo saca de ahí, lo
                          suma en las dos partes). Sacá el "true" (o borrá
                          la línea) cuando el producto deje de ser una
                          novedad. Va arriba del todo aunque el producto
                          tenga variantes.
+                         Para que el más nuevo aparezca primero (aunque
+                         esté en otra categoría), poné un NÚMERO en vez de
+                         "true": 1 es el más nuevo, 2 el que sigue, etc.
+                         Cuando cargues un producto nuevo, ponele nuevo:1 y
+                         subile uno al número de todos los que ya tenían
+                         "nuevo" puesto (así el orden queda igual, solo se
+                         corren uno). Si dejás "true" en vez de un número,
+                         igual aparece en la sección, pero sin garantía de
+                         ir primero si hay otro más nuevo en otra categoría.
 
    variantes (lista)     OPCIONAL. Para el mismo producto en varios colores
                          o tamaños (ej. un termo en 8 colores, una yerba en
@@ -171,7 +180,7 @@ const PRODUCTOS = {
       sub: "criollos",
       etiqueta: "Premium",
       color: "navy",
-      nuevo: true,
+      nuevo: 1,
       variantes: [
         {
           label: "Borravino",
@@ -199,7 +208,7 @@ const PRODUCTOS = {
       precio: 63700,
       etiqueta: "Premium",
       color: "navy",
-      nuevo: true,
+      nuevo: 2,
       desc: "Torpedo calabaza avejentada, con virola grabada de hojas y medallón de sol de mayo en alpaca.",
       img: "assets/img/mates/torpedo-avejentado-sol-de-mayo-1.jpg",
       img2: "assets/img/mates/torpedo-avejentado-sol-de-mayo-2.jpg",
@@ -209,7 +218,7 @@ const PRODUCTOS = {
       nombre: "Imperial repujado",
       sub: "calabaza",
       etiqueta: "Nuevo",
-      nuevo: true,
+      nuevo: 3,
       variantes: [
         {
           label: "Negro",
@@ -236,7 +245,7 @@ const PRODUCTOS = {
       sub: "calabaza",
       etiqueta: "Premium",
       color: "navy",
-      nuevo: true,
+      nuevo: 6,
       variantes: [
         {
           label: "Negro",
@@ -263,7 +272,7 @@ const PRODUCTOS = {
       sub: "calabaza",
       etiqueta: "Premium",
       color: "navy",
-      nuevo: true,
+      nuevo: 5,
       variantes: [
         {
           label: "Negro",
@@ -291,7 +300,7 @@ const PRODUCTOS = {
       precio: 65000,
       etiqueta: "Premium",
       color: "navy",
-      nuevo: true,
+      nuevo: 4,
       desc: "Imperial en cuero negro repujado, con virola cincelada y base de bolitas en alpaca.",
       img: "assets/img/mates/imperial-repujado-base-bolitas-negro-1.jpg",
       img2: "assets/img/mates/imperial-repujado-base-bolitas-negro-2.jpg",
@@ -486,7 +495,7 @@ const PRODUCTOS = {
       nombre: "Matera 2 compartimentos",
       etiqueta: "Premium",
       color: "navy",
-      nuevo: true,
+      nuevo: 9,
       variantes: [
         {
           label: "Avejentada",
@@ -536,7 +545,7 @@ const PRODUCTOS = {
       img: "assets/img/bombillas/bombillon-recto-purinox-1.jpg",
       img2: "assets/img/bombillas/bombillon-recto-purinox-2.jpg",
       etiqueta: "Nuevo",
-      nuevo: true,
+      nuevo: 8,
       detalles: [
         "Acero inoxidable Purinox",
         "Caña recta",
@@ -606,7 +615,7 @@ const PRODUCTOS = {
       nombre: "Yerbera de gamuza premium 500g",
       etiqueta: "Premium",
       color: "navy",
-      nuevo: true,
+      nuevo: 7,
       variantes: [
         {
           label: "Negra",

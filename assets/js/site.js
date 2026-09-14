@@ -585,13 +585,20 @@
   }
 
   /* ---------------------------------------------------------------------
-     Recién llegados — junta los productos marcados "nuevo: true" en
-     products.js, de cualquier categoría, y los muestra en una franja
-     propia arriba del catálogo. Reusa tarjeta() tal cual: cada tarjeta
-     lleva su categoria/índice reales, así que agregar al pedido, elegir
-     variante o abrir la ficha desde acá funciona exactamente igual que
-     desde el catálogo normal (son el mismo mecanismo, no uno paralelo).
-     Si no hay ningún producto marcado, la sección se oculta sola. */
+     Recién llegados — junta los productos marcados "nuevo" en products.js,
+     de cualquier categoría, y los muestra en una franja propia arriba del
+     catálogo. Reusa tarjeta() tal cual: cada tarjeta lleva su
+     categoria/índice reales, así que agregar al pedido, elegir variante o
+     abrir la ficha desde acá funciona exactamente igual que desde el
+     catálogo normal (son el mismo mecanismo, no uno paralelo).
+     Si no hay ningún producto marcado, la sección se oculta sola.
+
+     Orden: "nuevo" puede ser un número (1 = el más nuevo) para que el
+     último que se cargó aparezca primero sin importar en qué categoría
+     esté — si solo dependiera del orden de las categorías (mates,
+     canastas, bombillas...), algo viejo en "mates" siempre taparía a algo
+     recién cargado en "yerbas". "nuevo: true" (sin número) va al final,
+     en el orden en que aparece recorriendo las categorías. */
   function renderRecienLlegados() {
     const seccion = $("#recien-llegados");
     const cont = $("[data-nuevos]", seccion || document);
@@ -602,6 +609,11 @@
       (PRODUCTOS[categoria] || []).forEach((producto, indice) => {
         if (producto.nuevo) items.push({ producto, categoria, indice });
       });
+    });
+    items.sort((a, b) => {
+      const ordenA = typeof a.producto.nuevo === "number" ? a.producto.nuevo : Infinity;
+      const ordenB = typeof b.producto.nuevo === "number" ? b.producto.nuevo : Infinity;
+      return ordenA - ordenB;
     });
 
     if (!items.length) {
