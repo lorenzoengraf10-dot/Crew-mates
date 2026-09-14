@@ -167,6 +167,18 @@ const PRODUCTOS = {
   mates: [
     /* --- Recién llegados: se muestran primero --- */
     {
+      nombre: "Torpedo avejentado sol de mayo",
+      sub: "calabaza",
+      precio: 63700,
+      etiqueta: "Premium",
+      color: "navy",
+      nuevo: true,
+      desc: "Torpedo calabaza avejentada, con virola grabada de hojas y medallón de sol de mayo en alpaca.",
+      img: "assets/img/mates/torpedo-avejentado-sol-de-mayo-1.jpg",
+      img2: "assets/img/mates/torpedo-avejentado-sol-de-mayo-2.jpg",
+      detalles: ["Calabaza avejentada", "Virola grabada de hojas", "Medallón de sol de mayo en alpaca"]
+    },
+    {
       nombre: "Imperial repujado",
       sub: "calabaza",
       etiqueta: "Nuevo",
