@@ -167,6 +167,33 @@ const PRODUCTOS = {
   mates: [
     /* --- Recién llegados: se muestran primero --- */
     {
+      nombre: "Torpedo criollo",
+      sub: "criollos",
+      etiqueta: "Premium",
+      color: "navy",
+      nuevo: true,
+      variantes: [
+        {
+          label: "Borravino",
+          swatch: "#5c2030",
+          precio: 48600,
+          desc: "Torpedo criollo en cuero borravino grabado, con virola de alpaca y base desmontable.",
+          img: "assets/img/mates/torpedo-criollo-borravino-1.jpg",
+          img2: "assets/img/mates/torpedo-criollo-borravino-2.jpg",
+          detalles: ["Cuero borravino grabado", "Virola de alpaca", "Base desmontable"]
+        },
+        {
+          label: "Negro",
+          swatch: "#1c1a19",
+          precio: 48600,
+          desc: "Torpedo criollo en cuero negro grabado, con virola de alpaca y base desmontable.",
+          img: "assets/img/mates/torpedo-criollo-negro-1.jpg",
+          img2: "assets/img/mates/torpedo-criollo-negro-2.jpg",
+          detalles: ["Cuero negro grabado", "Virola de alpaca", "Base desmontable"]
+        }
+      ]
+    },
+    {
       nombre: "Torpedo avejentado sol de mayo",
       sub: "calabaza",
       precio: 63700,
