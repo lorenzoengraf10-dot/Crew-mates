@@ -176,11 +176,22 @@ const PRODUCTOS = {
   mates: [
     /* --- Recién llegados: se muestran primero --- */
     {
+      nombre: "Coquito algarrobo",
+      sub: "algarrobo",
+      precio: 18200,
+      etiqueta: "Nuevo",
+      nuevo: 1,
+      desc: "Coquito de algarrobo con estampado del sol patrio y el Himno Nacional.",
+      img: "assets/img/mates/coquito-algarrobo-1.jpg",
+      img2: "assets/img/mates/coquito-algarrobo-2.jpg",
+      detalles: ["Algarrobo macizo", "Estampado del sol patrio con el Himno Nacional"]
+    },
+    {
       nombre: "Torpedo criollo",
       sub: "criollos",
       etiqueta: "Premium",
       color: "navy",
-      nuevo: 1,
+      nuevo: 2,
       variantes: [
         {
           label: "Borravino",
@@ -208,7 +219,7 @@ const PRODUCTOS = {
       precio: 63700,
       etiqueta: "Premium",
       color: "navy",
-      nuevo: 2,
+      nuevo: 3,
       desc: "Torpedo calabaza avejentada, con virola grabada de hojas y medallón de sol de mayo en alpaca.",
       img: "assets/img/mates/torpedo-avejentado-sol-de-mayo-1.jpg",
       img2: "assets/img/mates/torpedo-avejentado-sol-de-mayo-2.jpg",
@@ -218,7 +229,7 @@ const PRODUCTOS = {
       nombre: "Imperial repujado",
       sub: "calabaza",
       etiqueta: "Nuevo",
-      nuevo: 3,
+      nuevo: 4,
       variantes: [
         {
           label: "Negro",
@@ -245,7 +256,7 @@ const PRODUCTOS = {
       sub: "calabaza",
       etiqueta: "Premium",
       color: "navy",
-      nuevo: 6,
+      nuevo: 7,
       variantes: [
         {
           label: "Negro",
@@ -272,7 +283,7 @@ const PRODUCTOS = {
       sub: "calabaza",
       etiqueta: "Premium",
       color: "navy",
-      nuevo: 5,
+      nuevo: 6,
       variantes: [
         {
           label: "Negro",
@@ -300,7 +311,7 @@ const PRODUCTOS = {
       precio: 65000,
       etiqueta: "Premium",
       color: "navy",
-      nuevo: 4,
+      nuevo: 5,
       desc: "Imperial en cuero negro repujado, con virola cincelada y base de bolitas en alpaca.",
       img: "assets/img/mates/imperial-repujado-base-bolitas-negro-1.jpg",
       img2: "assets/img/mates/imperial-repujado-base-bolitas-negro-2.jpg",
@@ -341,16 +352,6 @@ const PRODUCTOS = {
       desc: "Mate de algarrobo, con bombilla de regalo.",
       img: "assets/img/mates/imperial-algarrobo.jpg",
       detalles: ["Algarrobo macizo", "Bombilla de regalo"]
-    },
-    {
-      nombre: "Ranchero Blanco",
-      sub: "algarrobo",
-      precio: 44200,
-      desc: "Mate ranchero de algarrobo, cruz con puntos de alpaca. Viene con bombilla de regalo.",
-      img: "assets/img/mates/ranchero-blanco.jpg",
-      etiqueta: "Nuevo",
-      color: "green",
-      detalles: ["Algarrobo macizo", "Cruz con puntos de alpaca", "Bombilla de regalo"]
     },
     {
       nombre: "Camionero algarrobo",
@@ -495,7 +496,7 @@ const PRODUCTOS = {
       nombre: "Matera 2 compartimentos",
       etiqueta: "Premium",
       color: "navy",
-      nuevo: 9,
+      nuevo: 10,
       variantes: [
         {
           label: "Avejentada",
@@ -545,7 +546,7 @@ const PRODUCTOS = {
       img: "assets/img/bombillas/bombillon-recto-purinox-1.jpg",
       img2: "assets/img/bombillas/bombillon-recto-purinox-2.jpg",
       etiqueta: "Nuevo",
-      nuevo: 8,
+      nuevo: 9,
       detalles: [
         "Acero inoxidable Purinox",
         "Caña recta",
@@ -615,7 +616,7 @@ const PRODUCTOS = {
       nombre: "Yerbera de gamuza premium 500g",
       etiqueta: "Premium",
       color: "navy",
-      nuevo: 7,
+      nuevo: 8,
       variantes: [
         {
           label: "Negra",
