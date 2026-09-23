@@ -176,15 +176,30 @@ const PRODUCTOS = {
   mates: [
     /* --- Recién llegados: se muestran primero --- */
     {
-      nombre: "Ranchero blanco",
+      nombre: "Ranchero",
       sub: "algarrobo",
-      precio: 33800,
       etiqueta: "Nuevo",
       nuevo: 1,
-      desc: "Ranchero de algarrobo facetado, con base pintada blanca y tachas de alpaca.",
-      img: "assets/img/mates/ranchero-blanco-1.jpg",
-      img2: "assets/img/mates/ranchero-blanco-2.jpg",
-      detalles: ["Algarrobo facetado", "Base pintada blanca", "Tachas de alpaca"]
+      variantes: [
+        {
+          label: "Blanco",
+          swatch: "#f2ede3",
+          precio: 33800,
+          desc: "Ranchero de algarrobo facetado, con base pintada blanca y tachas de alpaca.",
+          img: "assets/img/mates/ranchero-blanco-1.jpg",
+          img2: "assets/img/mates/ranchero-blanco-2.jpg",
+          detalles: ["Algarrobo facetado", "Base pintada blanca", "Tachas de alpaca"]
+        },
+        {
+          label: "Negro",
+          swatch: "#1c1a19",
+          precio: 33800,
+          desc: "Ranchero de algarrobo facetado, con base pintada negra y tachas de alpaca.",
+          img: "assets/img/mates/ranchero-negro-1.jpg",
+          img2: "assets/img/mates/ranchero-negro-2.jpg",
+          detalles: ["Algarrobo facetado", "Base pintada negra", "Tachas de alpaca"]
+        }
+      ]
     },
     {
       nombre: "Torpedo algarrobo",
