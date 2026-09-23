@@ -198,6 +198,15 @@ const PRODUCTOS = {
           img: "assets/img/mates/ranchero-negro-1.jpg",
           img2: "assets/img/mates/ranchero-negro-2.jpg",
           detalles: ["Algarrobo facetado", "Base pintada negra", "Tachas de alpaca"]
+        },
+        {
+          label: "Rosa",
+          swatch: "#e8b4c8",
+          precio: 33800,
+          desc: "Ranchero de algarrobo facetado, con base pintada rosa y tachas de alpaca.",
+          img: "assets/img/mates/ranchero-rosa-1.jpg",
+          img2: "assets/img/mates/ranchero-rosa-2.jpg",
+          detalles: ["Algarrobo facetado", "Base pintada rosa", "Tachas de alpaca"]
         }
       ]
     },
