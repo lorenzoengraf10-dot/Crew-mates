@@ -377,7 +377,8 @@ const PRODUCTOS = {
       sub: "algarrobo",
       precio: 32500,
       desc: "Imperial de algarrobo cincelado, con bombilla de regalo.",
-      img: "assets/img/mates/imperial-algarrobo-cincelado.jpg",
+      img: "assets/img/mates/imperial-algarrobo-cincelado-1.jpg",
+      img2: "assets/img/mates/imperial-algarrobo-cincelado-2.jpg",
       detalles: ["Algarrobo macizo", "Virola cincelada", "Bombilla de regalo"]
     },
 
