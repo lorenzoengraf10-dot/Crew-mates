@@ -11,8 +11,10 @@
 
      "Consent Mode": arranca en "denied" (no guarda nada todavía) hasta
      que el visitante contesta el cartelito de cookies (ver site.js,
-     initCookies). Si ya había aceptado antes, site.js lo pasa a
-     "granted" apenas carga la página. -->
+     initCookies). Si ya había aceptado en una visita anterior, se pasa
+     a "granted" acá mismo, ANTES del config: si se hiciera después
+     (desde site.js), la visita de esa página ya habría salido como
+     "sin consentimiento" y GA4 la contaría a medias. -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-DNWETYPEF9"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -24,6 +26,17 @@
     ad_personalization: 'denied',
     analytics_storage: 'denied'
   });
+
+  try {
+    if (localStorage.getItem('crewmates-cookies') === 'aceptado') {
+      gtag('consent', 'update', {
+        ad_storage: 'granted',
+        ad_user_data: 'granted',
+        ad_personalization: 'granted',
+        analytics_storage: 'granted'
+      });
+    }
+  } catch (e) { /* sin localStorage: queda en denied y se pregunta de nuevo */ }
 
   gtag('js', new Date());
   gtag('config', 'G-DNWETYPEF9');
@@ -87,7 +100,7 @@
 <link rel="preload" as="image" href="assets/img/fondos/hero.jpg" fetchpriority="high">
 
 <!-- Nuestra hoja de estilos va primero y con ?v= para forzar recarga cuando cambia -->
-<link rel="stylesheet" href="assets/css/styles.css?v=28">
+<link rel="stylesheet" href="assets/css/styles.css?v=29">
 
 <!-- Las tipografías se cargan aparte: si tardan o fallan, el sitio igual se ve bien -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -101,7 +114,8 @@
 
 <!-- Aviso de cookies: se arma acá el marcado, pero lo muestra/oculta y
      conecta con el "Consent Mode" de Google site.js (initCookies). Si el
-     visitante ya había elegido antes, ni se dibuja: sigue oculto. -->
+     visitante ya había elegido antes, sigue oculto; se puede volver a
+     abrir desde "Preferencias de cookies" en el pie. -->
 <div class="cookies" data-cookies hidden role="dialog" aria-label="Aviso de cookies">
   <p class="cookies__texto">
     Usamos cookies propias y de Google Analytics para entender cómo se usa el sitio.
@@ -127,7 +141,7 @@
 
       <div class="hero__actions">
         <a class="btn btn--orange" href="#catalogo">Ver el catálogo</a>
-        <a class="btn btn--ghost" data-wa="Hola Crewmates! Vi la web y quería consultar por un producto 🧉">Consultar por WhatsApp</a>
+        <a class="btn btn--ghost" data-ubicacion="hero" data-wa="Hola Crewmates! Vi la web y quería consultar por un producto 🧉">Consultar por WhatsApp</a>
       </div>
 
       <ul class="hero__facts">
@@ -243,6 +257,6 @@
      entró se queda con el JS viejo un día entero aunque haya deploy nuevo:
      hay que subir este número cada vez que cambie products.js o site.js. -->
 <script src="assets/js/products.js?v=25"></script>
-<script src="assets/js/site.js?v=20"></script>
+<script src="assets/js/site.js?v=21"></script>
 </body>
 </html>

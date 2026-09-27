@@ -65,6 +65,10 @@
      estándar de GA4 para que aparezcan solos en sus reportes de
      ecommerce, con moneda y valor.
 
+     Aparte, consulta_whatsapp (evento propio) mide los "Consultar por
+     WhatsApp" sueltos — tarjeta, ficha, hero, botón flotante, pie — con
+     de dónde vino (ubicacion) y, si corresponde, qué producto.
+
      evento() nunca debe romper el sitio si gtag no cargó (bloqueador de
      anuncios, sin conexión a Google, etc.): agregar al carrito o abrir
      una ficha tiene que funcionar igual aunque falle la analítica. */
@@ -74,16 +78,24 @@
     if (typeof gtag === "function") gtag("event", nombre, params);
   }
 
-  function itemGA(categoria, producto, variante) {
+  /* item_name es siempre el nombre base ("Ranchero") y el color va en
+     item_variant ("Blanco"), en los 3 eventos: si el pedido mandara
+     "Ranchero — Blanco" como nombre, GA4 lo contaría como otro producto
+     y no se podría seguir el embudo ficha → carrito → pedido. */
+  function itemGA(categoria, producto, variante, cantidad = 1) {
     const precio = variante ? variante.precio : producto.precio;
     return {
       item_id: slugify(producto.nombre),
       item_name: producto.nombre,
       item_category: (CATEGORIAS[categoria] && CATEGORIAS[categoria].nombre) || categoria,
       item_variant: variante ? variante.label : undefined,
-      price: typeof precio === "number" ? precio : undefined,
-      quantity: 1
+      price: typeof precio === "number" && precio > 0 ? precio : undefined,
+      quantity: cantidad
     };
+  }
+
+  function productoBase(categoria, slug) {
+    return (PRODUCTOS[categoria] && PRODUCTOS[categoria].find((p) => slugify(p.nombre) === slug)) || null;
   }
 
   /* ---------------------------------------------------------------------
@@ -92,7 +104,9 @@
      index.html arranca "Consent Mode" en denied (ver el script de gtag):
      hasta que el visitante contesta acá, no se guarda nada. La decisión
      queda en localStorage, así no se le vuelve a preguntar en su próxima
-     visita. */
+     visita (y si había aceptado, index.html ya la aplica antes de contar
+     la visita). El cartel dice que se puede cambiar "cuando quieras": para
+     eso está "Preferencias de cookies" en el pie, que lo vuelve a abrir. */
   const COOKIES_KEY = "crewmates-cookies";
 
   function actualizarConsentimiento(otorgado) {
@@ -106,21 +120,54 @@
     });
   }
 
+  /* Cualquier link de WhatsApp que no sea el pedido armado del carrito
+     (ese ya se mide como generate_lead). Si viene de una tarjeta o de la
+     ficha, sumamos qué producto era, con los mismos nombres que usan los
+     eventos de ecommerce. */
+  function initMedicionWa() {
+    document.addEventListener("click", (e) => {
+      const link = e.target.closest("a[data-wa]");
+      if (!link) return;
+      const params = { ubicacion: link.dataset.ubicacion || "otro" };
+      const origen = link.closest(".card") || link;
+      const base = origen.dataset.slug && productoBase(origen.dataset.categoria, origen.dataset.slug);
+      if (base) {
+        params.producto = base.nombre;
+        if (origen.dataset.variante) params.variante = origen.dataset.variante;
+      }
+      evento("consulta_whatsapp", params);
+    });
+  }
+
+  /* Si antes había aceptado y ahora rechaza, pasar a "denied" frena las
+     cookies nuevas pero no borra las que Analytics ya dejó (_ga, _ga_XXXX):
+     las borramos a mano, en el dominio exacto y en el ".dominio". */
+  function borrarCookiesGA() {
+    const host = location.hostname;
+    document.cookie.split(";").forEach((c) => {
+      const nombre = c.split("=")[0].trim();
+      if (!/^_ga(_|$)/.test(nombre)) return;
+      ["", `; domain=${host}`, `; domain=.${host}`].forEach((dom) => {
+        document.cookie = `${nombre}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/${dom}`;
+      });
+    });
+  }
+
   function initCookies() {
     const bar = $("[data-cookies]");
     if (!bar) return;
+
+    const mostrar = (si) => {
+      bar.hidden = !si;
+      document.body.classList.toggle("cookies-abierto", si);
+    };
 
     let guardado = null;
     try { guardado = localStorage.getItem(COOKIES_KEY); } catch {
       /* Sin localStorage (modo privado, etc.): mostramos el cartelito
          igual, simplemente se lo va a volver a preguntar la próxima vez. */
     }
-
-    if (guardado === "aceptado") { actualizarConsentimiento(true); return; }
-    if (guardado === "rechazado") return;
-
-    bar.hidden = false;
-    document.body.classList.add("cookies-abierto");
+    if (guardado !== "aceptado" && guardado !== "rechazado") mostrar(true);
 
     bar.addEventListener("click", (e) => {
       const acepta = e.target.closest("[data-cookies-aceptar]");
@@ -132,8 +179,15 @@
            volver a preguntar antes de tiempo. */
       }
       actualizarConsentimiento(!!acepta);
-      bar.hidden = true;
-      document.body.classList.remove("cookies-abierto");
+      if (!acepta) borrarCookiesGA();
+      mostrar(false);
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest("[data-cookies-abrir]")) return;
+      mostrar(true);
+      const boton = $("[data-cookies-aceptar]", bar);
+      if (boton) boton.focus();
     });
   }
 
@@ -311,7 +365,7 @@
           <div class="footer__col">
             <h2>Contacto</h2>
             <ul>
-              <li><a data-wa="Hola Crewmates! 🧉">WhatsApp ${escapar(CONFIG.whatsappVisible)}</a></li>
+              <li><a data-wa="Hola Crewmates! 🧉" data-ubicacion="footer_contacto">WhatsApp ${escapar(CONFIG.whatsappVisible)}</a></li>
               <li><a href="${CONFIG.instagram}" target="_blank" rel="noopener">Instagram @crew.mattes</a></li>
               <li>Showroom en ${escapar(CONFIG.ciudad)}</li>
               <li>${escapar(CONFIG.provincia)}, Argentina</li>
@@ -325,20 +379,21 @@
               <li>Retiro sin cargo en el showroom</li>
               <li>Coordinamos todo por WhatsApp</li>
             </ul>
-            <a class="btn btn--wa footer__wa" data-wa="Hola Crewmates! Quería hacer una consulta 🧉">Escribinos</a>
+            <a class="btn btn--wa footer__wa" data-wa="Hola Crewmates! Quería hacer una consulta 🧉" data-ubicacion="footer">Escribinos</a>
           </div>
         </div>
 
         <div class="wrap footer__bottom">
           <p>© <span data-anio></span> Crewmates · ${escapar(CONFIG.ciudad)}, ${escapar(CONFIG.provincia)}</p>
           <p>Mates &amp; accesorios · Hecho con ganas de compartir</p>
+          <button class="footer__cookies" type="button" data-cookies-abrir>Preferencias de cookies</button>
         </div>
         </div>
       </footer>
 
       <div data-carrito></div>
 
-      <a class="fab" data-wa="Hola Crewmates! Quería hacer una consulta 🧉" aria-label="Escribir por WhatsApp">
+      <a class="fab" data-wa="Hola Crewmates! Quería hacer una consulta 🧉" data-ubicacion="boton_flotante" aria-label="Escribir por WhatsApp">
         ${ICONO_WA}<span class="fab__label">Escribinos</span>
       </a>
 
@@ -358,7 +413,7 @@
             <p class="modal__desc" id="modal-desc"></p>
             <ul class="modal__specs" id="modal-specs"></ul>
             <button type="button" class="btn btn--orange modal__add" id="modal-add" hidden>Agregar al pedido</button>
-            <a class="btn btn--wa modal__cta" id="modal-wa">Consultar por WhatsApp</a>
+            <a class="btn btn--wa modal__cta" id="modal-wa" data-ubicacion="ficha">Consultar por WhatsApp</a>
             <button type="button" class="btn btn--ghost modal__share" id="modal-share">Copiar link de este producto</button>
             <p class="modal__note">Te respondemos apenas lo vemos. Coordinamos envío o retiro en el showroom.</p>
           </div>
@@ -458,7 +513,7 @@
         <div class="card__foot">
           ${precioHTML(producto)}
           <button class="btn card__add" data-agregar type="button">Agregar al pedido</button>
-          <a class="card__consulta" data-wa="${escapar(mensaje)}">Consultar por WhatsApp</a>
+          <a class="card__consulta" data-wa="${escapar(mensaje)}" data-ubicacion="tarjeta">Consultar por WhatsApp</a>
         </div>
       </div>`;
 
@@ -1063,9 +1118,16 @@
     const sumaFinal = totalConDescuento(suma, sumaSinDescuento, metodoPago);
     const hayDescuento = suma > 0 && sumaFinal !== suma;
 
+    /* Si todo lo que quedó está en pausa (en 0), no hay pedido que mandar:
+       el total queda en 0 (no "a consultar") y el botón se apaga en vez de
+       abrir un WhatsApp con la lista vacía. */
+    const sinUnidades = Carrito.unidades() === 0;
+
     const elTotal = $("[data-cart-total]");
     if (elTotal) {
-      elTotal.innerHTML = suma > 0
+      elTotal.innerHTML = sinUnidades
+        ? `<span>Total</span><strong>${CONFIG.moneda} 0</strong>`
+        : suma > 0
         ? `<span>Total</span><strong>${CONFIG.moneda} ${formatoPrecio.format(sumaFinal)}</strong>
            ${hayDescuento
              ? `<small class="cart__ahorro">Precio de lista ${CONFIG.moneda} ${formatoPrecio.format(suma)} · Ahorrás ${CONFIG.moneda} ${formatoPrecio.format(suma - sumaFinal)} pagando en ${NOMBRE_PAGO[metodoPago].toLowerCase()}</small>`
@@ -1080,12 +1142,20 @@
 
     const cta = $("[data-cart-cta]");
     if (cta) {
-      cta.textContent = metodoPago === "transferencia" ? "Confirmar el pedido" : "Hacer el pedido";
+      cta.textContent = sinUnidades
+        ? "Sumá al menos un producto"
+        : metodoPago === "transferencia" ? "Confirmar el pedido" : "Hacer el pedido";
     }
 
     const wa = $("#cart-wa");
     if (wa) {
-      wa.setAttribute("href", waLink(Carrito.mensaje()));
+      if (sinUnidades) {
+        wa.removeAttribute("href");
+        wa.setAttribute("aria-disabled", "true");
+      } else {
+        wa.setAttribute("href", waLink(Carrito.mensaje()));
+        wa.removeAttribute("aria-disabled");
+      }
       wa.setAttribute("target", "_blank");
       wa.setAttribute("rel", "noopener");
     }
@@ -1097,6 +1167,7 @@
 
     const abrir = () => { modal.hidden = false; bloquearScroll(); };
     const cerrar = () => { modal.hidden = true; desbloquearScroll(); };
+    let ultimoPedidoMedido = null;
 
     document.addEventListener("click", (e) => {
       /* Agregar al pedido desde una tarjeta */
@@ -1107,7 +1178,7 @@
         if (!card) return;
         const categoria = card.dataset.categoria, slug = card.dataset.slug, varianteLabel = card.dataset.variante || null;
         Carrito.agregar(categoria, slug, varianteLabel);
-        const base = PRODUCTOS[categoria] && PRODUCTOS[categoria].find((prod) => slugify(prod.nombre) === slug);
+        const base = productoBase(categoria, slug);
         if (base) {
           const variante = base.variantes ? (base.variantes.find((v) => v.label === varianteLabel) || varianteDefault(base)) : null;
           evento("add_to_cart", {
@@ -1136,28 +1207,37 @@
          sitio (todavía no pagó nada, pero acá es donde el catálogo
          termina su trabajo y arranca la charla con el negocio). No
          bloqueamos el click: el link abre en pestaña nueva, así que
-         medir y navegar no compiten entre sí. */
-      if (e.target.closest("#cart-wa")) {
+         medir y navegar no compiten entre sí.
+         Un doble toque (o volver de WhatsApp y tocar de nuevo sin cambiar
+         nada) es el mismo pedido: se cuenta una sola vez. */
+      const btnPedido = e.target.closest("#cart-wa");
+      if (btnPedido) {
+        if (btnPedido.getAttribute("aria-disabled") === "true") { e.preventDefault(); return; }
+        const firma = Carrito.mensaje();
+        if (firma === ultimoPedidoMedido) return;
+
+        const items = Carrito.items
+          .filter((it) => it.cantidad > 0)
+          .map((it) => {
+            const base = productoBase(it.categoria, it.slug);
+            if (!base) return null;
+            const variante = base.variantes ? base.variantes.find((v) => v.label === it.variante) || varianteDefault(base) : null;
+            return itemGA(it.categoria, base, variante, it.cantidad);
+          })
+          .filter(Boolean);
+        if (!items.length) return;
+
         const { suma, sumaSinDescuento } = Carrito.total();
         const pago = $('input[name="pago"]:checked');
         const metodoPago = pago ? pago.value : null;
         const valor = totalConDescuento(suma, sumaSinDescuento, metodoPago);
-        const items = Carrito.items
-          .filter((it) => it.cantidad > 0)
-          .map((it) => {
-            const p = Carrito.producto(it);
-            if (!p) return null;
-            return {
-              item_id: it.slug,
-              item_name: p.nombre,
-              item_category: (CATEGORIAS[it.categoria] && CATEGORIAS[it.categoria].nombre) || it.categoria,
-              item_variant: it.variante || undefined,
-              price: typeof p.precio === "number" ? p.precio : undefined,
-              quantity: it.cantidad
-            };
-          })
-          .filter(Boolean);
-        evento("generate_lead", { currency: MONEDA_GA, value: valor > 0 ? valor : undefined, items });
+        ultimoPedidoMedido = firma;
+        evento("generate_lead", {
+          currency: MONEDA_GA,
+          value: valor > 0 ? valor : undefined,
+          metodo_pago: metodoPago || undefined,
+          items
+        });
         return;
       }
 
@@ -1309,6 +1389,9 @@
 
       elWa.dataset.wa =
         `Hola Crewmates! 🧉 Me interesa: ${elTit.textContent}` + (sub ? ` (${sub})` : "") + `. ¿Tienen stock?`;
+      elWa.dataset.categoria = categoriaAbierta;
+      elWa.dataset.slug = slugify(p.nombre);
+      elWa.dataset.variante = v ? v.label : "";
       activarLinksWa(modal);
     }
 
@@ -1533,6 +1616,7 @@
     Carrito.cargar();
     initCarrito();
     pintarCarrito();
+    initMedicionWa();
     initCookies();
   });
 })();

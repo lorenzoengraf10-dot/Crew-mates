@@ -200,7 +200,7 @@ h1,h2,h3,h4{
 }
 
 /* Marca — usa el logo si existe, si no muestra el wordmark en CSS */
-.brand{ display:flex; align-items:center; flex:none; }
+.brand{ display:flex; align-items:center; justify-content:center; flex:none; min-width:44px; min-height:44px; }
 .brand__logo{ height:42px; width:auto; object-fit:contain; }
 .brand__mark{ display:none; }
 .brand.is-fallback .brand__logo{ display:none; }
@@ -231,7 +231,8 @@ h1,h2,h3,h4{
 .nav__item{ position:relative; }
 .nav__list a{
   position:relative;
-  display:block;
+  display:flex; align-items:center;
+  min-height:44px;               /* zona tocable cómoda también en escritorio */
   font-size:.95rem; font-weight:500;
   color:var(--navy);
   padding:6px 2px;
@@ -402,8 +403,8 @@ h1,h2,h3,h4{
   flex:none;
   font-family:var(--font-display);
   font-weight:700;
-  font-size:.78rem;
-  letter-spacing:.06em;
+  font-size:.95rem;
+  letter-spacing:.04em;
   text-transform:uppercase;
   color:var(--cream);
   white-space:nowrap;
@@ -425,7 +426,7 @@ h1,h2,h3,h4{
   background:#fff;
   box-shadow:inset 0 0 0 1.5px var(--line);
   font-family:var(--font-display);
-  font-weight:600; font-size:.92rem;
+  font-weight:600; font-size:.95rem;
   color:var(--navy);
   white-space:nowrap;
   transition:background-color .18s ease, color .18s ease, box-shadow .18s ease;
@@ -442,7 +443,7 @@ h1,h2,h3,h4{
 .pill--sm{
   min-height:44px;
   padding:7px 15px;
-  font-size:.84rem;
+  font-size:.95rem;
 }
 
 /* ============================ RECIÉN LLEGADOS ============================
@@ -452,7 +453,7 @@ h1,h2,h3,h4{
   padding:clamp(32px, 5vw, 56px) 0;
   background:var(--cream-2);
   border-bottom:1px solid var(--line);
-  scroll-margin-top:var(--header-h);
+  scroll-margin-top:calc(var(--header-h) + var(--catnav-h));
 }
 .nuevos[hidden]{ display:none; }
 
@@ -461,7 +462,12 @@ h1,h2,h3,h4{
    de otra en la misma página. Las pastillas de arriba muestran u ocultan
    cada .catsec sin recargar nada. */
 
-.catalogo{ padding-top:clamp(44px, 6vw, 72px); }
+/* "Ver el catálogo" y el skip-link apuntan acá: sin el scroll-margin, el
+   título quedaba tapado por el encabezado y la barra de pastillas. */
+.catalogo{
+  padding-top:clamp(44px, 6vw, 72px);
+  scroll-margin-top:calc(var(--header-h) + var(--catnav-h));
+}
 
 .catsec{
   padding:clamp(36px, 5vw, 60px) 0;
@@ -565,7 +571,7 @@ h1,h2,h3,h4{
 }
 .card__desc{
   margin:0;
-  font-size:.9rem;
+  font-size:.95rem;
   color:var(--muted);
   display:-webkit-box;
   -webkit-line-clamp:2;
@@ -643,7 +649,7 @@ h1,h2,h3,h4{
   display:flex; align-items:center; justify-content:center;
   text-align:center;
   min-height:44px;
-  font-size:.84rem; font-weight:500;
+  font-size:.95rem; font-weight:500; line-height:1.25;
   color:var(--muted);
   text-decoration:underline;
   text-underline-offset:3px;
@@ -719,8 +725,8 @@ h1,h2,h3,h4{
 }
 .testi__autor{
   margin:10px 20px 0;
-  font-size:.82rem; font-weight:700;
-  letter-spacing:.08em; text-transform:lowercase;
+  font-size:.95rem; font-weight:700;
+  letter-spacing:.06em; text-transform:lowercase;
   color:var(--green-soft);
 }
 
@@ -830,7 +836,7 @@ h1,h2,h3,h4{
   background:var(--cream-3);
 }
 .citem__media img{ width:100%; height:100%; object-fit:cover; }
-.citem__body{ flex:1 1 auto; min-width:0; padding-right:28px; }
+.citem__body{ flex:1 1 auto; min-width:0; padding-right:40px; }
 .citem__nombre{
   font-size:1rem; line-height:1.2;
   margin-bottom:4px;
@@ -848,7 +854,7 @@ h1,h2,h3,h4{
   overflow:hidden;
 }
 .citem__cant button{
-  width:40px; height:40px;
+  width:44px; height:44px;
   display:grid; place-items:center;
   font-size:1.2rem; font-weight:700;
   color:var(--navy);
@@ -862,9 +868,11 @@ h1,h2,h3,h4{
   font-family:var(--font-display);
   font-weight:700;
 }
+/* 44px de zona tocable, corrida para que el círculo visible quede donde
+   estaba (mismo centro que cuando medía 32px) */
 .citem__quitar{
-  position:absolute; top:14px; right:0;
-  width:32px; height:32px;
+  position:absolute; top:8px; right:-6px;
+  width:44px; height:44px;
   border-radius:50%;
   display:grid; place-items:center;
   font-size:1.3rem; line-height:1;
@@ -903,7 +911,7 @@ h1,h2,h3,h4{
 .entrega__precio{
   flex:none;
   font-family:var(--font-display);
-  font-weight:700; font-size:.9rem;
+  font-weight:700; font-size:.95rem;
   color:var(--muted);
 }
 .entrega__precio--gratis{ color:var(--green-soft); }
@@ -944,7 +952,7 @@ h1,h2,h3,h4{
 }
 .pagobox__fila{
   display:flex; align-items:center; gap:10px;
-  padding:11px 14px;
+  padding:8px 8px 8px 14px;
   margin-bottom:8px;
   border-radius:12px;
   background:#fff;
@@ -965,13 +973,14 @@ h1,h2,h3,h4{
 }
 .pagobox__fila button{
   flex:none;
-  min-height:36px;
-  padding:0 14px;
+  margin-left:auto;
+  min-height:44px;
+  padding:0 16px;
   border-radius:999px;
   background:var(--navy);
   color:var(--cream);
   font-family:var(--font-display);
-  font-weight:700; font-size:.76rem;
+  font-weight:700; font-size:.95rem;
   transition:background-color .18s ease;
 }
 .pagobox__fila button:hover{ background:var(--navy-deep); }
@@ -979,13 +988,13 @@ h1,h2,h3,h4{
   display:flex; align-items:center; gap:10px;
   min-height:44px;
   margin-top:6px;
-  font-size:.9rem;
+  font-size:.95rem;
   cursor:pointer;
 }
 .pagobox__check input{ accent-color:var(--green); width:18px; height:18px; flex:none; }
 
 .cart__total{
-  display:flex; align-items:baseline; gap:10px;
+  display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 10px;
   padding:14px 0;
   border-top:1px solid var(--line);
   margin-bottom:14px;
@@ -997,21 +1006,24 @@ h1,h2,h3,h4{
 }
 .cart__total strong{
   margin-left:auto;
+  white-space:nowrap;
   font-family:var(--font-display);
   font-weight:800; font-size:1.5rem;
   color:var(--navy);
 }
 .cart__total small{
   width:100%;
-  font-size:.8rem;
+  font-size:.95rem;
   color:var(--muted);
 }
 .cart__total small.cart__ahorro{ color:var(--green-soft); font-weight:500; }
 
 .cart__cta{ width:100%; min-height:52px; font-size:1.05rem; }
+/* Todo el pedido en pausa: no hay nada para mandar (ver pintarCarrito) */
+.cart__cta[aria-disabled="true"]{ opacity:.5; cursor:not-allowed; }
 .cart__nota{
   margin:12px 0 0;
-  font-size:.8rem; line-height:1.5;
+  font-size:.95rem; line-height:1.45;
   color:var(--muted);
   text-align:center;
 }
@@ -1021,7 +1033,7 @@ h1,h2,h3,h4{
   width:100%;
   min-height:44px;
   margin-top:6px;
-  font-size:.85rem;
+  font-size:.95rem;
   color:var(--muted);
   text-decoration:underline;
   text-underline-offset:3px;
@@ -1150,15 +1162,27 @@ h1,h2,h3,h4{
   transition:color .18s ease;
 }
 .footer__col a:hover{ color:var(--orange-soft); }
-.footer__wa{ margin-top:10px; padding:10px 18px; font-size:.9rem; }
+.footer__wa{ margin-top:10px; padding:10px 18px; font-size:.95rem; }
 
 .footer__bottom{
   display:flex; flex-wrap:wrap; justify-content:space-between; gap:8px;
   padding-top:24px;
-  font-size:.83rem;
-  color:rgba(251,247,240,.5);
+  font-size:.95rem;
+  color:rgba(251,247,240,.62);
 }
 .footer__bottom p{ margin:0; }
+/* Vuelve a abrir el aviso de cookies: se ve como un link más del pie */
+.footer__cookies{
+  display:inline-flex; align-items:center;
+  min-height:44px;
+  padding:0;
+  background:none; border:0;
+  font:inherit; color:inherit;
+  text-decoration:underline;
+  text-underline-offset:3px;
+  cursor:pointer;
+}
+.footer__cookies:hover{ color:var(--orange-soft); }
 
 /* ============================ AVISO DE COOKIES ============================
    Tarjeta chica, no un backdrop de página entera: el resto del sitio se
@@ -1354,7 +1378,7 @@ body.cookies-abierto .fab{ display:none; }
   position:relative;
   padding-left:20px;
   margin-bottom:8px;
-  font-size:.93rem;
+  font-size:.95rem;
   color:var(--muted);
 }
 .modal__specs li::before{
@@ -1363,10 +1387,10 @@ body.cookies-abierto .fab{ display:none; }
   background:var(--orange);
 }
 .modal__cta{ width:100%; }
-.modal__share{ width:100%; margin-top:10px; font-size:.92rem; }
+.modal__share{ width:100%; margin-top:10px; font-size:.95rem; }
 .modal__note{
   margin:14px 0 0;
-  font-size:.82rem;
+  font-size:.95rem;
   color:var(--muted);
   text-align:center;
 }
@@ -1428,7 +1452,7 @@ body.cookies-abierto .fab{ display:none; }
   .cartbtn{ margin-left:auto; width:44px; height:44px; }
 
   .catnav__inner{ padding-block:10px; }
-  .pill{ padding:9px 15px; font-size:.88rem; }
+  .pill{ padding:9px 15px; }
 
   .modal__box{ grid-template-columns:1fr; max-height:92vh; }
   .modal__media{ aspect-ratio:16/10; }
