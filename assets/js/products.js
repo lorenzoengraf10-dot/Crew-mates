@@ -575,12 +575,26 @@ const PRODUCTOS = {
     },
     {
       nombre: "Canasta 100% cuero",
-      precio: 41600,
-      desc: "Canasta matera 100% cuero, con dos manijas y divisiones internas.",
-      img: "assets/img/canastas/canasta-100-cuero.jpg",
       etiqueta: "Premium",
       color: "navy",
-      detalles: ["100% cuero", "Dos manijas", "Divisiones internas"]
+      variantes: [
+        {
+          label: "Marrón",
+          swatch: "#4a2a24",
+          precio: 58500,
+          desc: "Canasta matera 100% cuero marrón, con dos manijas y divisiones internas.",
+          img: "assets/img/canastas/canasta-100-cuero-marron-1.jpg",
+          detalles: ["100% cuero", "Dos manijas", "Divisiones internas"]
+        },
+        {
+          label: "Negra",
+          swatch: "#1c1a19",
+          precio: 58500,
+          desc: "Canasta matera 100% cuero negro, con dos manijas y divisiones internas.",
+          img: "assets/img/canastas/canasta-100-cuero-negra-1.jpg",
+          detalles: ["100% cuero", "Dos manijas", "Divisiones internas"]
+        }
+      ]
     }
   ],
 
