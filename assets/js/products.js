@@ -403,14 +403,6 @@ const PRODUCTOS = {
 
     /* --- Algarrobo: madera maciza --- */
     {
-      nombre: "Imperial algarrobo",
-      sub: "algarrobo",
-      precio: 28600,
-      desc: "Mate de algarrobo, con bombilla de regalo.",
-      img: "assets/img/mates/imperial-algarrobo.jpg",
-      detalles: ["Algarrobo macizo", "Bombilla de regalo"]
-    },
-    {
       nombre: "Camionero algarrobo",
       sub: "algarrobo",
       precio: 18200,
