@@ -176,12 +176,24 @@ const PRODUCTOS = {
   mates: [
     /* --- Recién llegados: se muestran primero --- */
     {
+      nombre: "Torpedo cuero crudo costura en tiento",
+      sub: "criollos",
+      precio: 67600,
+      etiqueta: "Premium",
+      color: "navy",
+      nuevo: 1,
+      desc: "Torpedo criollo en cuero crudo, con costura en tiento trenzado y virola grabada.",
+      img: "assets/img/mates/torpedo-cuero-crudo-tiento-1.jpg",
+      img2: "assets/img/mates/torpedo-cuero-crudo-tiento-2.jpg",
+      detalles: ["Cuero crudo", "Costura en tiento trenzado", "Virola grabada"]
+    },
+    {
       nombre: "Torpedo cuero crudo base bolitas corona en bronce",
       sub: "criollos",
       precio: 70200,
       etiqueta: "Premium",
       color: "navy",
-      nuevo: 1,
+      nuevo: 2,
       desc: "Torpedo criollo en cuero crudo, con virola de bronce y base con bolitas.",
       img: "assets/img/mates/torpedo-cuero-crudo-bolitas-1.jpg",
       img2: "assets/img/mates/torpedo-cuero-crudo-bolitas-2.jpg",
@@ -193,7 +205,7 @@ const PRODUCTOS = {
       precio: 61100,
       etiqueta: "Premium",
       color: "navy",
-      nuevo: 2,
+      nuevo: 3,
       desc: "Mate criollo forrado en cuero crudo, con virola grabada y asa de cuero.",
       img: "assets/img/mates/cuero-crudo-clasico-1.jpg",
       img2: "assets/img/mates/cuero-crudo-clasico-2.jpg",
@@ -205,7 +217,7 @@ const PRODUCTOS = {
       precio: 41600,
       etiqueta: "Premium",
       color: "navy",
-      nuevo: 3,
+      nuevo: 4,
       desc: "Torpedo de algarrobo macizo, con virola de bronce de doble corona grabada.",
       img: "assets/img/mates/torpedo-algarrobo-doble-corona-1.jpg",
       img2: "assets/img/mates/torpedo-algarrobo-doble-corona-2.jpg",
@@ -217,7 +229,7 @@ const PRODUCTOS = {
       precio: 39000,
       etiqueta: "Premium",
       color: "navy",
-      nuevo: 4,
+      nuevo: 5,
       desc: "Torpedo de algarrobo macizo, con virola grabada.",
       img: "assets/img/mates/torpedo-algarrobo-premium-1.jpg",
       img2: "assets/img/mates/torpedo-algarrobo-premium-2.jpg",
@@ -227,7 +239,7 @@ const PRODUCTOS = {
       nombre: "Coquito sol de mayo",
       sub: "calabaza",
       etiqueta: "Nuevo",
-      nuevo: 5,
+      nuevo: 6,
       variantes: [
         {
           label: "Oscuro",
@@ -252,7 +264,7 @@ const PRODUCTOS = {
       sub: "criollos",
       precio: 31200,
       etiqueta: "Nuevo",
-      nuevo: 6,
+      nuevo: 7,
       desc: "Torpedo criollo de calabaza con virola y funda de cuero cosida.",
       img: "assets/img/mates/torpedo-criollo-virola-1.jpg",
       img2: "assets/img/mates/torpedo-criollo-virola-2.jpg",
@@ -263,7 +275,7 @@ const PRODUCTOS = {
       sub: "algarrobo",
       precio: 32500,
       etiqueta: "Nuevo",
-      nuevo: 8,
+      nuevo: 9,
       desc: "Imperial de algarrobo cincelado, con bombilla de regalo.",
       img: "assets/img/mates/imperial-algarrobo-cincelado-1.jpg",
       img2: "assets/img/mates/imperial-algarrobo-cincelado-2.jpg",
@@ -273,7 +285,7 @@ const PRODUCTOS = {
       nombre: "Ranchero",
       sub: "algarrobo",
       etiqueta: "Nuevo",
-      nuevo: 9,
+      nuevo: 10,
       variantes: [
         {
           label: "Blanco",
@@ -318,7 +330,7 @@ const PRODUCTOS = {
       sub: "algarrobo",
       precio: 32500,
       etiqueta: "Nuevo",
-      nuevo: 10,
+      nuevo: 11,
       desc: "Torpedo de algarrobo macizo, con virola ancha grabada.",
       img: "assets/img/mates/torpedo-algarrobo-1.jpg",
       img2: "assets/img/mates/torpedo-algarrobo-2.jpg",
@@ -329,7 +341,7 @@ const PRODUCTOS = {
       sub: "algarrobo",
       precio: 18200,
       etiqueta: "Nuevo",
-      nuevo: 11,
+      nuevo: 12,
       desc: "Coquito de algarrobo con estampado del sol patrio y el Himno Nacional.",
       img: "assets/img/mates/coquito-algarrobo-1.jpg",
       img2: "assets/img/mates/coquito-algarrobo-2.jpg",
@@ -340,7 +352,7 @@ const PRODUCTOS = {
       sub: "criollos",
       etiqueta: "Premium",
       color: "navy",
-      nuevo: 12,
+      nuevo: 13,
       variantes: [
         {
           label: "Borravino",
@@ -368,7 +380,7 @@ const PRODUCTOS = {
       precio: 63700,
       etiqueta: "Premium",
       color: "navy",
-      nuevo: 13,
+      nuevo: 14,
       desc: "Torpedo calabaza avejentada, con virola grabada de hojas y medallón de sol de mayo en alpaca.",
       img: "assets/img/mates/torpedo-avejentado-sol-de-mayo-1.jpg",
       img2: "assets/img/mates/torpedo-avejentado-sol-de-mayo-2.jpg",
@@ -378,7 +390,7 @@ const PRODUCTOS = {
       nombre: "Imperial repujado",
       sub: "calabaza",
       etiqueta: "Nuevo",
-      nuevo: 14,
+      nuevo: 15,
       variantes: [
         {
           label: "Negro",
@@ -405,7 +417,7 @@ const PRODUCTOS = {
       sub: "calabaza",
       etiqueta: "Premium",
       color: "navy",
-      nuevo: 17,
+      nuevo: 18,
       variantes: [
         {
           label: "Negro",
@@ -441,7 +453,7 @@ const PRODUCTOS = {
       sub: "calabaza",
       etiqueta: "Premium",
       color: "navy",
-      nuevo: 16,
+      nuevo: 17,
       variantes: [
         {
           label: "Negro",
@@ -469,7 +481,7 @@ const PRODUCTOS = {
       precio: 65000,
       etiqueta: "Premium",
       color: "navy",
-      nuevo: 15,
+      nuevo: 16,
       desc: "Imperial en cuero negro repujado, con virola cincelada y base de bolitas en alpaca.",
       img: "assets/img/mates/imperial-repujado-base-bolitas-negro-1.jpg",
       img2: "assets/img/mates/imperial-repujado-base-bolitas-negro-2.jpg",
@@ -594,7 +606,7 @@ const PRODUCTOS = {
       nombre: "Canasta 100% cuero",
       etiqueta: "Premium",
       color: "navy",
-      nuevo: 7,
+      nuevo: 8,
       variantes: [
         {
           label: "Marrón",
@@ -618,7 +630,7 @@ const PRODUCTOS = {
       nombre: "Matera 2 compartimentos",
       etiqueta: "Premium",
       color: "navy",
-      nuevo: 20,
+      nuevo: 21,
       variantes: [
         {
           label: "Avejentada",
@@ -659,7 +671,7 @@ const PRODUCTOS = {
       img: "assets/img/bombillas/bombillon-recto-purinox-1.jpg",
       img2: "assets/img/bombillas/bombillon-recto-purinox-2.jpg",
       etiqueta: "Nuevo",
-      nuevo: 19,
+      nuevo: 20,
       detalles: [
         "Acero inoxidable Purinox",
         "Caña recta",
@@ -729,7 +741,7 @@ const PRODUCTOS = {
       nombre: "Yerbera de gamuza premium 500g",
       etiqueta: "Premium",
       color: "navy",
-      nuevo: 18,
+      nuevo: 19,
       variantes: [
         {
           label: "Negra",
