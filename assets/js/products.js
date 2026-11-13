@@ -451,7 +451,8 @@ const PRODUCTOS = {
       sub: "algarrobo",
       precio: 18200,
       desc: "Camionero de algarrobo, con bombilla de regalo.",
-      img: "assets/img/mates/camionero-algarrobo.jpg",
+      img: "assets/img/mates/camionero-algarrobo-1.jpg",
+      img2: "assets/img/mates/camionero-algarrobo-2.jpg",
       detalles: ["Algarrobo macizo", "Bombilla de regalo"]
     },
 
