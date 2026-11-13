@@ -245,15 +245,18 @@
   /* Precio por pagar en efectivo o transferencia (evita el costo de
      financiar las 3 cuotas sin interés con tarjeta). Se muestra como una
      segunda línea debajo del precio de lista, en tarjeta y en la ficha.
-     Los precios de products.js son los de lista (tarjeta / 3 cuotas), que
-     es el precio de efectivo + 30%. Entonces el precio de efectivo o
-     transferencia es la lista dividida 1,3 (no "lista menos 20%", que da
-     un 4% más caro que el precio de efectivo real). Se redondea a los
-     $100 más cercanos para no mostrar centavos raros. */
+
+     Cada producto (o variante) en products.js lleva:
+       precio    → el de lista (tarjeta / 3 cuotas)
+       efectivo  → el de efectivo o transferencia, TAL CUAL lo pasa el dueño.
+     Si un producto viejo no tiene "efectivo", se calcula como la lista
+     dividida 1,3 (redondeado a los $100). */
   const RECARGO_CUOTAS = 1.3;
   const aEfectivo = (monto) => Math.round(monto / RECARGO_CUOTAS / 100) * 100;
-  const precioEfectivoHTML = (precio, desde) => {
-    const conDescuento = aEfectivo(precio);
+  const efectivoDe = (item) =>
+    typeof item.efectivo === "number" && item.efectivo > 0 ? item.efectivo : aEfectivo(item.precio);
+  const precioEfectivoHTML = (item, desde) => {
+    const conDescuento = efectivoDe(item);
     const monto = `${CONFIG.moneda} ${formatoPrecio.format(conDescuento)}`;
     return `<small class="oferta">${desde ? "Desde " : ""}<strong>${monto}</strong> con transferencia o efectivo</small>`;
   };
@@ -263,20 +266,19 @@
      descuento, se aclara que no aplican cuotas. Es una marca por producto,
      no por categoría, porque una misma categoría puede tener productos con
      descuento y sin descuento a la vez (ej: yerbas y yerberas). */
-  const lineaPrecioExtra = (precio, desde, sinCuotas) =>
+  const lineaPrecioExtra = (item, desde, sinCuotas) =>
     sinCuotas
       ? '<small class="sin-cuotas">No aplican cuotas</small>'
-      : precioEfectivoHTML(precio, desde);
-  /* El mismo cálculo de precioEfectivoHTML, aplicado al total del carrito según
-     el medio de pago elegido (efectivo/transferencia sí, tarjeta no). */
+      : precioEfectivoHTML(item, desde);
+  /* El total del carrito según el medio de pago elegido: efectivo o
+     transferencia suman el precio de efectivo de cada producto, tarjeta
+     suma el de lista. */
   const NOMBRE_PAGO = { efectivo: "Efectivo", transferencia: "Transferencia", tarjeta: "Tarjeta de crédito" };
   const tieneDescuentoPorPago = (metodoPago) => metodoPago === "efectivo" || metodoPago === "transferencia";
-  const conDescuentoSiCorresponde = (monto, metodoPago) =>
-    tieneDescuentoPorPago(metodoPago) ? aEfectivo(monto) : monto;
-  /* Total real a cobrar: la parte de categorías sin cuotas (yerbas) nunca
-     se descuenta, el resto sí si paga en efectivo/transferencia. */
-  const totalConDescuento = (suma, sumaSinDescuento, metodoPago) =>
-    sumaSinDescuento + conDescuentoSiCorresponde(suma - sumaSinDescuento, metodoPago);
+  /* Total real a cobrar (ver Carrito.total): los productos sinCuotas
+     (yerbas) cuentan siempre a su precio, sin descuento. */
+  const totalConDescuento = (total, metodoPago) =>
+    tieneDescuentoPorPago(metodoPago) ? total.sumaEfectivo : total.suma;
 
   const ICONO_WA =
     '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.6 2 2.2 6.4 2.2 11.84c0 1.74.46 3.44 1.32 4.94L2 22l5.36-1.4a9.8 9.8 0 0 0 4.68 1.19h.01c5.43 0 9.84-4.4 9.84-9.84 0-2.63-1.03-5.1-2.89-6.96A9.77 9.77 0 0 0 12.04 2Zm4.5 13.84c-.25-.13-1.46-.72-1.68-.8-.23-.08-.39-.13-.56.13-.16.24-.64.79-.78.96-.15.16-.29.18-.53.06-.25-.13-1.04-.39-1.98-1.22-.73-.65-1.23-1.46-1.37-1.7-.15-.25-.02-.38.1-.5.11-.11.25-.29.37-.44.13-.15.17-.25.25-.42.09-.16.04-.31-.02-.44-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.41-.56-.42h-.48c-.16 0-.43.06-.65.31-.22.24-.85.83-.85 2.03s.87 2.35.99 2.51c.12.16 1.71 2.61 4.15 3.66.58.25 1.03.4 1.39.51.58.19 1.11.16 1.53.1.47-.07 1.46-.6 1.66-1.18.21-.58.21-1.07.15-1.18-.06-.1-.22-.16-.47-.29Z"/></svg>';
@@ -449,23 +451,22 @@
 
   function precioHTML(producto, sinCuotas = producto.sinCuotas) {
     if (producto.variantes) {
-      const precios = producto.variantes
-        .filter((v) => !v.agotado && typeof v.precio === "number" && v.precio > 0)
-        .map((v) => v.precio);
-      if (!precios.length) {
+      const validas = producto.variantes
+        .filter((v) => !v.agotado && typeof v.precio === "number" && v.precio > 0);
+      if (!validas.length) {
         return producto.variantes.every((v) => v.agotado)
           ? '<span class="card__price">Sin stock<small>Consultá reposición</small></span>'
           : '<span class="card__price">A consultar<small>Te pasamos el precio</small></span>';
       }
-      const min = Math.min(...precios);
-      const desde = min !== Math.max(...precios);
-      return `<span class="card__price">${desde ? "Desde " : ""}${CONFIG.moneda} ${formatoPrecio.format(min)}${lineaPrecioExtra(min, desde, sinCuotas)}</span>`;
+      const barata = validas.reduce((a, v) => (v.precio < a.precio ? v : a));
+      const desde = validas.some((v) => v.precio !== barata.precio);
+      return `<span class="card__price">${desde ? "Desde " : ""}${CONFIG.moneda} ${formatoPrecio.format(barata.precio)}${lineaPrecioExtra(barata, desde, sinCuotas)}</span>`;
     }
     if (producto.agotado) {
       return '<span class="card__price">Sin stock<small>Consultá reposición</small></span>';
     }
     if (typeof producto.precio === "number" && producto.precio > 0) {
-      return `<span class="card__price">${CONFIG.moneda} ${formatoPrecio.format(producto.precio)}${lineaPrecioExtra(producto.precio, false, sinCuotas)}</span>`;
+      return `<span class="card__price">${CONFIG.moneda} ${formatoPrecio.format(producto.precio)}${lineaPrecioExtra(producto, false, sinCuotas)}</span>`;
     }
     return '<span class="card__price">A consultar<small>Te pasamos el precio</small></span>';
   }
@@ -880,7 +881,7 @@
       if (!base.variantes) return base;
       const v = base.variantes.find((v) => v.label === it.variante) || varianteDefault(base);
       if (!v) return base;
-      return { nombre: `${base.nombre} — ${v.label}`, precio: v.precio, img: v.img, agotado: v.agotado, sinCuotas: base.sinCuotas };
+      return { nombre: `${base.nombre} — ${v.label}`, precio: v.precio, efectivo: v.efectivo, img: v.img, agotado: v.agotado, sinCuotas: base.sinCuotas };
     },
 
     agregar(categoria, slug, variante) {
@@ -930,23 +931,23 @@
     },
 
     /* Total de lo que tiene precio cargado. Los que están "a consultar"
-       se cuentan aparte para no mostrar un total que engañe. sumaSinDescuento
-       es la parte de productos con sinCuotas:true (ver products.js) que no
-       entran en el precio de efectivo/transferencia: se suma aparte para
-       nunca descontarla. */
+       se cuentan aparte para no mostrar un total que engañe.
+         suma          → total a precio de lista (tarjeta)
+         sumaEfectivo  → total a precio de efectivo/transferencia: suma el
+                         "efectivo" de cada producto; los de sinCuotas:true
+                         (ver products.js) van siempre a su precio. */
     total() {
-      let suma = 0, aConsultar = 0, sumaSinDescuento = 0;
+      let suma = 0, aConsultar = 0, sumaEfectivo = 0;
       this.items.forEach((it) => {
         const p = this.producto(it);
         if (typeof p.precio === "number" && p.precio > 0) {
-          const subtotal = p.precio * it.cantidad;
-          suma += subtotal;
-          if (p.sinCuotas) sumaSinDescuento += subtotal;
+          suma += p.precio * it.cantidad;
+          sumaEfectivo += (p.sinCuotas ? p.precio : efectivoDe(p)) * it.cantidad;
         } else {
           aConsultar += it.cantidad;
         }
       });
-      return { suma, aConsultar, sumaSinDescuento };
+      return { suma, aConsultar, sumaEfectivo };
     },
 
     /* El mensaje que se abre en WhatsApp, ya con todo el detalle */
@@ -954,7 +955,8 @@
       const entrega = $('input[name="entrega"]:checked');
       const pago = $('input[name="pago"]:checked');
       const transfirio = $("#pago-hecho")?.checked;
-      const { suma, aConsultar, sumaSinDescuento } = this.total();
+      const total = this.total();
+      const { suma, aConsultar } = total;
 
       /* Los que quedaron en 0 (en pausa, ver cambiar()) no van en el pedido */
       const lineas = this.items
@@ -980,7 +982,7 @@
       txt += lineas.join("\n");
 
       if (suma > 0) {
-        const sumaFinal = totalConDescuento(suma, sumaSinDescuento, metodoPago);
+        const sumaFinal = totalConDescuento(total, metodoPago);
         txt += sumaFinal !== suma
           ? `\n\nTotal de lista: ${CONFIG.moneda} ${formatoPrecio.format(suma)}` +
             `\nTotal con ${nombrePago.toLowerCase()} (precio contado): ${CONFIG.moneda} ${formatoPrecio.format(sumaFinal)}`
@@ -1161,10 +1163,11 @@
 
     if (foot) foot.hidden = false;
 
-    const { suma, aConsultar, sumaSinDescuento } = Carrito.total();
+    const total = Carrito.total();
+    const { suma, aConsultar } = total;
     const pago = $('input[name="pago"]:checked');
     const metodoPago = pago ? pago.value : null;
-    const sumaFinal = totalConDescuento(suma, sumaSinDescuento, metodoPago);
+    const sumaFinal = totalConDescuento(total, metodoPago);
     const hayDescuento = suma > 0 && sumaFinal !== suma;
 
     /* Si todo lo que quedó está en pausa (en 0), no hay pedido que mandar:
@@ -1287,10 +1290,10 @@
           .filter(Boolean);
         if (!items.length) return;
 
-        const { suma, sumaSinDescuento } = Carrito.total();
+        const total = Carrito.total();
         const pago = $('input[name="pago"]:checked');
         const metodoPago = pago ? pago.value : null;
-        const valor = totalConDescuento(suma, sumaSinDescuento, metodoPago);
+        const valor = totalConDescuento(total, metodoPago);
         ultimoPedidoMedido = firma;
         evento("generate_lead", {
           currency: MONEDA_GA,
@@ -1380,7 +1383,7 @@
     function pintarFicha(p) {
       const v = p.variantes ? varianteActual : null;
       const efectivo = v
-        ? { precio: v.precio, desc: v.desc, img: v.img, img2: v.img2, detalles: v.detalles, agotado: v.agotado }
+        ? { precio: v.precio, efectivo: v.efectivo, desc: v.desc, img: v.img, img2: v.img2, detalles: v.detalles, agotado: v.agotado }
         : p;
 
       const sub = p.sub ? SUBS[p.sub] || p.sub : "";
@@ -1393,7 +1396,7 @@
       elPre.innerHTML = efectivo.agotado
         ? "Sin stock por el momento"
         : typeof efectivo.precio === "number" && efectivo.precio > 0
-        ? `${CONFIG.moneda} ${formatoPrecio.format(efectivo.precio)}${lineaPrecioExtra(efectivo.precio, false, p.sinCuotas)}`
+        ? `${CONFIG.moneda} ${formatoPrecio.format(efectivo.precio)}${lineaPrecioExtra(efectivo, false, p.sinCuotas)}`
         : "Precio a consultar";
 
       elSpecs.innerHTML = (efectivo.detalles || []).map((d) => `<li>${escapar(d)}</li>`).join("");

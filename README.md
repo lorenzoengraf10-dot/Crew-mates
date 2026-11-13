@@ -42,7 +42,8 @@ sitemap.xml, robots.txt  → para Google
 {
   nombre: "Imperial cuero crudo cincelado",
   sub: "criollos",                 // solo en mates y termos
-  precio: 65000,                   // precio de LISTA (tarjeta / 3 cuotas), ver abajo
+  precio: 65000,                   // precio de LISTA (tarjeta / 3 cuotas)
+  efectivo: 50000,                 // precio de EFECTIVO / TRANSFERENCIA
   etiqueta: "Premium", color: "navy",
   nuevo: 1,                        // lo suma a "Lo último que sumamos" (1 = el más nuevo)
   desc: "Imperial criollo en cuero crudo, con virola ancha cincelada.",
@@ -55,14 +56,17 @@ sitemap.xml, robots.txt  → para Google
 Productos en varios colores o tamaños usan `variantes: [ { label, swatch, precio, img, ... } ]`
 (mirá "Ranchero" o "Torpedo rey" como ejemplo).
 
-### Precios: cómo se calculan
+### Precios
 
-- En `products.js` se carga **siempre el precio de lista**: el de tarjeta / 3 cuotas, que es
-  el precio de efectivo **más 30%**.
-- El sitio muestra debajo el precio de **efectivo o transferencia**, que es la lista dividida
-  1,3 (redondeado a los $100). Ejemplo: lista `65000` → efectivo `$ 50.000`.
-- Para cargar un producto: `precio = efectivo × 1,3`. Si el efectivo es $24.000, la lista es `31200`.
-- Las yerbas llevan `sinCuotas: true`: no tienen precio de efectivo y muestran "No aplican cuotas".
+Cada producto (o variante) lleva **los dos precios tal cual los pasa el dueño**:
+
+- `precio`: el de lista (tarjeta / 3 cuotas).
+- `efectivo`: el de efectivo o transferencia.
+
+El sitio muestra el de lista arriba y el de efectivo abajo, y el pedido por WhatsApp suma
+cada producto con su precio de efectivo si el cliente paga en efectivo o transferencia.
+Los productos viejos que no tienen `efectivo` se calculan como la lista ÷ 1,3.
+Las yerbas llevan `sinCuotas: true`: no tienen precio de efectivo y muestran "No aplican cuotas".
 
 ### "Lo último que sumamos"
 

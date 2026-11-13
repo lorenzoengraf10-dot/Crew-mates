@@ -47,9 +47,12 @@ nada de eso), si no los navegadores siguen usando la copia vieja en caché
 
 ## Precios
 
-- En `products.js` va el precio de **lista** (tarjeta / 3 cuotas) = efectivo × 1,3.
-- El sitio calcula el efectivo/transferencia como lista ÷ 1,3 (redondeado a $100).
-  Nunca "lista − 20%".
+- Cada producto (o variante) en `products.js` lleva **dos precios, copiados tal
+  cual los pasa el dueño, sin calcular nada**: `precio` = el de lista (tarjeta /
+  3 cuotas) y `efectivo` = el de efectivo/transferencia.
+- Si el dueño pasa un solo número o dice cuál es cuál, preguntar antes de inventar.
+- Los productos viejos que no tienen `efectivo` se calculan como lista ÷ 1,3
+  (redondeado a $100). No tocarlos salvo que el dueño lo pida.
 - Productos nuevos: `nuevo: 1` y subirle 1 a todos los demás `nuevo`.
 
 ## Probar

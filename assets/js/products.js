@@ -16,8 +16,16 @@
    sub       (texto)     Subcategoría. Solo se usa en MATES y TERMOS.
                          Mates  -> "criollos" | "calabaza" | "algarrobo"
                          Termos -> "1lt" | "stanley12"
-   precio    (número)    Ej: 28000  →  se muestra "$ 28.000".
+   precio    (número)    Precio de LISTA (tarjeta / 3 cuotas), tal cual lo
+                         pasa el dueño. Ej: 28000  →  "$ 28.000".
                          Poné null si preferís "Consultar precio".
+   efectivo  (número)    Precio de EFECTIVO / TRANSFERENCIA, tal cual lo
+                         pasa el dueño. Ej: 22000  →  "$ 22.000 con
+                         transferencia o efectivo". Se copia SIEMPRE el
+                         número que pasa el dueño, sin calcular nada.
+                         (Los productos viejos que no lo tienen se calculan
+                         como lista ÷ 1,3.) En productos con variantes va
+                         adentro de cada variante, igual que el precio.
    desc      (texto)     Una o dos líneas describiendo el producto.
    img       (texto)     Ruta de la foto. Si la dejás en "" se muestra
                          un placeholder con el logo hasta que la cargues.
@@ -29,9 +37,8 @@
                          "orange" (por defecto) | "green" | "navy"
    detalles  (lista)     OPCIONAL. Puntos que se ven al abrir la ficha.
    agotado   (true)      OPCIONAL. Marca el producto como sin stock.
-   sinCuotas (true)      OPCIONAL. Para productos que NO tienen el precio de
-                         efectivo/transferencia (lista ÷ 1,3) (hoy: las
-                         yerbas). En vez del precio con descuento, muestra
+   sinCuotas (true)      OPCIONAL. Para productos que NO tienen precio de
+                         efectivo/transferencia aparte (hoy: las yerbas). En vez del precio con descuento, muestra
                          "No aplican cuotas". Va arriba del todo aunque el
                          producto tenga variantes (es una marca por
                          producto, no por variante ni por categoría).
