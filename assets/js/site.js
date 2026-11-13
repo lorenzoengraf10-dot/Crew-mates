@@ -232,9 +232,15 @@
   /* Descuento por pagar en efectivo o transferencia (evita el costo de
      financiar las 3 cuotas sin interés con tarjeta). Se muestra como una
      segunda línea debajo del precio de lista, en tarjeta y en la ficha. */
-  const DESCUENTO_EFECTIVO = 0.2;
+  /* Los precios de products.js son los de lista (tarjeta / 3 cuotas), que
+     es el precio de efectivo + 30%. Entonces el precio de efectivo o
+     transferencia es la lista dividida 1,3 (no "lista menos 20%", que da
+     un 4% más caro que el precio de efectivo real). Se redondea a los
+     $100 más cercanos para no mostrar centavos raros. */
+  const RECARGO_CUOTAS = 1.3;
+  const aEfectivo = (monto) => Math.round(monto / RECARGO_CUOTAS / 100) * 100;
   const precioEfectivoHTML = (precio, desde) => {
-    const conDescuento = Math.round(precio * (1 - DESCUENTO_EFECTIVO));
+    const conDescuento = aEfectivo(precio);
     const monto = `${CONFIG.moneda} ${formatoPrecio.format(conDescuento)}`;
     return `<small class="oferta">${desde ? "Desde " : ""}<strong>${monto}</strong> con transferencia o efectivo</small>`;
   };
@@ -248,12 +254,12 @@
     sinCuotas
       ? '<small class="sin-cuotas">No aplican cuotas</small>'
       : precioEfectivoHTML(precio, desde);
-  /* El mismo 20% de precioEfectivoHTML, aplicado al total del carrito según
+  /* El mismo cálculo de precioEfectivoHTML, aplicado al total del carrito según
      el medio de pago elegido (efectivo/transferencia sí, tarjeta no). */
   const NOMBRE_PAGO = { efectivo: "Efectivo", transferencia: "Transferencia", tarjeta: "Tarjeta de crédito" };
   const tieneDescuentoPorPago = (metodoPago) => metodoPago === "efectivo" || metodoPago === "transferencia";
   const conDescuentoSiCorresponde = (monto, metodoPago) =>
-    tieneDescuentoPorPago(metodoPago) ? Math.round(monto * (1 - DESCUENTO_EFECTIVO)) : monto;
+    tieneDescuentoPorPago(metodoPago) ? aEfectivo(monto) : monto;
   /* Total real a cobrar: la parte de categorías sin cuotas (yerbas) nunca
      se descuenta, el resto sí si paga en efectivo/transferencia. */
   const totalConDescuento = (suma, sumaSinDescuento, metodoPago) =>
@@ -888,7 +894,7 @@
     /* Total de lo que tiene precio cargado. Los que están "a consultar"
        se cuentan aparte para no mostrar un total que engañe. sumaSinDescuento
        es la parte de productos con sinCuotas:true (ver products.js) que no
-       entran en el 20% de efectivo/transferencia: se suma aparte para
+       entran en el precio de efectivo/transferencia: se suma aparte para
        nunca descontarla. */
     total() {
       let suma = 0, aConsultar = 0, sumaSinDescuento = 0;
@@ -939,7 +945,7 @@
         const sumaFinal = totalConDescuento(suma, sumaSinDescuento, metodoPago);
         txt += sumaFinal !== suma
           ? `\n\nTotal de lista: ${CONFIG.moneda} ${formatoPrecio.format(suma)}` +
-            `\nTotal con ${nombrePago.toLowerCase()} (20% off): ${CONFIG.moneda} ${formatoPrecio.format(sumaFinal)}`
+            `\nTotal con ${nombrePago.toLowerCase()} (precio contado): ${CONFIG.moneda} ${formatoPrecio.format(sumaFinal)}`
           : `\n\nTotal: ${CONFIG.moneda} ${formatoPrecio.format(suma)}`;
       }
       if (aConsultar > 0) txt += suma > 0 ? `\n(+ ${aConsultar} producto(s) a consultar)` : "";
@@ -1005,12 +1011,12 @@
               <label class="entrega__op">
                 <input type="radio" name="pago" value="efectivo" checked>
                 <span class="entrega__nombre">Efectivo</span>
-                <span class="entrega__precio entrega__precio--gratis">-20%</span>
+                <span class="entrega__precio entrega__precio--gratis">Mejor precio</span>
               </label>
               <label class="entrega__op">
                 <input type="radio" name="pago" value="transferencia">
                 <span class="entrega__nombre">Transferencia</span>
-                <span class="entrega__precio entrega__precio--gratis">-20%</span>
+                <span class="entrega__precio entrega__precio--gratis">Mejor precio</span>
               </label>
               <label class="entrega__op">
                 <input type="radio" name="pago" value="tarjeta">

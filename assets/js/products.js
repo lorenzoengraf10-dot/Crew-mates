@@ -29,8 +29,8 @@
                          "orange" (por defecto) | "green" | "navy"
    detalles  (lista)     OPCIONAL. Puntos que se ven al abrir la ficha.
    agotado   (true)      OPCIONAL. Marca el producto como sin stock.
-   sinCuotas (true)      OPCIONAL. Para productos que NO tienen el 20% de
-                         descuento por efectivo/transferencia (hoy: las
+   sinCuotas (true)      OPCIONAL. Para productos que NO tienen el precio de
+                         efectivo/transferencia (lista ÷ 1,3) (hoy: las
                          yerbas). En vez del precio con descuento, muestra
                          "No aplican cuotas". Va arriba del todo aunque el
                          producto tenga variantes (es una marca por
