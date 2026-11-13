@@ -1,9 +1,9 @@
 /* =========================================================================
    Crewmates — lógica del sitio
    -------------------------------------------------------------------------
-   Este archivo arma el encabezado y el pie de página en TODAS las páginas
-   (así los datos de contacto se cambian en un solo lugar) y dibuja el
-   catálogo de la sección que corresponda.
+   Este archivo arma el encabezado, el pie de página, el catálogo completo
+   (todas las secciones en index.html), la ficha de producto y el pedido
+   por WhatsApp. Los datos de contacto se cambian en un solo lugar.
 
    Para cargar productos NO hace falta tocar este archivo: todo se edita
    en assets/js/products.js
@@ -227,12 +227,25 @@
     }
   }
 
+  /* Teclado en los cuadros que se abren encima de la página (ficha y
+     pedido): Tab no tiene que escaparse hacia lo que quedó tapado detrás. */
+  function atraparTab(e, contenedor) {
+    if (e.key !== "Tab" || contenedor.hidden) return;
+    const foco = $$("a[href], button:not([disabled]), input:not([disabled]), select:not([disabled])", contenedor)
+      .filter((el) => el.offsetParent !== null || el === document.activeElement);
+    if (!foco.length) return;
+    const primero = foco[0], ultimo = foco[foco.length - 1];
+    if (!contenedor.contains(document.activeElement)) { e.preventDefault(); primero.focus(); }
+    else if (e.shiftKey && document.activeElement === primero) { e.preventDefault(); ultimo.focus(); }
+    else if (!e.shiftKey && document.activeElement === ultimo) { e.preventDefault(); primero.focus(); }
+  }
+
   const formatoPrecio = new Intl.NumberFormat("es-AR", { maximumFractionDigits: 0 });
 
-  /* Descuento por pagar en efectivo o transferencia (evita el costo de
+  /* Precio por pagar en efectivo o transferencia (evita el costo de
      financiar las 3 cuotas sin interés con tarjeta). Se muestra como una
-     segunda línea debajo del precio de lista, en tarjeta y en la ficha. */
-  /* Los precios de products.js son los de lista (tarjeta / 3 cuotas), que
+     segunda línea debajo del precio de lista, en tarjeta y en la ficha.
+     Los precios de products.js son los de lista (tarjeta / 3 cuotas), que
      es el precio de efectivo + 30%. Entonces el precio de efectivo o
      transferencia es la lista dividida 1,3 (no "lista menos 20%", que da
      un 4% más caro que el precio de efectivo real). Se redondea a los
@@ -418,7 +431,7 @@
             <div class="modal__variantes" id="modal-variantes" hidden></div>
             <p class="modal__desc" id="modal-desc"></p>
             <ul class="modal__specs" id="modal-specs"></ul>
-            <button type="button" class="btn btn--orange modal__add" id="modal-add" hidden>Agregar al pedido</button>
+            <button type="button" class="btn btn--orange modal__add" id="modal-add">Agregar al pedido</button>
             <a class="btn btn--wa modal__cta" id="modal-wa" data-ubicacion="ficha">Consultar por WhatsApp</a>
             <button type="button" class="btn btn--ghost modal__share" id="modal-share">Copiar link de este producto</button>
             <p class="modal__note">Te respondemos apenas lo vemos. Coordinamos envío o retiro en el showroom.</p>
@@ -497,6 +510,8 @@
           </div>`
         : "";
 
+    const sinStock = variante ? !!variante.agotado : !!producto.agotado;
+
     const art = document.createElement("article");
     art.className = "card";
     art.dataset.categoria = categoria;
@@ -518,7 +533,7 @@
         ${variantesHTML}
         <div class="card__foot">
           ${precioHTML(producto)}
-          <button class="btn card__add" data-agregar type="button">Agregar al pedido</button>
+          <button class="btn card__add" data-agregar type="button"${sinStock ? " disabled" : ""}>Agregar al pedido</button>
           <a class="card__consulta" data-wa="${escapar(mensaje)}" data-ubicacion="tarjeta">Consultar por WhatsApp</a>
         </div>
       </div>`;
@@ -697,16 +712,33 @@
     const secciones = $$(".catsec");
     if (!barra || !secciones.length) return;
 
+    const aplicar = (filtro) => {
+      $$(".pill[data-filtro]", barra).forEach((p) => p.classList.toggle("is-active", p.dataset.filtro === filtro));
+      secciones.forEach((s) => { s.hidden = filtro !== "todos" && s.dataset.cat !== filtro; });
+    };
+
     barra.addEventListener("click", (e) => {
       const btn = e.target.closest("[data-filtro]");
       if (!btn) return;
-      const filtro = btn.dataset.filtro;
-
-      $$(".pill[data-filtro]", barra).forEach((p) => p.classList.toggle("is-active", p === btn));
-      secciones.forEach((s) => { s.hidden = filtro !== "todos" && s.dataset.cat !== filtro; });
-
+      aplicar(btn.dataset.filtro);
       $("#catalogo")?.scrollIntoView({ block: "start" });
     });
+
+    /* Los links del menú, del pie y de las páginas viejas (mates.html, etc.)
+       apuntan a #cat-<sección>. Si esa sección está escondida por un filtro,
+       el ancla no llevaba a ningún lado: la mostramos (volviendo a "Todos")
+       antes de que el navegador salte. */
+    const asegurarSeccion = (hash) => {
+      const m = /^#cat-([a-z0-9-]+)$/i.exec(hash || "");
+      if (!m) return;
+      const seccion = secciones.find((s) => s.dataset.cat === m[1]);
+      if (seccion && seccion.hidden) aplicar("todos");
+    };
+    document.addEventListener("click", (e) => {
+      const link = e.target.closest('a[href^="#cat-"]');
+      if (link) asegurarSeccion(link.getAttribute("href"));
+    });
+    window.addEventListener("hashchange", () => asegurarSeccion(location.hash));
   }
 
   /* Pastillas chicas dentro de cada sección: filtran por subcategoría */
@@ -747,6 +779,8 @@
       if (!variante) return;
 
       card.dataset.variante = variante.label;
+      const botonAdd = $("[data-agregar]", card);
+      if (botonAdd) botonAdd.disabled = !!variante.agotado;
 
       const media = $(".card__media", card);
       const img = $("img", media);
@@ -756,6 +790,9 @@
       } else {
         media.classList.add("is-empty");
       }
+
+      const descCard = $(".card__desc", card);
+      if (descCard) descCard.textContent = variante.desc || "";
 
       const precioViejo = $(".card__price", card);
       if (precioViejo) precioViejo.outerHTML = precioHTML(variante, producto.sinCuotas);
@@ -814,6 +851,7 @@
            variante sin que el cliente lo haya pedido. */
         this.items = guardado.filter((it) => {
           if (!it || typeof it.slug !== "string" || !PRODUCTOS[it.categoria]) return false;
+          if (!Number.isInteger(it.cantidad) || it.cantidad < 0 || it.cantidad > 99) return false;
           const base = PRODUCTOS[it.categoria].find((p) => slugify(p.nombre) === it.slug);
           if (!base) return false;
           if (!base.variantes) return true;
@@ -850,7 +888,7 @@
       const ya = this.items.find(
         (it) => it.categoria === categoria && it.slug === slug && it.variante === variante
       );
-      if (ya) ya.cantidad += 1;
+      if (ya) ya.cantidad = Math.min(99, ya.cantidad + 1);
       else this.items.push({ categoria, slug, variante, cantidad: 1 });
       this.guardar();
       pintarCarrito();
@@ -867,7 +905,7 @@
         (i) => i.categoria === categoria && i.slug === slug && i.variante === variante
       );
       if (!it) return;
-      it.cantidad = Math.max(0, it.cantidad + delta);
+      it.cantidad = Math.min(99, Math.max(0, it.cantidad + delta));
       this.guardar();
       pintarCarrito();
     },
@@ -950,9 +988,14 @@
       }
       if (aConsultar > 0) txt += suma > 0 ? `\n(+ ${aConsultar} producto(s) a consultar)` : "";
       if (entrega) {
-        txt += `\n\nEntrega: ${entrega.dataset.texto}`;
-        const cp = entrega.value === "envio" ? $("#envio-cp")?.value.trim() : "";
-        if (cp) txt += `\nCódigo postal: ${cp}`;
+        if (entrega.value === "envio") {
+          const provincia = $("#envio-select")?.value;
+          txt += `\n\nEntrega: Envío a domicilio${provincia ? ` — ${provincia}` : " (provincia a confirmar)"}`;
+          const cp = $("#envio-cp")?.value.trim();
+          if (cp) txt += `\nCódigo postal: ${cp}`;
+        } else {
+          txt += `\n\nEntrega: ${entrega.dataset.texto}`;
+        }
       }
 
       if (esTransferencia) {
@@ -991,7 +1034,7 @@
               </label>
               <label class="entrega__op">
                 <input type="radio" name="entrega" value="envio"
-                       data-texto="Envío a domicilio (elegí tu provincia)">
+                       data-texto="Envío a domicilio">
                 <span class="entrega__nombre">Envío a todo el país</span>
               </label>
               <div class="entrega__provincia" data-envio-provincia hidden>
@@ -1171,8 +1214,19 @@
     const modal = $("#cart");
     if (!modal) return;
 
-    const abrir = () => { modal.hidden = false; bloquearScroll(); };
-    const cerrar = () => { modal.hidden = true; desbloquearScroll(); };
+    let focoPrevio = null;
+    const abrir = () => {
+      focoPrevio = document.activeElement;
+      modal.hidden = false;
+      bloquearScroll();
+      const botonCerrar = $(".cart__close", modal);
+      if (botonCerrar) botonCerrar.focus();
+    };
+    const cerrar = () => {
+      modal.hidden = true;
+      desbloquearScroll();
+      if (focoPrevio && document.contains(focoPrevio)) focoPrevio.focus();
+    };
     let ultimoPedidoMedido = null;
 
     document.addEventListener("click", (e) => {
@@ -1274,6 +1328,7 @@
        WhatsApp quede al día, sin esperar a que salga del campo. */
     modal.addEventListener("input", (e) => {
       if (e.target.id !== "envio-cp") return;
+      e.target.value = e.target.value.replace(/\D/g, "").slice(0, 4);
       pintarCarrito();
     });
 
@@ -1286,8 +1341,6 @@
         if (provinciaBox) provinciaBox.hidden = e.target.value !== "envio";
       }
       if (e.target.id === "envio-select") {
-        const input = $('input[name="entrega"][value="envio"]');
-        if (input && e.target.value) input.dataset.texto = `Envío a domicilio — ${e.target.value}`;
         pintarCarrito();
         return;
       }
@@ -1298,6 +1351,7 @@
 
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && !modal.hidden) cerrar();
+      else atraparTab(e, modal);
     });
   }
 
@@ -1391,7 +1445,7 @@
         elVariantes.hidden = true;
       }
 
-      if (elAdd) elAdd.hidden = !p.variantes;
+      if (elAdd) elAdd.disabled = !!efectivo.agotado;
 
       elWa.dataset.wa =
         `Hola Crewmates! 🧉 Me interesa: ${elTit.textContent}` + (sub ? ` (${sub})` : "") + `. ¿Tienen stock?`;
@@ -1428,6 +1482,11 @@
     function cerrar() {
       modal.hidden = true;
       desbloquearScroll();
+      /* Si se abrió por un link directo (#producto=...), sacamos el hash:
+         si no, recargar la página volvería a abrir la misma ficha. */
+      if (location.hash.startsWith("#producto=")) {
+        history.replaceState(null, "", location.pathname + location.search);
+      }
       if (ultimoFoco) ultimoFoco.focus();
     }
 
@@ -1490,6 +1549,7 @@
 
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && !modal.hidden) cerrar();
+      else atraparTab(e, modal);
     });
 
     /* Si alguien entra con un link tipo #producto=categoria:slug (el que

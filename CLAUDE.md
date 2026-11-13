@@ -40,9 +40,23 @@ no romper links guardados.
   catálogo completo.
 - `assets/css/styles.css` — estilos. La paleta se define en `:root`.
 
-Al modificar el CSS hay que subir el `?v=` del link en `index.html` (es la
-única página que carga la hoja de estilos; los redirects no la usan), si no
-los navegadores siguen usando la copia vieja en caché.
+Al modificar el CSS o el JS hay que subir el `?v=` del link correspondiente en
+`index.html` (`styles.css`, `products.js`, `site.js`; los redirects no cargan
+nada de eso), si no los navegadores siguen usando la copia vieja en caché
+(`vercel.json` cachea `/assets/` por 24 hs).
+
+## Precios
+
+- En `products.js` va el precio de **lista** (tarjeta / 3 cuotas) = efectivo × 1,3.
+- El sitio calcula el efectivo/transferencia como lista ÷ 1,3 (redondeado a $100).
+  Nunca "lista − 20%".
+- Productos nuevos: `nuevo: 1` y subirle 1 a todos los demás `nuevo`.
+
+## Probar
+
+`python3 -m http.server 8150` y revisar en 390 × 844: sin scroll horizontal, nada
+de texto < 15 px (salvo etiquetas en mayúscula), zonas tocables ≥ 44 px, sin
+errores en consola. Fotos de producto: 750 × 1000 JPG (~q82).
 
 ## Estilo
 

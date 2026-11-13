@@ -81,7 +81,6 @@ const CONFIG = {
   instagram: "https://www.instagram.com/crew.mattes",
   ciudad: "Carmen de Patagones",
   provincia: "Buenos Aires",
-  origenCP: "8504",
   moneda: "$",
 
   /* Datos para que el cliente te transfiera. Se muestran en el último paso

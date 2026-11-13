@@ -52,6 +52,10 @@ body{
   -webkit-font-smoothing:antialiased;
 }
 
+/* El atributo hidden siempre gana: sin esto, cualquier clase con display
+   propio (.btn, .card, etc.) lo pisaba y el elemento seguía a la vista. */
+[hidden]{ display:none !important; }
+
 img{ max-width:100%; display:block; }
 a{ color:inherit; text-decoration:none; }
 ul,ol{ margin:0; padding:0; list-style:none; }
@@ -150,6 +154,7 @@ h1,h2,h3,h4{
 }
 .btn:hover{ transform:translateY(-2px); box-shadow:var(--shadow-md); }
 .btn:active{ transform:translateY(0); }
+.btn:disabled{ opacity:.5; cursor:not-allowed; transform:none; box-shadow:none; }
 
 .btn--primary{ --btn-bg:var(--navy); --btn-fg:var(--cream); }
 .btn--orange{ --btn-bg:var(--orange); --btn-fg:#fff; }
@@ -1157,7 +1162,7 @@ h1,h2,h3,h4{
 }
 .footer__col a{
   display:inline-flex; align-items:center;
-  min-height:44px;               /* zona tocable cómoda con el dedo */
+  min-height:44px; min-width:44px; /* zona tocable cómoda con el dedo */
   cursor:pointer;
   transition:color .18s ease;
 }
