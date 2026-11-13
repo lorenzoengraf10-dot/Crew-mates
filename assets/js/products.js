@@ -461,51 +461,6 @@ const PRODUCTOS = {
       detalles: ["Cuero liso borravino", "Virola cincelada"]
     },
     {
-      nombre: "Torpedo croco",
-      sub: "calabaza",
-      etiqueta: "Premium",
-      color: "navy",
-      variantes: [
-        {
-          label: "Borravino",
-          swatch: "#5c2030",
-          precio: 49400,
-          desc: "Torpedo en cuero croco borravino, con virola de alpaca cincelada y bombilla de regalo.",
-          img: "assets/img/mates/torpedo-croco-borravino.jpg",
-          detalles: ["Cuero croco borravino", "Virola de alpaca cincelada", "Bombilla de regalo"]
-        },
-        {
-          label: "Negro",
-          swatch: "#1c1a19",
-          precio: 49400,
-          desc: "Torpedo en cuero croco negro, con bombilla de regalo.",
-          img: "assets/img/mates/torpedo-croco-negro.jpg",
-          detalles: ["Cuero croco negro", "Bombilla de regalo"]
-        }
-      ]
-    },
-    {
-      nombre: "Imperial croco negro",
-      sub: "calabaza",
-      precio: 49400,
-      desc: "Imperial en cuero croco negro, con bombilla de regalo.",
-      img: "assets/img/mates/imperial-croco-negro.jpg",
-      etiqueta: "Premium",
-      color: "navy",
-      detalles: ["Cuero croco negro", "Bombilla de regalo"]
-    },
-    {
-      nombre: "Imperial croco cincelado",
-      sub: "calabaza",
-      precio: 49400,
-      desc: "Imperial en cuero croco, con virola cincelada y bombilla de regalo.",
-      img: "assets/img/mates/imperial-croco-cincelado-1.jpg",
-      img2: "assets/img/mates/imperial-croco-cincelado-2.jpg",
-      etiqueta: "Premium",
-      color: "navy",
-      detalles: ["Cuero croco", "Virola cincelada", "Bombilla de regalo"]
-    },
-    {
       nombre: "Camionero repujado",
       sub: "calabaza",
       variantes: [
@@ -711,32 +666,6 @@ const PRODUCTOS = {
           detalles: ["500 g", "Elaborada despalada", "Padrón uruguayo"]
         }
       ]
-    },
-    {
-      nombre: "Yerba Barão",
-      precio: 8000,
-      sinCuotas: true,
-      desc: "Erva-mate tipo uruguayo, importada de Brasil.",
-      img: "assets/img/yerbas/barao.jpg",
-      detalles: ["1 kg", "Tipo uruguayo", "Origen Brasil"]
-    },
-    {
-      nombre: "Yerba Mate Latina 1 kg",
-      precio: 7500,
-      sinCuotas: true,
-      desc: "Mate intenso y cremoso, con molienda fina estilo uruguayo y sabor herbal bien marcado.",
-      img: "assets/img/yerbas/latina-1kg.jpg",
-      etiqueta: "Nuevo",
-      color: "green",
-      detalles: ["1 kg", "Molienda fina", "Estilo uruguayo"]
-    },
-    {
-      nombre: "Centenaria 1 kg",
-      precio: 8000,
-      sinCuotas: true,
-      desc: "Yerba brasileña Seleme Centenaria Original, para un mate más intenso y diferente al argentino clásico.",
-      img: "assets/img/yerbas/centenaria-1kg.jpg",
-      detalles: ["1 kg", "Origen Brasil"]
     }
   ],
 
