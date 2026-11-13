@@ -398,7 +398,7 @@ const PRODUCTOS = {
         {
           label: "Negro",
           swatch: "#1c1a19",
-          precio: 67600,
+          precio: 63700,
           desc: "Torpedo calabaza lustrada negra, con virola ancha y base de estrella en alpaca.",
           img: "assets/img/mates/torpedo-rey-negro-1.jpg",
           img2: "assets/img/mates/torpedo-rey-negro-2.jpg",
@@ -407,7 +407,7 @@ const PRODUCTOS = {
         {
           label: "Marrón",
           swatch: "#a35a2e",
-          precio: 67600,
+          precio: 63700,
           desc: "Torpedo calabaza lustrada marrón claro, con virola ancha y base de estrella en alpaca.",
           img: "assets/img/mates/torpedo-rey-marron-1.jpg",
           img2: "assets/img/mates/torpedo-rey-marron-2.jpg",
@@ -416,7 +416,7 @@ const PRODUCTOS = {
         {
           label: "Borravino",
           swatch: "#5c2030",
-          precio: 67600,
+          precio: 63700,
           desc: "Torpedo calabaza lustrada borravino, con virola ancha y base de estrella en alpaca.",
           img: "assets/img/mates/torpedo-rey-borravino-1.jpg",
           img2: "assets/img/mates/torpedo-rey-borravino-2.jpg",
