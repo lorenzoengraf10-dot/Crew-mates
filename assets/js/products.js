@@ -253,6 +253,15 @@ const PRODUCTOS = {
           img: "assets/img/mates/ranchero-rosa-1.jpg",
           img2: "assets/img/mates/ranchero-rosa-2.jpg",
           detalles: ["Algarrobo facetado", "Base pintada rosa", "Tachas de alpaca"]
+        },
+        {
+          label: "Vaquita",
+          swatch: "radial-gradient(circle at 32% 38%, #1c1a19 0 15%, transparent 16%), radial-gradient(circle at 68% 68%, #1c1a19 0 13%, transparent 14%), #fbfaf6",
+          precio: 33800,
+          desc: "Ranchero de algarrobo facetado, con base pintada de blanco con manchas negras estilo vaquita.",
+          img: "assets/img/mates/ranchero-vaquita-1.jpg",
+          img2: "assets/img/mates/ranchero-vaquita-2.jpg",
+          detalles: ["Algarrobo facetado", "Base pintada estilo vaquita"]
         }
       ]
     },
