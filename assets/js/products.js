@@ -412,6 +412,15 @@ const PRODUCTOS = {
           img: "assets/img/mates/torpedo-rey-marron-1.jpg",
           img2: "assets/img/mates/torpedo-rey-marron-2.jpg",
           detalles: ["Calabaza lustrada marrón claro", "Virola ancha de alpaca", "Base de estrella de alpaca"]
+        },
+        {
+          label: "Borravino",
+          swatch: "#5c2030",
+          precio: 67600,
+          desc: "Torpedo calabaza lustrada borravino, con virola ancha y base de estrella en alpaca.",
+          img: "assets/img/mates/torpedo-rey-borravino-1.jpg",
+          img2: "assets/img/mates/torpedo-rey-borravino-2.jpg",
+          detalles: ["Calabaza lustrada borravino", "Virola ancha de alpaca", "Base de estrella de alpaca"]
         }
       ]
     },
